@@ -1,0 +1,67 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Tag from '../components/Tag.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    date: string;
+    summary: string;
+    tags: string[];
+    role?: string;
+    stack?: string[];
+  };
+  readingTime?: string;
+  backLink?: {
+    href: string;
+    label: string;
+  };
+}
+
+const { frontmatter, readingTime, backLink } = Astro.props;
+
+const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.summary}>
+  <article class="container-narrow py-12 sm:py-16">
+    {backLink && (
+      <a href={backLink.href} class="inline-flex items-center text-sm text-gray-600 hover:text-accent mb-8">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        {backLink.label}
+      </a>
+    )}
+
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-semibold mb-4">{frontmatter.title}</h1>
+
+      <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
+        <time datetime={frontmatter.date}>{formattedDate}</time>
+        {readingTime && <span>{readingTime}</span>}
+        {frontmatter.role && <span>{frontmatter.role}</span>}
+      </div>
+
+      <div class="flex flex-wrap gap-2 mb-4">
+        {frontmatter.tags.map((tag) => (
+          <Tag>{tag}</Tag>
+        ))}
+      </div>
+
+      {frontmatter.stack && (
+        <div class="text-sm text-gray-600">
+          <span class="font-medium">Stack:</span> {frontmatter.stack.join(', ')}
+        </div>
+      )}
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,106 @@
+---
+title: "LLM Observability Platform"
+slug: "llm-observability"
+date: "2025-09-15"
+summary: "Monitoring and tracing infrastructure for LLM applications — catch regressions before users report them."
+tags: ["Observability", "LLMs", "MLOps", "Tracing", "Python"]
+role: "AI Engineer"
+stack: ["Python", "OpenTelemetry", "ClickHouse", "Grafana", "FastAPI"]
+featured: true
+status: "completed"
+links:
+  demo: ""
+  github: ""
+  writeup: ""
+---
+
+## Context
+
+*Why LLM apps need specialized observability*
+
+*Limitations of traditional APM tools for LLM workloads*
+
+*Goals: regression detection, cost tracking, quality monitoring*
+
+---
+
+## Constraints
+
+- **Overhead:** < 5ms latency impact per request
+- **Throughput:** Handle 1K+ requests/second
+- **Privacy:** PII detection and redaction in logs
+- **Integration:** Work with existing monitoring stack
+
+---
+
+## Architecture
+
+*Instrumentation approach (decorators, middleware)*
+
+*Data model for LLM traces*
+
+*Storage backend selection*
+
+*Dashboard and alerting design*
+
+*Evaluation pipeline integration*
+
+---
+
+## Implementation Highlights
+
+### Trace Capture
+
+*Capturing prompt/response pairs efficiently*
+
+### Cost Attribution
+
+*Token counting and cost per request/user/feature*
+
+### Drift Detection
+
+*Semantic similarity tracking for output quality*
+
+### Sampling
+
+*Strategies for high-volume applications*
+
+---
+
+## Evaluation
+
+| Metric | Target | Achieved |
+|--------|--------|----------|
+| Overhead | < 5ms | TBD |
+| Detection Time | < 1 hour | TBD |
+| False Positive Rate | < 5% | TBD |
+| Coverage | > 95% | TBD |
+
+*Time-to-detection for injected regressions*
+
+*User feedback from internal teams*
+
+---
+
+## Outcomes
+
+- Regressions caught before user reports
+- Mean time to detection
+- Cost savings from optimization insights
+- Debugging time reduction
+
+---
+
+## Learnings
+
+### Metrics That Matter
+
+*Which signals actually predict problems*
+
+### Alert vs. Log
+
+*When to wake someone up vs. when to record*
+
+### Detail vs. Overhead
+
+*The tradeoff and where we landed*

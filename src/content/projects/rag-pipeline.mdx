@@ -1,0 +1,109 @@
+---
+title: "RAG Pipeline for Enterprise Search"
+slug: "rag-pipeline"
+date: "2025-12-01"
+summary: "End-to-end retrieval-augmented generation system serving 10K+ daily queries with sub-second latency."
+tags: ["RAG", "LLM", "Vector Search", "Python", "FastAPI"]
+role: "AI Engineer"
+stack: ["Python", "FastAPI", "PostgreSQL", "pgvector", "OpenAI", "Redis"]
+featured: true
+status: "completed"
+links:
+  demo: ""
+  github: ""
+  writeup: ""
+---
+
+## Context
+
+*Business problem and user need — what was the pain point?*
+
+*Existing solutions and their limitations — why weren't they working?*
+
+*Success criteria defined upfront — how would we know we succeeded?*
+
+---
+
+## Constraints
+
+- **Latency:** < 500ms p95 for end-to-end response
+- **Scale:** 10K+ queries/day, 100K+ document corpus
+- **Cost:** Budget for embeddings and inference
+- **Privacy:** PII handling and data residency requirements
+
+---
+
+## Architecture
+
+*Document ingestion pipeline*
+
+*Embedding strategy and model selection*
+
+*Vector store choice and indexing approach*
+
+*Retrieval ranking (hybrid search, reranking)*
+
+*LLM integration and prompt design*
+
+*Caching layer*
+
+---
+
+## Implementation Highlights
+
+### Chunking Strategy
+
+*Why the chunking approach mattered*
+
+### Document Freshness
+
+*Handling updates and staleness*
+
+### Fallback Behavior
+
+*What happens when retrieval fails*
+
+### Cost Controls
+
+*Rate limiting and budget management*
+
+---
+
+## Evaluation
+
+| Metric | Target | Achieved |
+|--------|--------|----------|
+| Recall@10 | > 0.85 | TBD |
+| MRR | > 0.7 | TBD |
+| P95 Latency | < 500ms | TBD |
+| User Satisfaction | > 4.0/5 | TBD |
+
+*Human evaluation approach*
+
+*A/B test results if applicable*
+
+---
+
+## Outcomes
+
+- Queries served per day
+- Latency achieved
+- Cost per query
+- User satisfaction metrics
+- Business impact (support tickets reduced, time saved)
+
+---
+
+## Learnings
+
+### What Worked Well
+
+*Key successes*
+
+### What I'd Do Differently
+
+*Retrospective insights*
+
+### Unexpected Challenges
+
+*Surprises during implementation*

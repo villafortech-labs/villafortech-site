@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="AI Engineer building production ML systems. My work sits at the intersection of machine learning and software engineering."
+>
+  <Section>
+    <div class="max-w-2xl">
+      <h1 class="text-3xl sm:text-4xl font-semibold mb-8">About</h1>
+
+      <div class="prose">
+        <p class="text-xl text-gray-600 mb-8">
+          I'm an AI Engineer who builds production ML systems.
+        </p>
+
+        <p>
+          My work sits at the intersection of machine learning and software engineering — taking models from research to reliable, monitored production systems. I've built RAG pipelines that serve real queries, observability tooling that catches issues before users notice, and MLOps infrastructure that lets teams iterate with confidence.
+        </p>
+
+        <h2>Background</h2>
+        <p>
+          I started in software engineering and moved toward ML when I saw how many promising models never made it to production. The gap between "works in a notebook" and "runs reliably at scale" became my focus.
+        </p>
+
+        <p>Most of my work involves:</p>
+        <ul>
+          <li><strong>RAG systems</strong> — retrieval pipelines, embedding strategies, evaluation frameworks</li>
+          <li><strong>LLM applications</strong> — prompt engineering, orchestration, cost optimization</li>
+          <li><strong>MLOps</strong> — model deployment, monitoring, CI/CD for ML</li>
+          <li><strong>Observability</strong> — tracing, metrics, alerting for ML systems</li>
+        </ul>
+
+        <h2>Current Focus</h2>
+        <p>
+          I'm building tools and systems at the edge of LLM applications — particularly around evaluation, monitoring, and the infrastructure that makes AI systems trustworthy in production.
+        </p>
+
+        <h2>Values</h2>
+        <ul>
+          <li><strong>Ship, then iterate.</strong> Working software beats perfect plans.</li>
+          <li><strong>Measure what matters.</strong> If you can't evaluate it, you can't improve it.</li>
+          <li><strong>Simplicity scales.</strong> Complex systems fail in complex ways.</li>
+          <li><strong>Write it down.</strong> Documentation is a feature, not a chore.</li>
+        </ul>
+
+        <hr />
+
+        <p>
+          If you're working on something interesting in AI infrastructure, I'd like to hear about it.
+        </p>
+      </div>
+
+      <div class="mt-8">
+        <Button href="/contact">Get in Touch</Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,76 @@
+---
+const pathname = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/about', label: 'About' },
+  { href: '/writing', label: 'Writing' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/resume', label: 'Resume' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+}
+---
+
+<nav class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50" aria-label="Main navigation">
+  <div class="container-narrow">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="font-semibold text-lg text-gray-900 hover:text-accent">
+        VillaForTech
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-6" role="menubar">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            role="menuitem"
+            aria-current={isActive(link.href) ? 'page' : undefined}
+            class:list={[
+              'text-sm transition-colors',
+              isActive(link.href)
+                ? 'text-accent font-medium'
+                : 'text-gray-600 hover:text-gray-900',
+            ]}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- Mobile Menu Toggle -->
+      <label for="mobile-menu" class="md:hidden cursor-pointer p-2 -mr-2" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </label>
+    </div>
+  </div>
+
+  <!-- Mobile Menu (CSS-only) -->
+  <input type="checkbox" id="mobile-menu" class="hidden peer" aria-label="Mobile menu toggle" />
+  <div class="md:hidden hidden peer-checked:block border-t border-gray-200 bg-white" role="menu">
+    <div class="container-narrow py-4 space-y-2">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          role="menuitem"
+          aria-current={isActive(link.href) ? 'page' : undefined}
+          class:list={[
+            'block py-2 text-sm transition-colors',
+            isActive(link.href)
+              ? 'text-accent font-medium'
+              : 'text-gray-600 hover:text-gray-900',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>

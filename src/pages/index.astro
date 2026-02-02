@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import projects from '../data/projects.json';
+
+const featuredProjects = projects.projects
+  .filter((p) => p.featured)
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+
+const proofCards = [
+  {
+    title: 'What I Build',
+    description: 'Production ML systems — RAG pipelines, LLM applications, monitoring infrastructure, and the MLOps tooling that keeps them healthy. I focus on systems that serve real users, not just notebooks that impress in demos.',
+  },
+  {
+    title: 'How I Work',
+    description: 'Systems thinking first. I start with constraints, design for observability, and build incrementally. Every system I ship includes evaluation metrics, monitoring, and a path to iterate. No black boxes.',
+  },
+  {
+    title: 'What I Care About',
+    description: 'Reliability over novelty. I\'d rather ship a well-monitored baseline than a fragile state-of-the-art system. The goal is production impact, not paper citations.',
+  },
+];
+---
+
+<BaseLayout
+  title="Home"
+  description="AI Engineer focused on RAG pipelines, LLM monitoring, and MLOps infrastructure. I ship systems that run reliably at scale."
+>
+  <!-- Hero -->
+  <section class="py-20 sm:py-32">
+    <div class="container-narrow">
+      <h1 class="text-4xl sm:text-5xl font-semibold text-gray-900 mb-6">
+        I build production ML systems that work.
+      </h1>
+      <p class="text-xl text-gray-600 mb-8 max-w-2xl">
+        AI Engineer focused on RAG pipelines, LLM monitoring, and MLOps infrastructure. I ship systems that run reliably at scale.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <Button href="/projects" size="lg">View Projects</Button>
+        <Button href="/contact" variant="secondary" size="lg">Get in Touch</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof Row -->
+  <Section class="bg-white border-y border-gray-200">
+    <h2 class="sr-only">What I Do</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      {proofCards.map((card) => (
+        <div>
+          <h3 class="font-semibold text-gray-900 mb-3">{card.title}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">{card.description}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- Featured Projects -->
+  <Section title="Featured Projects">
+    <div class="grid gap-6">
+      {featuredProjects.map((project) => (
+        <Card
+          title={project.title}
+          summary={project.summary}
+          href={`/projects/${project.slug}`}
+          tags={project.tags}
+          date={project.date}
+          variant="featured"
+        />
+      ))}
+    </div>
+    <div class="mt-8">
+      <Button href="/projects" variant="ghost">
+        View all projects
+        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </Button>
+    </div>
+  </Section>
+
+  <!-- CTA -->
+  <Section class="bg-white border-y border-gray-200">
+    <div class="text-center">
+      <h2 class="text-2xl font-semibold mb-4">Interested in working together?</h2>
+      <p class="text-gray-600 mb-6">
+        Currently exploring new opportunities in AI infrastructure and MLOps.
+      </p>
+      <Button href="/contact">Get in Touch</Button>
+    </div>
+  </Section>
+</BaseLayout>

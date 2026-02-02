@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import Card from '../../components/Card.astro';
+import projects from '../../data/projects.json';
+
+const sortedProjects = projects.projects.sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected work from production ML systems, open-source tools, and technical explorations."
+>
+  <Section>
+    <h1 class="text-3xl sm:text-4xl font-semibold mb-4">Projects</h1>
+    <p class="text-gray-600 mb-8 max-w-2xl">
+      Selected work from production ML systems, open-source tools, and technical explorations. Each project includes context, architecture decisions, and outcomes.
+    </p>
+
+    <div class="grid gap-6">
+      {sortedProjects.map((project) => (
+        <Card
+          title={project.title}
+          summary={project.summary}
+          href={`/projects/${project.slug}`}
+          tags={project.tags}
+          date={project.date}
+          variant={project.featured ? 'featured' : 'default'}
+        />
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

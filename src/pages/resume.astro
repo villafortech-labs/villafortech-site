@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Button from '../components/Button.astro';
+import Tag from '../components/Tag.astro';
+---
+
+<BaseLayout
+  title="Resume"
+  description="Professional summary and experience building production ML systems."
+>
+  <Section>
+    <div class="max-w-2xl">
+      <div class="flex items-start justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-semibold mb-2">Resume</h1>
+          <p class="text-gray-600">
+            A summary of my experience building production ML systems.
+          </p>
+        </div>
+        <Button href="/resume.pdf" variant="secondary" external>
+          Download PDF
+        </Button>
+      </div>
+
+      <!-- Summary -->
+      <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">Summary</h2>
+        <p class="text-gray-600">
+          AI Engineer with expertise in building production ML systems, including RAG pipelines, LLM applications, and MLOps infrastructure. Focused on reliability, observability, and systems that scale.
+        </p>
+      </div>
+
+      <!-- Experience -->
+      <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-6">Experience</h2>
+        <div class="space-y-8">
+          <div class="border-l-2 border-gray-200 pl-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="font-semibold">AI Engineer</h3>
+                <p class="text-gray-600">Company Name</p>
+              </div>
+              <span class="text-sm text-gray-500 whitespace-nowrap">2023 - Present</span>
+            </div>
+            <ul class="mt-3 text-sm text-gray-600 space-y-2">
+              <li>Built RAG pipeline serving 10K+ daily queries with sub-second latency</li>
+              <li>Designed LLM observability platform for regression detection</li>
+              <li>Reduced model deployment time from days to hours</li>
+            </ul>
+          </div>
+
+          <div class="border-l-2 border-gray-200 pl-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="font-semibold">ML Engineer</h3>
+                <p class="text-gray-600">Previous Company</p>
+              </div>
+              <span class="text-sm text-gray-500 whitespace-nowrap">2021 - 2023</span>
+            </div>
+            <ul class="mt-3 text-sm text-gray-600 space-y-2">
+              <li>Developed end-to-end ML pipelines for production workloads</li>
+              <li>Implemented monitoring and alerting for model performance</li>
+              <li>Led migration to containerized model serving infrastructure</li>
+            </ul>
+          </div>
+
+          <div class="border-l-2 border-gray-200 pl-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="font-semibold">Software Engineer</h3>
+                <p class="text-gray-600">Earlier Company</p>
+              </div>
+              <span class="text-sm text-gray-500 whitespace-nowrap">2019 - 2021</span>
+            </div>
+            <ul class="mt-3 text-sm text-gray-600 space-y-2">
+              <li>Built backend services handling millions of requests daily</li>
+              <li>Implemented data pipelines for analytics and reporting</li>
+              <li>Contributed to CI/CD and infrastructure automation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">Skills</h2>
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">ML & AI</h3>
+            <div class="flex flex-wrap gap-2">
+              {['RAG', 'LLMs', 'Embeddings', 'MLOps', 'Model Evaluation', 'Prompt Engineering'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Languages & Frameworks</h3>
+            <div class="flex flex-wrap gap-2">
+              {['Python', 'TypeScript', 'FastAPI', 'PyTorch', 'SQL'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Infrastructure</h3>
+            <div class="flex flex-wrap gap-2">
+              {['Kubernetes', 'Docker', 'AWS', 'PostgreSQL', 'Redis', 'Grafana'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div>
+        <h2 class="text-xl font-semibold mb-4">Education</h2>
+        <div class="border-l-2 border-gray-200 pl-4">
+          <h3 class="font-semibold">B.S. Computer Science</h3>
+          <p class="text-gray-600">University Name</p>
+          <p class="text-sm text-gray-500">Graduation Year</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

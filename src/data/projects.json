@@ -1,0 +1,31 @@
+{
+  "projects": [
+    {
+      "slug": "rag-pipeline",
+      "title": "RAG Pipeline for Enterprise Search",
+      "summary": "End-to-end retrieval-augmented generation system serving 10K+ daily queries with sub-second latency.",
+      "tags": ["RAG", "LLM", "Vector Search", "Python", "FastAPI"],
+      "featured": true,
+      "date": "2025-12-01",
+      "status": "completed"
+    },
+    {
+      "slug": "llm-observability",
+      "title": "LLM Observability Platform",
+      "summary": "Monitoring and tracing infrastructure for LLM applications — catch regressions before users report them.",
+      "tags": ["Observability", "LLMs", "MLOps", "Tracing", "Python"],
+      "featured": true,
+      "date": "2025-09-15",
+      "status": "completed"
+    },
+    {
+      "slug": "mlops-platform",
+      "title": "MLOps Platform for Model Deployment",
+      "summary": "Internal platform for deploying, versioning, and monitoring ML models — from training to production in hours, not weeks.",
+      "tags": ["MLOps", "Infrastructure", "CI/CD", "Kubernetes", "Python"],
+      "featured": true,
+      "date": "2025-06-01",
+      "status": "completed"
+    }
+  ]
+}
