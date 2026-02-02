@@ -7,15 +7,15 @@ import Tag from '../components/Tag.astro';
 
 <BaseLayout
   title="Resume"
-  description="Professional summary and experience building production ML systems."
+  description="Roberto Villafuerte — AI Engineer focused on production RAG systems and MLOps."
 >
   <Section>
     <div class="max-w-2xl">
       <div class="flex items-start justify-between gap-4 mb-8">
         <div>
-          <h1 class="text-3xl sm:text-4xl font-semibold mb-2">Resume</h1>
+          <h1 class="text-3xl sm:text-4xl font-semibold mb-2">Roberto Villafuerte</h1>
           <p class="text-gray-600">
-            A summary of my experience building production ML systems.
+            AI Engineer · MLOps · RAG Systems
           </p>
         </div>
         <Button href="/resume.pdf" variant="secondary" external>
@@ -27,7 +27,7 @@ import Tag from '../components/Tag.astro';
       <div class="mb-12">
         <h2 class="text-xl font-semibold mb-4">Summary</h2>
         <p class="text-gray-600">
-          AI Engineer with expertise in building production ML systems, including RAG pipelines, LLM applications, and MLOps infrastructure. Focused on reliability, observability, and systems that scale.
+          Final-year Computer Science undergraduate specializing in MLOps and retrieval-augmented generation (RAG) systems. Experience architecting automated forecasting pipelines and deploying multi-tenant GenAI support agents. Completed Master's-level coursework in Trustworthy ML at the University of Helsinki. Focused on shipping scalable, reliable, and bias-aware production AI systems.
         </p>
       </div>
 
@@ -39,87 +39,145 @@ import Tag from '../components/Tag.astro';
             <div class="flex items-start justify-between gap-4">
               <div>
                 <h3 class="font-semibold">AI Engineer</h3>
-                <p class="text-gray-600">Company Name</p>
+                <p class="text-gray-600">COMPUMAX · Part-time, Remote</p>
               </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">2023 - Present</span>
+              <span class="text-sm text-gray-500 whitespace-nowrap">Dec 2025 – Present</span>
             </div>
             <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Built RAG pipeline serving 10K+ daily queries with sub-second latency</li>
-              <li>Designed LLM observability platform for regression detection</li>
-              <li>Reduced model deployment time from days to hours</li>
+              <li>Architecting a multi-tenant RAG helpdesk for small businesses</li>
+              <li>Designing end-to-end backend in Python, from prototype to deployment</li>
+              <li>Building internal GenAI workflows aligned to business goals and scalable architecture</li>
             </ul>
           </div>
 
           <div class="border-l-2 border-gray-200 pl-4">
             <div class="flex items-start justify-between gap-4">
               <div>
-                <h3 class="font-semibold">ML Engineer</h3>
-                <p class="text-gray-600">Previous Company</p>
+                <h3 class="font-semibold">Machine Learning Engineer Intern</h3>
+                <p class="text-gray-600">Datalysis Group · Remote</p>
               </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">2021 - 2023</span>
+              <span class="text-sm text-gray-500 whitespace-nowrap">Feb 2025 – Jun 2025</span>
             </div>
             <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Developed end-to-end ML pipelines for production workloads</li>
-              <li>Implemented monitoring and alerting for model performance</li>
-              <li>Led migration to containerized model serving infrastructure</li>
+              <li>Automated demand forecasting pipeline for inventory replenishment</li>
+              <li>Implemented end-to-end workflow: cleaning/validation, feature engineering, training, evaluation</li>
+              <li>Stack: Snowflake, Mage AI, Python</li>
             </ul>
-          </div>
-
-          <div class="border-l-2 border-gray-200 pl-4">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h3 class="font-semibold">Software Engineer</h3>
-                <p class="text-gray-600">Earlier Company</p>
-              </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">2019 - 2021</span>
-            </div>
-            <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Built backend services handling millions of requests daily</li>
-              <li>Implemented data pipelines for analytics and reporting</li>
-              <li>Contributed to CI/CD and infrastructure automation</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Skills -->
-      <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4">Skills</h2>
-        <div class="space-y-4">
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">ML & AI</h3>
-            <div class="flex flex-wrap gap-2">
-              {['RAG', 'LLMs', 'Embeddings', 'MLOps', 'Model Evaluation', 'Prompt Engineering'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">Languages & Frameworks</h3>
-            <div class="flex flex-wrap gap-2">
-              {['Python', 'TypeScript', 'FastAPI', 'PyTorch', 'SQL'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">Infrastructure</h3>
-            <div class="flex flex-wrap gap-2">
-              {['Kubernetes', 'Docker', 'AWS', 'PostgreSQL', 'Redis', 'Grafana'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
           </div>
         </div>
       </div>
 
       <!-- Education -->
+      <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-6">Education</h2>
+        <div class="space-y-8">
+          <div class="border-l-2 border-gray-200 pl-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="font-semibold">B.Eng. Computer Science</h3>
+                <p class="text-gray-600">Universidad San Francisco de Quito (USFQ)</p>
+              </div>
+              <span class="text-sm text-gray-500 whitespace-nowrap">2022 – 2026</span>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+              Focus: software engineering, algorithms, databases, applied machine learning. Expected graduation: Dec 2026.
+            </p>
+          </div>
+
+          <div class="border-l-2 border-gray-200 pl-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="font-semibold">Exchange Studies — Data Science (Master's-level)</h3>
+                <p class="text-gray-600">University of Helsinki</p>
+              </div>
+              <span class="text-sm text-gray-500 whitespace-nowrap">Aug 2025 – Jan 2026</span>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+              30 ECTS · GPA: 4.83/5.0
+            </p>
+            <p class="mt-1 text-sm text-gray-600">
+              Coursework: Big Data Platforms, Computer Vision, Engineering of ML Systems, Trustworthy ML, Software Architecture.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">Certifications</h2>
+        <div class="space-y-3">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="font-medium text-gray-900">Technical AI Safety Course</p>
+              <p class="text-sm text-gray-600">BlueDot Impact</p>
+            </div>
+            <span class="text-sm text-gray-500">Jan 2026</span>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="font-medium text-gray-900">General Data Protection Regulation (GDPR)</p>
+              <p class="text-sm text-gray-600">Packt</p>
+            </div>
+            <span class="text-sm text-gray-500">Dec 2025</span>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="font-medium text-gray-900">IBM Machine Learning Specialization</p>
+              <p class="text-sm text-gray-600">Coursera</p>
+            </div>
+            <span class="text-sm text-gray-500"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Awards -->
+      <div class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">Awards</h2>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="font-medium text-gray-900">2nd Place — IEEEXtreme 18.0 (Ecuador)</p>
+            <p class="text-sm text-gray-600">Global 24-hour algorithmic programming competition organized by IEEE</p>
+          </div>
+          <span class="text-sm text-gray-500">Oct 2024</span>
+        </div>
+      </div>
+
+      <!-- Skills -->
       <div>
-        <h2 class="text-xl font-semibold mb-4">Education</h2>
-        <div class="border-l-2 border-gray-200 pl-4">
-          <h3 class="font-semibold">B.S. Computer Science</h3>
-          <p class="text-gray-600">University Name</p>
-          <p class="text-sm text-gray-500">Graduation Year</p>
+        <h2 class="text-xl font-semibold mb-4">Skills</h2>
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Languages</h3>
+            <div class="flex flex-wrap gap-2">
+              {['Python', 'SQL', 'Bash'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">AI / ML</h3>
+            <div class="flex flex-wrap gap-2">
+              {['Generative AI', 'LLMs', 'RAG', 'LLM Evaluation', 'Forecasting', 'ML Systems'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Infrastructure & Engineering</h3>
+            <div class="flex flex-wrap gap-2">
+              {['Snowflake', 'Mage AI', 'Docker', 'CI/CD', 'GitHub Actions', 'Git'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Concepts</h3>
+            <div class="flex flex-wrap gap-2">
+              {['MLOps', 'Data Pipelines', 'Reproducibility', 'Validation', 'CRISP-DM'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
