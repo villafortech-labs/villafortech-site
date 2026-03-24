@@ -7,7 +7,7 @@ import Tag from '../components/Tag.astro';
 
 <BaseLayout
   title="Resume"
-  description="Roberto Villafuerte — AI Engineer focused on production RAG systems and MLOps."
+  description="Roberto Villafuerte — Lead Data Architect specializing in privacy-by-design, HealthTech data systems, and scalable data governance."
 >
   <Section>
     <div class="max-w-2xl">
@@ -15,7 +15,7 @@ import Tag from '../components/Tag.astro';
         <div>
           <h1 class="text-3xl sm:text-4xl font-semibold mb-2">Roberto Villafuerte</h1>
           <p class="text-gray-600">
-            AI Engineer · MLOps · RAG Systems
+            Data Architect · Privacy & Data Governance · HealthTech
           </p>
         </div>
         <Button href="/resume.pdf" variant="secondary" external>
@@ -27,7 +27,7 @@ import Tag from '../components/Tag.astro';
       <div class="mb-12">
         <h2 class="text-xl font-semibold mb-4">Summary</h2>
         <p class="text-gray-600">
-          Final-year Computer Science undergraduate specializing in MLOps and retrieval-augmented generation (RAG) systems. Experience architecting automated forecasting pipelines and deploying multi-tenant GenAI support agents. Completed Master's-level coursework in Trustworthy ML at the University of Helsinki. Focused on shipping scalable, reliable, and bias-aware production AI systems.
+          Lead Data Architect with a security and privacy-by-design mindset, building scalable data foundations for HealthTech and analytics-driven products. Focused on data modeling, governance, and secure data handling — quality, integrity, access control, auditability — to deliver actionable insights without exposing sensitive information. Background includes Master's-level training in Trustworthy ML, Big Data Platforms, and Software Architecture at the University of Helsinki, plus hands-on delivery of production data and ML pipelines.
         </p>
       </div>
 
@@ -38,15 +38,33 @@ import Tag from '../components/Tag.astro';
           <div class="border-l-2 border-gray-200 pl-4">
             <div class="flex items-start justify-between gap-4">
               <div>
+                <h3 class="font-semibold">Lead Data Architect</h3>
+                <p class="text-gray-600">SaliHub · Hybrid, Quito</p>
+              </div>
+              <span class="text-sm text-gray-500 whitespace-nowrap">Feb 2026 – Present</span>
+            </div>
+            <ul class="mt-3 text-sm text-gray-600 space-y-2">
+              <li>Leading the design and governance of SaliHub's data architecture to support a scalable preventive health ecosystem</li>
+              <li>Architected the founding data model and core database schema from scratch, translating complex LOPD privacy requirements and business logic into a secure, multi-tenant architecture</li>
+              <li>Established Privacy-by-Design and defined the organization's data governance framework, implementing strict access controls and audit trails to handle sensitive health data (PII/PHI)</li>
+              <li>Building scalable data infrastructure with robust ETL pipelines using Python and SQL to transform raw health signals into longitudinal user insights and real-time dashboards</li>
+              <li>Partnering with Product and Engineering to translate business goals into measurable data capabilities</li>
+            </ul>
+          </div>
+
+          <div class="border-l-2 border-gray-200 pl-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
                 <h3 class="font-semibold">AI Engineer</h3>
                 <p class="text-gray-600">COMPUMAX · Part-time, Remote</p>
               </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">Dec 2025 – Present</span>
+              <span class="text-sm text-gray-500 whitespace-nowrap">Dec 2025 – Feb 2026</span>
             </div>
             <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Architecting a multi-tenant RAG helpdesk for small businesses</li>
-              <li>Designing end-to-end backend in Python, from prototype to deployment</li>
-              <li>Building internal GenAI workflows aligned to business goals and scalable architecture</li>
+              <li>Built and deployed a production-grade RAG pipeline to automate support workflows with high reliability</li>
+              <li>Designed end-to-end backend services in Python from prototype to deployment</li>
+              <li>Implemented retrieval quality evaluation and continuous improvement workflows</li>
+              <li>Added monitoring and observability practices to support safe releases and maintenance</li>
             </ul>
           </div>
 
@@ -59,9 +77,9 @@ import Tag from '../components/Tag.astro';
               <span class="text-sm text-gray-500 whitespace-nowrap">Feb 2025 – Jun 2025</span>
             </div>
             <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Automated demand forecasting pipeline for inventory replenishment</li>
-              <li>Implemented end-to-end workflow: cleaning/validation, feature engineering, training, evaluation</li>
-              <li>Stack: Snowflake, Mage AI, Python</li>
+              <li>Designed and implemented an end-to-end sales forecasting system using Snowflake, Mage AI, and Python — from raw transactional data to automated daily predictions for branch managers</li>
+              <li>Built data cleaning, feature engineering, model training, and evaluation workflows following CRISP-DM principles</li>
+              <li>Improved reliability with validation checks, schema conventions, and documentation for reproducibility</li>
             </ul>
           </div>
         </div>
@@ -80,7 +98,7 @@ import Tag from '../components/Tag.astro';
               <span class="text-sm text-gray-500 whitespace-nowrap">2022 – 2026</span>
             </div>
             <p class="mt-2 text-sm text-gray-600">
-              Focus: software engineering, algorithms, databases, applied machine learning. Expected graduation: Dec 2026.
+              Focus: software engineering, algorithms, databases, applied machine learning.
             </p>
           </div>
 
@@ -93,9 +111,6 @@ import Tag from '../components/Tag.astro';
               <span class="text-sm text-gray-500 whitespace-nowrap">Aug 2025 – Jan 2026</span>
             </div>
             <p class="mt-2 text-sm text-gray-600">
-              30 ECTS · GPA: 4.83/5.0
-            </p>
-            <p class="mt-1 text-sm text-gray-600">
               Coursework: Big Data Platforms, Computer Vision, Engineering of ML Systems, Trustworthy ML, Software Architecture.
             </p>
           </div>
@@ -147,17 +162,25 @@ import Tag from '../components/Tag.astro';
         <h2 class="text-xl font-semibold mb-4">Skills</h2>
         <div class="space-y-4">
           <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">Languages</h3>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Data Architecture & Governance</h3>
             <div class="flex flex-wrap gap-2">
-              {['Python', 'SQL', 'Bash'].map((skill) => (
+              {['Data Architecture', 'Data Modeling', 'Data Governance', 'Privacy-by-Design', 'Database Security', 'Access Control'].map((skill) => (
                 <Tag size="sm">{skill}</Tag>
               ))}
             </div>
           </div>
           <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">AI / ML</h3>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Data Engineering</h3>
             <div class="flex flex-wrap gap-2">
-              {['Generative AI', 'LLMs', 'RAG', 'LLM Evaluation', 'Forecasting', 'ML Systems'].map((skill) => (
+              {['PostgreSQL', 'SQL', 'Python', 'ETL / Data Pipelines', 'Snowflake', 'Mage AI'].map((skill) => (
+                <Tag size="sm">{skill}</Tag>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">AI / ML Systems</h3>
+            <div class="flex flex-wrap gap-2">
+              {['Generative AI', 'Machine Learning', 'RAG', 'MLOps', 'LLM Evaluation', 'Forecasting'].map((skill) => (
                 <Tag size="sm">{skill}</Tag>
               ))}
             </div>
@@ -165,15 +188,7 @@ import Tag from '../components/Tag.astro';
           <div>
             <h3 class="text-sm font-medium text-gray-700 mb-2">Infrastructure & Engineering</h3>
             <div class="flex flex-wrap gap-2">
-              {['Snowflake', 'Mage AI', 'Docker', 'CI/CD', 'GitHub Actions', 'Git'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">Concepts</h3>
-            <div class="flex flex-wrap gap-2">
-              {['MLOps', 'Data Pipelines', 'Reproducibility', 'Validation', 'CRISP-DM'].map((skill) => (
+              {['AWS', 'Docker', 'CI/CD', 'GitHub Actions', 'Git'].map((skill) => (
                 <Tag size="sm">{skill}</Tag>
               ))}
             </div>

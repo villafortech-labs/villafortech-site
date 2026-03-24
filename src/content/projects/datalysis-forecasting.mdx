@@ -1,0 +1,59 @@
+---
+title: "End-to-End Sales Forecasting Pipeline"
+slug: "datalysis-forecasting"
+date: "2025-02-01"
+summary: "Designed and implemented a sales forecasting system from raw transactional data to automated daily predictions, using Snowflake, Mage AI, and Python."
+tags: ["Data Pipelines", "Forecasting", "Snowflake", "Python", "Mage AI"]
+role: "Machine Learning Engineer Intern"
+stack: ["Snowflake", "Mage AI", "Python", "SQL"]
+featured: true
+status: "completed"
+---
+
+## Context
+
+Datalysis Group needed an automated sales forecasting system that could deliver daily predictions to branch managers, helping them make informed inventory and staffing decisions. The challenge was building a reliable end-to-end pipeline — from raw transactional data all the way to actionable daily forecasts — following production-quality engineering practices.
+
+---
+
+## Approach
+
+### Data Pipeline Design
+
+Designed the full data pipeline following CRISP-DM principles:
+
+- **Data ingestion:** Connected to raw transactional data sources in Snowflake
+- **Data cleaning:** Built validation and cleaning steps to handle missing values, outliers, and schema inconsistencies
+- **Feature engineering:** Created time-series features from transactional data to capture seasonality, trends, and branch-level patterns
+
+### Model Training & Evaluation
+
+Built reproducible model training and evaluation workflows:
+
+- Multiple forecasting approaches evaluated against held-out data
+- Automated retraining on updated data with consistent evaluation metrics
+- Clear documentation of model assumptions and performance characteristics
+
+### Production Pipeline
+
+Orchestrated the full workflow using Mage AI, producing automated daily predictions that branch managers could use directly for operational decisions.
+
+### Reliability & Maintainability
+
+Improved reliability with validation checks, schema conventions, and documentation so that models and pipelines are reproducible and easier to extend by future team members.
+
+---
+
+## Technical Details
+
+- **Data warehouse:** Snowflake
+- **Orchestration:** Mage AI
+- **Language:** Python, SQL
+- **Methodology:** CRISP-DM
+- **Output:** Automated daily sales predictions per branch
+
+---
+
+## Outcome
+
+Delivered a working end-to-end forecasting system that automated the path from raw transactional data to daily branch-level predictions, with validation checks and documentation to support ongoing maintenance and iteration.

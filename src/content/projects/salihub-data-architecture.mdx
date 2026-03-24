@@ -1,0 +1,57 @@
+---
+title: "Founding Data Architecture for a Preventive Health Ecosystem"
+slug: "salihub-data-architecture"
+date: "2026-02-01"
+summary: "Designed the core data model, privacy governance framework, and multi-tenant schema for SaliHub's HealthTech platform — handling sensitive health data (PII/PHI) under LOPD requirements."
+tags: ["Data Architecture", "Privacy-by-Design", "PostgreSQL", "HealthTech", "Data Governance"]
+role: "Lead Data Architect"
+stack: ["PostgreSQL", "Python", "SQL", "ETL Pipelines"]
+featured: true
+status: "in-progress"
+---
+
+## Context
+
+SaliHub is building a preventive health ecosystem that transforms daily health signals into longitudinal user insights and real-time dashboards. The platform handles sensitive health data — including PII and PHI — and must comply with LOPD privacy regulations from day one.
+
+As the first data hire, my role was to design the entire data foundation from scratch: the data model, the governance framework, and the infrastructure to support a scalable, multi-tenant architecture.
+
+---
+
+## Approach
+
+### Data Model Design
+
+Architected the founding data model and core database schema, translating complex LOPD privacy requirements and business logic into a secure, multi-tenant architecture. The schema was designed to support longitudinal health tracking while maintaining strict tenant isolation.
+
+### Privacy & Governance Framework
+
+Established Privacy-by-Design as a core principle and defined the organization's data governance framework:
+
+- Strict access controls with role-based permissions
+- Audit trails for all data access and modifications
+- Data classification and handling policies for PII/PHI
+- Consent management integrated into the data layer
+
+### Data Infrastructure
+
+Building scalable ETL pipelines using Python and SQL to transform raw health signals into structured, queryable insights. The pipeline architecture supports both batch processing for historical analysis and near-real-time updates for dashboards.
+
+### Cross-Functional Collaboration
+
+Partnering with Product and Engineering to translate business goals into measurable data capabilities — ensuring the data architecture supports both current product needs and future analytics requirements.
+
+---
+
+## Technical Details
+
+- **Database:** PostgreSQL with multi-tenant schema design
+- **Privacy:** LOPD compliance, PII/PHI handling, audit trails, access control
+- **Pipelines:** Python and SQL-based ETL for health data transformation
+- **Outputs:** Longitudinal user insights, real-time dashboards
+
+---
+
+## Status
+
+This is an ongoing project. The founding data model and governance framework are in place, and I am actively building out the pipeline infrastructure and analytics capabilities.

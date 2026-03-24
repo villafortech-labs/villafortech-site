@@ -1,30 +1,30 @@
 {
   "projects": [
     {
-      "slug": "rag-pipeline",
-      "title": "RAG Pipeline for Enterprise Search",
-      "summary": "End-to-end retrieval-augmented generation system serving 10K+ daily queries with sub-second latency.",
-      "tags": ["RAG", "LLM", "Vector Search", "Python", "FastAPI"],
+      "slug": "salihub-data-architecture",
+      "title": "Founding Data Architecture for a Preventive Health Ecosystem",
+      "summary": "Designed the core data model, privacy governance framework, and multi-tenant schema for SaliHub's HealthTech platform — handling sensitive health data (PII/PHI) under LOPD requirements.",
+      "tags": ["Data Architecture", "Privacy-by-Design", "PostgreSQL", "HealthTech", "Data Governance"],
+      "featured": true,
+      "date": "2026-02-01",
+      "status": "in-progress"
+    },
+    {
+      "slug": "compumax-rag-pipeline",
+      "title": "Production RAG Pipeline for Support Automation",
+      "summary": "Built and deployed an end-to-end retrieval-augmented generation pipeline to automate support workflows with high reliability, including retrieval quality evaluation and monitoring.",
+      "tags": ["RAG", "Python", "Generative AI", "Monitoring", "Backend"],
       "featured": true,
       "date": "2025-12-01",
       "status": "completed"
     },
     {
-      "slug": "llm-observability",
-      "title": "LLM Observability Platform",
-      "summary": "Monitoring and tracing infrastructure for LLM applications — catch regressions before users report them.",
-      "tags": ["Observability", "LLMs", "MLOps", "Tracing", "Python"],
+      "slug": "datalysis-forecasting",
+      "title": "End-to-End Sales Forecasting Pipeline",
+      "summary": "Designed and implemented a sales forecasting system from raw transactional data to automated daily predictions, using Snowflake, Mage AI, and Python.",
+      "tags": ["Data Pipelines", "Forecasting", "Snowflake", "Python", "Mage AI"],
       "featured": true,
-      "date": "2025-09-15",
-      "status": "completed"
-    },
-    {
-      "slug": "mlops-platform",
-      "title": "MLOps Platform for Model Deployment",
-      "summary": "Internal platform for deploying, versioning, and monitoring ML models — from training to production in hours, not weeks.",
-      "tags": ["MLOps", "Infrastructure", "CI/CD", "Kubernetes", "Python"],
-      "featured": true,
-      "date": "2025-06-01",
+      "date": "2025-02-01",
       "status": "completed"
     }
   ]

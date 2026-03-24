@@ -1,0 +1,54 @@
+---
+title: "Production RAG Pipeline for Support Automation"
+slug: "compumax-rag-pipeline"
+date: "2025-12-01"
+summary: "Built and deployed an end-to-end retrieval-augmented generation pipeline to automate support workflows with high reliability, including retrieval quality evaluation and monitoring."
+tags: ["RAG", "Python", "Generative AI", "Monitoring", "Backend"]
+role: "AI Engineer"
+stack: ["Python", "RAG", "LLMs"]
+featured: true
+status: "completed"
+---
+
+## Context
+
+COMPUMAX needed to automate repetitive support workflows that were consuming significant agent time. The goal was a production-grade retrieval-augmented generation pipeline that could handle real support queries with high reliability — not a prototype, but a system that could be trusted in daily operations.
+
+---
+
+## Approach
+
+### End-to-End Pipeline Design
+
+Designed and built the full RAG pipeline from prototype to deployment:
+
+- Document ingestion and chunking for the support knowledge base
+- Retrieval layer with relevance ranking
+- LLM-powered response generation grounded in retrieved context
+- Backend services in Python handling the full request lifecycle
+
+### Retrieval Quality Evaluation
+
+Implemented evaluation workflows to measure and continuously improve retrieval quality. This included automated checks for retrieval relevance and answer faithfulness, creating a feedback loop for ongoing improvement rather than a one-time deployment.
+
+### Monitoring & Observability
+
+Added monitoring and observability practices to support safe releases and ongoing maintenance. The system tracks key quality indicators so regressions can be caught before they affect users.
+
+### Business Alignment
+
+Worked closely with stakeholders to align the solution with business requirements and operational constraints — ensuring the system fit into existing support workflows rather than requiring the team to adapt to the tool.
+
+---
+
+## Technical Details
+
+- **Stack:** Python, RAG pipeline architecture, LLMs
+- **Focus areas:** Retrieval quality, evaluation workflows, monitoring, backend services
+- **Deployment:** Production environment with observability and continuous improvement
+
+---
+
+## Outcome
+
+Delivered a production-grade RAG system that automated support workflows with high reliability, reducing manual effort while maintaining quality standards for customer-facing responses.
