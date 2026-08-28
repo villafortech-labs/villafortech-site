@@ -53,7 +53,7 @@
 | Link | Target | Status |
 |------|--------|--------|
 | Email | `mailto:contact@villafortech.com` | ✅ Pass |
-| GitHub | `https://github.com/VillafuerTech` | ✅ Pass |
+| GitHub | `https://github.com/VillaforTech` | ✅ Pass |
 | LinkedIn | `https://linkedin.com/in/robertovillafuerte` | ✅ Pass |
 
 ### Footer Features
@@ -150,7 +150,7 @@
 | CTA | Type | Target | Status |
 |-----|------|--------|--------|
 | Email | `mailto:` | `contact@villafortech.com` | ✅ Pass |
-| GitHub | External link | `github.com/VillafuerTech` | ✅ Pass |
+| GitHub | External link | `github.com/VillaforTech` | ✅ Pass |
 | LinkedIn | External link | `linkedin.com/in/robertovillafuerte` | ✅ Pass |
 
 ### Home Page CTAs
