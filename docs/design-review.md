@@ -246,3 +246,25 @@ independent reviewer found no material Cycle 3 issue worth changing.
 
 Further changes now require a measured regression or a material finding. Two
 final consecutive audits must identify no worthwhile change before release.
+
+### Release hardening
+
+The first final audit found one material provenance issue: the fairness case
+linked exact metrics to a mutable `master` path while its reference report had
+not yet been published. Release paused until the evidence boundary was fixed.
+
+- The fairness repository now publishes a reproducible source revision at
+  `a58a381e8b9aeb92c7b01aca8b8cc52ec6f14d33` and a reference-evidence revision
+  at `c942c259d791c1a3202dad7d585f3e81c6aca18e`.
+- The checked XGBoost report records the clean source revision, matching package
+  hash, seed 42, 500 paired bootstrap samples, and the expected DI/SPD policy
+  rejection.
+- English and Spanish case-study actions and exact metric citations now point
+  to immutable GitHub revisions. The ongoing repository link remains available
+  separately.
+- Both fairness GitHub workflows pass at the published evidence revision after
+  validating the committed report, package source hash, tests, packaging,
+  documentation, and the runtime bundle path.
+
+Because this was a material finding, the no-change audit count was reset. The
+two required independent release audits start from this hardened state.
