@@ -5,6 +5,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.villafortech.com',
   trailingSlash: 'always',
+  build: {
+    inlineStylesheets: 'always',
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'es'],

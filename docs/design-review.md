@@ -268,3 +268,23 @@ not yet been published. Release paused until the evidence boundary was fixed.
 
 Because this was a material finding, the no-change audit count was reset. The
 two required independent release audits start from this hardened state.
+
+### Production acceptance correction
+
+The first deployed candidate passed the 64-case browser matrix, but repeated
+mobile Lighthouse runs exposed a performance regression that the fast local
+server had hidden. Production performance fell between 92 and 94 on repeated
+homepage and About runs, below the 95 release gate. The LCP was the page heading
+and its delay remained on About, where the heading has no entrance animation,
+which ruled out the motion layer as the cause. Lighthouse identified the shared
+60,768-byte CSS bundle as the only render-blocking resource, with an estimated
+243 to 300 milliseconds of avoidable delay.
+
+Astro now inlines the shared stylesheet into each static document. This trades
+cross-page CSS caching for a faster cold first render, which is appropriate for
+the site's compact, content-first pages and directly removes the blocking
+request. The complete build and metadata gates remain clean. Mobile Lighthouse
+against the rebuilt local production server returned 100 in every category on
+the English homepage, Spanish homepage, About page, and fairness case, with
+zero layout shift. Production must be measured again after deployment, and the
+two no-change audits must restart from that measured release state.
