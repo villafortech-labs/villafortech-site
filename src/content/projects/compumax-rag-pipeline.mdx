@@ -1,54 +1,59 @@
 ---
-title: "Production RAG Pipeline for Support Automation"
-slug: "compumax-rag-pipeline"
-date: "2025-12-01"
-summary: "Built and deployed an end-to-end retrieval-augmented generation pipeline to automate support workflows with high reliability, including retrieval quality evaluation and monitoring."
-tags: ["RAG", "Python", "Generative AI", "Monitoring", "Backend"]
-role: "AI Engineer"
-stack: ["Python", "RAG", "LLMs"]
+title: 'Support Automation with Retrieval and Human Escalation'
+shortTitle: 'Support Automation Stack'
+eyebrow: 'Sanitized engineering note · AI systems'
+slug: 'compumax-rag-pipeline'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: 'December 2025 – February 2026'
+summary: 'Built a support-automation stack connecting retrieval, service orchestration, human escalation, and explicit fallback controls.'
+tags: ['Backend', 'Retrieval', 'Systems Integration', 'Human Escalation']
+role: 'AI Engineer'
+organization: 'COMPUMAX'
+stack:
+  ['FastAPI', 'Chatwoot', 'Qdrant', 'PostgreSQL', 'Redis', 'Docker Compose']
 featured: true
-status: "completed"
+featuredOrder: 3
+status: 'completed'
+evidence: 'sanitized'
+disclosure: 'Private repository · System-level account of the retrieval, orchestration, fallback, and human-escalation architecture I built.'
 ---
+
+import SupportSystemMap from '../../components/SupportSystemMap.astro';
+
+<div class="article-deck">
+  A support assistant is not just a model call. It is a controlled path from an
+  incoming message to retrieval, a response, or a human.
+</div>
 
 ## Context
 
-COMPUMAX needed to automate repetitive support workflows that were consuming significant agent time. The goal was a production-grade retrieval-augmented generation pipeline that could handle real support queries with high reliability — not a prototype, but a system that could be trusted in daily operations.
+At COMPUMAX, I built a support-automation stack that connected Chatwoot conversations to retrieval and backend services. The goal was to structure automation as a controlled path while preserving a clear route back to a human operator.
 
----
+The stack brought together FastAPI, Chatwoot, Qdrant, PostgreSQL with pgvector, Redis, and Docker Compose around one controlled request path.
 
-## Approach
+## Request path
 
-### End-to-End Pipeline Design
+An incoming request moved through intent routing before the system decided whether to retrieve an FAQ response, escalate to a human, or enter a human-only fallback. Internal adapters kept service-specific behavior at the boundaries rather than mixing it into the orchestration logic.
 
-Designed and built the full RAG pipeline from prototype to deployment:
+Logging made processed user-message paths inspectable. A kill switch and human-only path provided explicit operational controls for cases where automation should not answer.
 
-- Document ingestion and chunking for the support knowledge base
-- Retrieval layer with relevance ranking
-- LLM-powered response generation grounded in retrieved context
-- Backend services in Python handling the full request lifecycle
+<SupportSystemMap />
 
-### Retrieval Quality Evaluation
+## Architecture lessons
 
-Implemented evaluation workflows to measure and continuously improve retrieval quality. This included automated checks for retrieval relevance and answer faithfulness, creating a feedback loop for ongoing improvement rather than a one-time deployment.
+### Escalation is part of the product path
 
-### Monitoring & Observability
+Human escalation should not be treated as an exception around the system. It is a first-class outcome with explicit state, ownership, and recovery behavior.
 
-Added monitoring and observability practices to support safe releases and ongoing maintenance. The system tracks key quality indicators so regressions can be caught before they affect users.
+### Retrieval is only one failure surface
 
-### Business Alignment
+Even a relevant passage can lead to a bad support outcome if routing, conversation state, permissions, or downstream adapters fail. The system path therefore has to remain inspectable from end to end.
 
-Worked closely with stakeholders to align the solution with business requirements and operational constraints — ensuring the system fit into existing support workflows rather than requiring the team to adapt to the tool.
+### Control paths need first-class interfaces
 
----
+The kill switch, human-only mode, processed-path logging, and service adapters were part of the architecture itself. Keeping them explicit made routing behavior easier to inspect and change.
 
-## Technical Details
+## Takeaway
 
-- **Stack:** Python, RAG pipeline architecture, LLMs
-- **Focus areas:** Retrieval quality, evaluation workflows, monitoring, backend services
-- **Deployment:** Production environment with observability and continuous improvement
-
----
-
-## Outcome
-
-Delivered a production-grade RAG system that automated support workflows with high reliability, reducing manual effort while maintaining quality standards for customer-facing responses.
+The central engineering lesson was to treat retrieval, orchestration, state, and human ownership as one system. The useful unit of design was the complete path from an incoming conversation to an answer or a handoff.

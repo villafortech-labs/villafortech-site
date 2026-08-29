@@ -1,0 +1,131 @@
+---
+title: 'Engineering an Auditable Fairness Workflow'
+shortTitle: 'Auditable Fairness Workflow'
+eyebrow: 'Engineering case study · Trustworthy ML'
+slug: 'fairness-aware-candidate-pre-screening'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: '2025 – 2026'
+summary: 'Built an inspectable fairness-audit system that separates model fitting, policy selection, held-out measurement, and serving behavior on the UCI Adult benchmark.'
+tags: ['ML Systems', 'Fairness', 'Auditability', 'Governance']
+role: 'Project collaborator'
+organization: 'University of Helsinki'
+collaborators: ['Charles Santhakumar']
+stack: ['Python', 'scikit-learn', 'XGBoost', 'FastAPI', 'Docker']
+featured: true
+featuredOrder: 1
+status: 'completed'
+evidence: 'public'
+links:
+  github: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening'
+  reproduce: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening#reproduce-the-reference-audit'
+---
+
+import EvaluationProtocol from '../../components/EvaluationProtocol.astro';
+import MetricShift from '../../components/MetricShift.astro';
+
+<div class="article-deck">
+  Fairness becomes an engineering property only when the data boundary, decision
+  policy, and evidence trail can all be inspected.
+</div>
+
+This project packages a complete audit workflow for tabular classification. It supports separate Logistic Regression, Random Forest, and XGBoost audits, measures group disparities, selects an offline threshold policy on dedicated validation data, and writes the artifacts needed to inspect the resulting decision rule.
+
+The central design choice is separation. Model fitting, policy selection, held-out measurement, and API behavior are distinct stages with explicit inputs and outputs.
+
+## The system under audit
+
+Each run fits one selected model: Logistic Regression, Random Forest, or XGBoost. It reports conventional performance measures alongside statistical parity difference (SPD), disparate impact (DI), and true-positive-rate (TPR) gap.
+
+The cleaned dataset contains 45,222 records. Sex and binary race are retained for measurement but excluded from the 12 model features. The split assigns 25,637 records to fitting, 4,525 to validation, and preserves all 15,060 records from the official UCI test partition. The validation set is jointly stratified by income, sex, and binary race so the relevant cells remain represented during policy selection.
+
+<EvaluationProtocol />
+
+## One command owns the audit
+
+The repository exposes a packaged data-preparation step and one installed audit command. That command coordinates five boundaries:
+
+1. Build model-ready data and record its identity.
+2. Fit preprocessing and the selected model on the fitting partition.
+3. Select the offline threshold policy using validation labels.
+4. Apply the frozen model and policy once to the held-out test partition.
+5. Persist predictions, metrics, uncertainty intervals, manifest data, and the gate verdict.
+
+The run directory groups the model bundle, decision policy, paired predictions, report, and manifest. The manifest records dependency versions, split-cell counts, and source and data hashes, while predictions remain a separate inspection output. The report is therefore connected to the inputs and policy that produced it instead of existing as an isolated table.
+
+## The decision policy is versioned
+
+For the reference XGBoost run, the global decision threshold is `0.500`. Validation selects an offline Female threshold of `0.405`, while the Male threshold remains at `0.500`. Those values are frozen before the policy is applied to the test partition.
+
+The group-specific policy is stored as an analysis artifact. The FastAPI path uses one global `0.500` threshold and marks the offline policy as `served_by_api: false`. That boundary prevents an analytical intervention from silently becoming service behavior.
+
+## Reference audit snapshot
+
+The checked reference report records an XGBoost run with seed `42`.
+
+| Measure                       | Global 0.500 | Offline policy | Offline-policy 95% interval |
+| ----------------------------- | -----------: | -------------: | --------------------------: |
+| Accuracy                      |       0.8694 |         0.8678 |            [0.8630, 0.8728] |
+| TPR gap (Male − Female)       |       0.0504 |        -0.0124 |           [-0.0560, 0.0268] |
+| Statistical parity difference |       0.1754 |         0.1563 |            [0.1468, 0.1670] |
+| Disparate impact              |       0.3400 |         0.4120 |            [0.3817, 0.4370] |
+
+<MetricShift />
+
+Under the offline policy, the TPR-gap point estimate crosses zero while accuracy changes by `-0.0016`. SPD moves toward zero and DI moves toward one, but neither reaches the configured policy range.
+
+The intervals come from 500 paired, stratified bootstrap samples of the fixed test set. They describe uncertainty for this test sample. Sensitivity to a different validation split, model specification, year, or population remains a separate question.
+
+## A policy gate owns the verdict
+
+The default gate returns **FAIL**. The reference run satisfies minimum accuracy, maximum accuracy loss, and absolute TPR-gap requirements, but it fails two configured constraints:
+
+- `DI=0.4120`, below the allowed range beginning at `0.80`.
+- `|SPD|=0.1563`, above the maximum `0.10`.
+
+This is the useful system behavior: movement in one targeted measure cannot override the rest of the policy. The persisted verdict keeps the decision rule and the acceptance criteria in the same evidence trail.
+
+<aside
+  class="evidence-note evidence-note--verified"
+  aria-label="Reference artifact"
+>
+  <span>REFERENCE ARTIFACT</span>
+  The report records the seed, Python and dependency versions, hashes, split
+  cells, thresholds, intervals, and policy verdict.{' '}
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/master/reports/reference/xgb-seed-42-v1/report.json">
+    Inspect report.json
+  </a>
+  .
+</aside>
+
+## Audit and service paths stay distinct
+
+| System boundary   | Responsibility                                                      |
+| ----------------- | ------------------------------------------------------------------- |
+| Audit command     | Fit the selected model, choose the offline policy, and run the gate |
+| Reference bundle  | Package the model, policy, report, manifest, and dependencies       |
+| Run outputs       | Store paired predictions alongside the reference bundle             |
+| Validation checks | Reject malformed artifacts or incomplete policy inputs              |
+| FastAPI path      | Load a compatible bundle and apply the global `0.500` decision rule |
+
+Keeping those paths separate makes each artifact's responsibility explicit: the offline threshold policy remains inspectable, while the API behavior remains tied to its global rule.
+
+## Next engineering step
+
+The next iteration would pre-register repeated validation splits and report policy stability across them, extending the current test-sample intervals with split-sensitivity evidence. Any domain-facing extension would require a target and dataset designed for that context, plus legal and stakeholder review.
+
+## Inspect the implementation
+
+The public repository includes the locked environment, audit command, artifact checks, and reference report needed to follow the workflow from data preparation to gate verdict.
+
+**Charles Santhakumar** and I built the shared system at the University of Helsinki. I later carried out the engineering audit documented in this case study.
+
+<div class="article-end-link">
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening">
+    Inspect the source on GitHub →
+  </a>
+  {' · '}
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/master/reports/reference/xgb-seed-42-v1/report.json">
+    Open the reference report →
+  </a>
+</div>

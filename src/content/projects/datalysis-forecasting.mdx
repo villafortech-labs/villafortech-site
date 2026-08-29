@@ -1,59 +1,57 @@
 ---
-title: "End-to-End Sales Forecasting Pipeline"
-slug: "datalysis-forecasting"
-date: "2025-02-01"
-summary: "Designed and implemented a sales forecasting system from raw transactional data to automated daily predictions, using Snowflake, Mage AI, and Python."
-tags: ["Data Pipelines", "Forecasting", "Snowflake", "Python", "Mage AI"]
-role: "Machine Learning Engineer Intern"
-stack: ["Snowflake", "Mage AI", "Python", "SQL"]
+title: 'Forecasting Pipeline Components and Data Contracts'
+shortTitle: 'Forecasting Pipeline Work'
+eyebrow: 'Sanitized engineering note · ML pipelines'
+slug: 'datalysis-forecasting'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: 'February – June 2025'
+summary: 'Implemented forecasting pipeline components spanning data preparation, model evaluation, prediction, alerts, and data-platform exports in Python and Mage AI.'
+tags: ['ML Pipelines', 'Forecasting', 'Data Contracts', 'Python']
+role: 'Machine Learning Engineer Intern'
+organization: 'Datalysis Group'
+stack: ['Python', 'Mage AI', 'PostgreSQL', 'Snowflake']
 featured: true
-status: "completed"
+featuredOrder: 4
+status: 'completed'
+evidence: 'sanitized'
+disclosure: 'Private work · Focused account of the forecasting pipeline components and data contracts I contributed.'
 ---
+
+<div class="article-deck">
+  In a forecasting pipeline, the model is only one stage. The contracts between
+  preparation, evaluation, prediction, and export determine whether the result
+  can be trusted.
+</div>
 
 ## Context
 
-Datalysis Group needed an automated sales forecasting system that could deliver daily predictions to branch managers, helping them make informed inventory and staffing decisions. The challenge was building a reliable end-to-end pipeline — from raw transactional data all the way to actionable daily forecasts — following production-quality engineering practices.
+At Datalysis Group, I contributed to a forecasting workflow implemented in Python and orchestrated with Mage AI. My work covered components across data preparation, feature engineering, model training and evaluation, prediction, alerts, and data-platform-facing exports.
 
----
+The pipeline interacted with PostgreSQL and Snowflake-related paths. This case study focuses on the code and contracts I worked on inside that workflow.
 
-## Approach
+## Engineering contribution
 
-### Data Pipeline Design
+I implemented and corrected pipeline components that transformed source data, constructed model inputs, evaluated forecasts, produced predictions, and prepared outputs for downstream systems.
 
-Designed the full data pipeline following CRISP-DM principles:
+Several important fixes were not algorithm changes. They concerned the units used during evaluation, output schemas, write behavior, and duplicate exporters. Keeping predictions separate from evaluation metrics made the downstream contract clearer and reduced the chance that one output path would overwrite or confuse another.
 
-- **Data ingestion:** Connected to raw transactional data sources in Snowflake
-- **Data cleaning:** Built validation and cleaning steps to handle missing values, outliers, and schema inconsistencies
-- **Feature engineering:** Created time-series features from transactional data to capture seasonality, trends, and branch-level patterns
+I also documented data contracts, the model workflow, and scheduled outputs so future changes could be reasoned about from more than the orchestration graph alone.
 
-### Model Training & Evaluation
+## Why the boundaries mattered
 
-Built reproducible model training and evaluation workflows:
+### Evaluation needs a declared unit
 
-- Multiple forecasting approaches evaluated against held-out data
-- Automated retraining on updated data with consistent evaluation metrics
-- Clear documentation of model assumptions and performance characteristics
+A metric is ambiguous if it is unclear whether rows represent transactions, products, locations, or time windows. Correcting the evaluation unit was necessary before interpreting model performance.
 
-### Production Pipeline
+### Exports are interfaces
 
-Orchestrated the full workflow using Mage AI, producing automated daily predictions that branch managers could use directly for operational decisions.
+Database writes are not an implementation afterthought. Schema, keys, write policy, and idempotency determine whether a scheduled pipeline can be rerun safely and whether downstream consumers receive the meaning they expect.
 
-### Reliability & Maintainability
+### Orchestration does not replace contracts
 
-Improved reliability with validation checks, schema conventions, and documentation so that models and pipelines are reproducible and easier to extend by future team members.
+Mage AI made execution order visible, but the reliable part of the workflow still depended on explicit inputs, outputs, validation, and documentation at each stage.
 
----
+## Takeaway
 
-## Technical Details
-
-- **Data warehouse:** Snowflake
-- **Orchestration:** Mage AI
-- **Language:** Python, SQL
-- **Methodology:** CRISP-DM
-- **Output:** Automated daily sales predictions per branch
-
----
-
-## Outcome
-
-Delivered a working end-to-end forecasting system that automated the path from raw transactional data to daily branch-level predictions, with validation checks and documentation to support ongoing maintenance and iteration.
+The work reinforced a systems lesson I now apply beyond forecasting: reliability often comes from fixing the seams around a model, including the units, schemas, writes, and ownership boundaries that make its output usable.

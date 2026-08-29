@@ -1,14 +1,14 @@
 ---
 import { getCollection, render } from 'astro:content';
-import ContentLayout from '../../layouts/ContentLayout.astro';
+import ContentLayout from '../../../layouts/ContentLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection(
     'writing',
-    ({ data }) => !data.draft && data.locale === 'en',
+    ({ data }) => !data.draft && data.locale === 'es',
   );
   return posts.map((post) => ({
-    params: { slug: post.data.slug },
+    params: { slug: post.data.translationKey ?? post.data.slug },
     props: { post },
   }));
 }
@@ -19,8 +19,8 @@ const { Content } = await render(post);
 
 <ContentLayout
   frontmatter={post.data}
-  backLink={{ href: '/writing', label: 'Back to Writing' }}
-  locale="en"
+  backLink={{ href: '/es/writing', label: 'Volver a artículos' }}
+  locale="es"
 >
   <Content />
 </ContentLayout>

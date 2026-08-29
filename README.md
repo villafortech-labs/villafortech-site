@@ -1,150 +1,54 @@
 # VillaForTech
 
-Personal website for [villafortech.com](https://villafortech.com) — built with Astro, Tailwind CSS, and MDX.
+Roberto Villafuerte's personal engineering site at [www.villafortech.com](https://www.villafortech.com).
 
-## Tech Stack
+The site is an evidence-led portfolio: public work links to source, private work is clearly marked as sanitized, and case studies separate implemented behavior from unsupported outcome claims.
 
-- **Framework**: [Astro](https://astro.build) v5
-- **Styling**: [Tailwind CSS](https://tailwindcss.com) v3
-- **Content**: MDX for projects and writing
-- **Deployment**: Vercel
+## Stack
 
-## Getting Started
+- Astro 7 static site generation
+- MDX content collections for case studies and writing
+- Hand-authored CSS with no client framework or utility-CSS dependency
+- Vercel-compatible static output
 
-### Prerequisites
+## Local development
 
-- Node.js 18+
-- npm 9+
-
-### Development
+Node.js 22.12 or newer is required.
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev
 ```
 
-The site will be available at `http://localhost:4321`.
+The development server defaults to `http://localhost:4321`.
 
-### Build
+## Verification
 
 ```bash
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
+npm run verify
 ```
 
-## Project Structure
+This runs Astro diagnostics, formatting checks, the production build, and generated-HTML validation. The individual commands are also available as `npm run check`, `npm run format:check`, `npm run build`, and `npm run validate:html`.
 
-```
-src/
-├── components/       # Reusable UI components
-│   ├── Navbar.astro
-│   ├── Footer.astro
-│   ├── Section.astro
-│   ├── Card.astro
-│   ├── Tag.astro
-│   ├── Button.astro
-│   └── Callout.astro
-├── layouts/          # Page layouts
-│   ├── BaseLayout.astro
-│   └── ContentLayout.astro
-├── pages/            # Route pages
-│   ├── index.astro
-│   ├── about.astro
-│   ├── contact.astro
-│   ├── resume.astro
-│   ├── 404.astro
-│   ├── projects/
-│   └── writing/
-├── content/          # MDX content collections
-│   ├── projects/
-│   └── writing/
-├── data/             # JSON data files
-│   ├── projects.json
-│   └── socials.json
-└── styles/
-    └── global.css
-```
+## Content
 
-## Content Management
+- `src/data/profile.ts` is the canonical source for profile, experience, education, credentials, skills, languages, and contact links.
+- `src/content/projects/*.mdx` is the only source for project indexes and case-study routes.
+- `src/content/writing/*.mdx` contains independent notes. Drafts do not generate routes.
+- `src/content.config.ts` validates both collections.
 
-### Adding a Project
+Read [docs/content-policy.md](docs/content-policy.md) before changing professional claims, and [docs/architecture.md](docs/architecture.md) before changing routes or content structure.
 
-Create a new `.mdx` file in `src/content/projects/`:
+## Main routes
 
-```yaml
----
-title: "Project Title"
-slug: "project-slug"
-date: "2026-01-01"
-summary: "One-line description."
-tags: ["Tag1", "Tag2"]
-role: "Your Role"
-stack: ["Tech1", "Tech2"]
-featured: true
-status: "completed"
-links:
-  demo: "https://demo.example.com"
-  github: "https://github.com/..."
----
+| Route                                              | Purpose                                          |
+| -------------------------------------------------- | ------------------------------------------------ |
+| `/`                                                | Positioning, current work, and selected evidence |
+| `/projects`                                        | Evidence ledger for public and sanitized work    |
+| `/projects/fairness-aware-candidate-pre-screening` | Flagship public engineering case study           |
+| `/about`                                           | Demonstrated work and technical direction        |
+| `/resume`                                          | Canonical web résumé with print/PDF support      |
+| `/contact`                                         | Email, LinkedIn, and GitHub                      |
+| `/writing`                                         | Evidence-gated independent notes                 |
 
-Your project content here...
-```
-
-Then add an entry to `src/data/projects.json` for the index page.
-
-### Adding a Writing Post
-
-Create a new `.mdx` file in `src/content/writing/`:
-
-```yaml
----
-title: "Post Title"
-slug: "post-slug"
-date: "2026-01-01"
-summary: "What readers will learn."
-tags: ["Tag1", "Tag2"]
-draft: false
----
-
-Your post content here...
-```
-
-## Deployment
-
-### Vercel (Recommended)
-
-1. Push to GitHub
-2. Import project in [Vercel](https://vercel.com)
-3. Vercel auto-detects Astro — no configuration needed
-4. Add custom domain in project settings
-
-### Environment Variables
-
-No environment variables required for basic deployment.
-
-### Custom Domain Setup
-
-1. In Vercel project settings, go to Domains
-2. Add `villafortech.com`
-3. Configure DNS:
-   - **A Record**: `@` → `76.76.21.21`
-   - **CNAME**: `www` → `cname.vercel-dns.com`
-4. Wait for DNS propagation and SSL certificate
-
-## Commands
-
-| Command | Action |
-|---------|--------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-
-## License
-
-MIT
+The canonical host is `https://www.villafortech.com`.

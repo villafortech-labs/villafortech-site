@@ -1,215 +1,194 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Section from '../components/Section.astro';
-import Button from '../components/Button.astro';
-import Tag from '../components/Tag.astro';
+import profileEn from '../data/profile';
+import profileEs from '../data/profile.es';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const profile = locale === 'es' ? profileEs : profileEn;
+const copy = {
+  en: {
+    title: 'Résumé',
+    description:
+      'Résumé of Roberto Villafuerte, AI & Data Systems Engineer: experience, education, selected credentials, and technical skills.',
+    eyebrow: 'Résumé / Updated August 2026',
+    print: 'Print / save PDF',
+    experience: 'Experience',
+    education: 'Education',
+    credentials: 'Credentials',
+    languages: 'Languages',
+    skills: 'Selected skills',
+    skillsLabel: 'Selected technical skills',
+  },
+  es: {
+    title: 'Currículum',
+    description:
+      'Currículum de Roberto Villafuerte, Ingeniero de Sistemas de IA y Datos: experiencia, formación, credenciales seleccionadas y habilidades técnicas.',
+    eyebrow: 'Currículum / Actualizado en agosto de 2026',
+    print: 'Imprimir / guardar PDF',
+    experience: 'Experiencia',
+    education: 'Formación',
+    credentials: 'Credenciales',
+    languages: 'Idiomas',
+    skills: 'Habilidades seleccionadas',
+    skillsLabel: 'Habilidades técnicas seleccionadas',
+  },
+}[locale];
 ---
 
-<BaseLayout
-  title="Resume"
-  description="Roberto Villafuerte — Lead Data Architect specializing in privacy-by-design, HealthTech data systems, and scalable data governance."
->
-  <Section>
-    <div class="max-w-2xl">
-      <div class="flex items-start justify-between gap-4 mb-8">
-        <div>
-          <h1 class="text-3xl sm:text-4xl font-semibold mb-2">Roberto Villafuerte</h1>
-          <p class="text-gray-600">
-            Data Architect · Privacy & Data Governance · HealthTech
-          </p>
-        </div>
-        <Button href="/resume.pdf" variant="secondary" external>
-          Download PDF
-        </Button>
-      </div>
-
-      <!-- Summary -->
-      <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4">Summary</h2>
-        <p class="text-gray-600">
-          Lead Data Architect with a security and privacy-by-design mindset, building scalable data foundations for HealthTech and analytics-driven products. Focused on data modeling, governance, and secure data handling — quality, integrity, access control, auditability — to deliver actionable insights without exposing sensitive information. Background includes Master's-level training in Trustworthy ML, Big Data Platforms, and Software Architecture at the University of Helsinki, plus hands-on delivery of production data and ML pipelines.
-        </p>
-      </div>
-
-      <!-- Experience -->
-      <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-6">Experience</h2>
-        <div class="space-y-8">
-          <div class="border-l-2 border-gray-200 pl-4">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h3 class="font-semibold">Lead Data Architect</h3>
-                <p class="text-gray-600">SaliHub · Hybrid, Quito</p>
-              </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">Feb 2026 – Present</span>
-            </div>
-            <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Leading the design and governance of SaliHub's data architecture to support a scalable preventive health ecosystem</li>
-              <li>Architected the founding data model and core database schema from scratch, translating complex LOPD privacy requirements and business logic into a secure, multi-tenant architecture</li>
-              <li>Established Privacy-by-Design and defined the organization's data governance framework, implementing strict access controls and audit trails to handle sensitive health data (PII/PHI)</li>
-              <li>Building scalable data infrastructure with robust ETL pipelines using Python and SQL to transform raw health signals into longitudinal user insights and real-time dashboards</li>
-              <li>Partnering with Product and Engineering to translate business goals into measurable data capabilities</li>
-            </ul>
-          </div>
-
-          <div class="border-l-2 border-gray-200 pl-4">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h3 class="font-semibold">AI Engineer</h3>
-                <p class="text-gray-600">COMPUMAX · Part-time, Remote</p>
-              </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">Dec 2025 – Feb 2026</span>
-            </div>
-            <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Built and deployed a production-grade RAG pipeline to automate support workflows with high reliability</li>
-              <li>Designed end-to-end backend services in Python from prototype to deployment</li>
-              <li>Implemented retrieval quality evaluation and continuous improvement workflows</li>
-              <li>Added monitoring and observability practices to support safe releases and maintenance</li>
-            </ul>
-          </div>
-
-          <div class="border-l-2 border-gray-200 pl-4">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h3 class="font-semibold">Machine Learning Engineer Intern</h3>
-                <p class="text-gray-600">Datalysis Group · Remote</p>
-              </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">Feb 2025 – Jun 2025</span>
-            </div>
-            <ul class="mt-3 text-sm text-gray-600 space-y-2">
-              <li>Designed and implemented an end-to-end sales forecasting system using Snowflake, Mage AI, and Python — from raw transactional data to automated daily predictions for branch managers</li>
-              <li>Built data cleaning, feature engineering, model training, and evaluation workflows following CRISP-DM principles</li>
-              <li>Improved reliability with validation checks, schema conventions, and documentation for reproducibility</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Education -->
-      <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-6">Education</h2>
-        <div class="space-y-8">
-          <div class="border-l-2 border-gray-200 pl-4">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h3 class="font-semibold">B.Eng. Computer Science</h3>
-                <p class="text-gray-600">Universidad San Francisco de Quito (USFQ)</p>
-              </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">2022 – 2026</span>
-            </div>
-            <p class="mt-2 text-sm text-gray-600">
-              Focus: software engineering, algorithms, databases, applied machine learning.
-            </p>
-          </div>
-
-          <div class="border-l-2 border-gray-200 pl-4">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h3 class="font-semibold">Exchange Studies — Data Science (Master's-level)</h3>
-                <p class="text-gray-600">University of Helsinki</p>
-              </div>
-              <span class="text-sm text-gray-500 whitespace-nowrap">Aug 2025 – Jan 2026</span>
-            </div>
-            <p class="mt-2 text-sm text-gray-600">
-              Coursework: Big Data Platforms, Computer Vision, Engineering of ML Systems, Trustworthy ML, Software Architecture.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Certifications -->
-      <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4">Certifications</h2>
-        <div class="space-y-3">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <p class="font-medium text-gray-900">Technical AI Safety Course</p>
-              <p class="text-sm text-gray-600">BlueDot Impact</p>
-            </div>
-            <span class="text-sm text-gray-500">Jan 2026</span>
-          </div>
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <p class="font-medium text-gray-900">General Data Protection Regulation (GDPR)</p>
-              <p class="text-sm text-gray-600">Packt</p>
-            </div>
-            <span class="text-sm text-gray-500">Dec 2025</span>
-          </div>
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <p class="font-medium text-gray-900">IBM Machine Learning Specialization</p>
-              <p class="text-sm text-gray-600">Coursera</p>
-            </div>
-            <span class="text-sm text-gray-500"></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Awards -->
-      <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4">Awards</h2>
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <p class="font-medium text-gray-900">2nd Place — IEEEXtreme 18.0 (Ecuador)</p>
-            <p class="text-sm text-gray-600">Global 24-hour algorithmic programming competition organized by IEEE</p>
-          </div>
-          <span class="text-sm text-gray-500">Oct 2024</span>
-        </div>
-      </div>
-
-      <!-- Languages -->
-      <div class="mb-12">
-        <h2 class="text-xl font-semibold mb-4">Languages</h2>
-        <div class="space-y-3">
-          <div class="flex items-start justify-between gap-4">
-            <p class="font-medium text-gray-900">English</p>
-            <span class="text-sm text-gray-500">Native / Bilingual</span>
-          </div>
-          <div class="flex items-start justify-between gap-4">
-            <p class="font-medium text-gray-900">Spanish</p>
-            <span class="text-sm text-gray-500">Native / Bilingual</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Skills -->
+<BaseLayout title={copy.title} description={copy.description} locale={locale}>
+  <article class="resume-page">
+    <header class="resume-header shell">
       <div>
-        <h2 class="text-xl font-semibold mb-4">Skills</h2>
-        <div class="space-y-4">
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">Data Architecture & Governance</h3>
-            <div class="flex flex-wrap gap-2">
-              {['Data Architecture', 'Data Modeling', 'Data Governance', 'Privacy-by-Design', 'Database Security', 'Access Control'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">Data Engineering</h3>
-            <div class="flex flex-wrap gap-2">
-              {['PostgreSQL', 'SQL', 'Python', 'ETL / Data Pipelines', 'Snowflake', 'Mage AI'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">AI / ML Systems</h3>
-            <div class="flex flex-wrap gap-2">
-              {['Generative AI', 'Machine Learning', 'RAG', 'MLOps', 'LLM Evaluation', 'Forecasting'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 class="text-sm font-medium text-gray-700 mb-2">Infrastructure & Engineering</h3>
-            <div class="flex flex-wrap gap-2">
-              {['AWS', 'Docker', 'CI/CD', 'GitHub Actions', 'Git'].map((skill) => (
-                <Tag size="sm">{skill}</Tag>
-              ))}
-            </div>
-          </div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{profile.name}</h1>
+        <p>{profile.headline} | {profile.location}</p>
+      </div>
+      <div class="resume-header__actions">
+        <button
+          class="button button--secondary button--md"
+          type="button"
+          onclick="window.print()"
+        >
+          {copy.print}
+        </button>
+        <a class="text-link" href={profile.links.email}
+          >{profile.links.emailAddress}</a
+        >
+      </div>
+    </header>
+
+    <div class="shell resume-grid">
+      <aside class="resume-summary">
+        <p>{profile.introduction}</p>
+        <div class="resume-contact">
+          <a
+            href={profile.links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn <span class="external-mark" aria-hidden="true">↗</span></a
+          >
+          <a
+            href={profile.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub <span class="external-mark" aria-hidden="true">↗</span></a
+          >
         </div>
+      </aside>
+
+      <div class="resume-main">
+        <section class="resume-section">
+          <h2>{copy.experience}</h2>
+          <div class="resume-ledger">
+            {
+              profile.experience.map((item, index) => (
+                <article class="resume-entry">
+                  <div class="resume-entry__index">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+                  <div>
+                    <div class="resume-entry__heading">
+                      <div>
+                        <h3>{item.title}</h3>
+                        <p>{item.organization}</p>
+                      </div>
+                      <time>{item.period}</time>
+                    </div>
+                    <ul>
+                      {item.details.map((detail) => (
+                        <li>{detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="resume-section">
+          <h2>{copy.education}</h2>
+          <div class="resume-ledger">
+            {
+              profile.education.map((item, index) => (
+                <article class="resume-entry resume-entry--compact">
+                  <div class="resume-entry__index">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+                  <div>
+                    <div class="resume-entry__heading">
+                      <div>
+                        <h3>{item.program}</h3>
+                        <p>{item.institution}</p>
+                      </div>
+                      <time>{item.period}</time>
+                    </div>
+                    <p class="resume-entry__detail">{item.detail}</p>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <div class="resume-columns">
+          <section class="resume-section">
+            <h2>{copy.credentials}</h2>
+            <div class="compact-ledger">
+              {
+                profile.certifications.map((item) => (
+                  <div>
+                    <>
+                      <span>{item.date}</span>
+                      <strong>{item.name}</strong>
+                      <small>{item.issuer}</small>
+                    </>
+                  </div>
+                ))
+              }
+              {
+                profile.honors.map((item) => (
+                  <div>
+                    <>
+                      <span>{item.date}</span>
+                      <strong>{item.name}</strong>
+                      <small>{item.issuer}</small>
+                    </>
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+
+          <section class="resume-section">
+            <h2>{copy.languages}</h2>
+            <div class="compact-ledger">
+              {
+                profile.languages.map((item) => (
+                  <div>
+                    <>
+                      <strong>{item.name}</strong>
+                      <small>{item.level}</small>
+                    </>
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+        </div>
+
+        <section class="resume-section resume-skills">
+          <h2>{copy.skills}</h2>
+          <ul aria-label={copy.skillsLabel}>
+            {profile.skills.map((skill) => <li>{skill}</li>)}
+          </ul>
+        </section>
       </div>
     </div>
-  </Section>
+  </article>
 </BaseLayout>

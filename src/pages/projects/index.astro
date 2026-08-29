@@ -1,35 +1,124 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Section from '../../components/Section.astro';
-import Card from '../../components/Card.astro';
-import projects from '../../data/projects.json';
+import { localeRoutes, type Locale } from '../../i18n';
 
-const sortedProjects = projects.projects.sort(
-  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-);
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const routes = localeRoutes[locale];
+const copy = {
+  en: {
+    title: 'Selected work',
+    description:
+      'Engineering case studies and carefully scoped project notes by Roberto Villafuerte across AI, data, backend, and machine-learning systems.',
+    eyebrow: 'Selected work / Engineering case studies',
+    heading: 'Systems, decisions, and the work behind them.',
+    deck: 'Case studies across AI systems, data architecture, and machine-learning infrastructure: what I built, the decisions behind it, and what changed.',
+    case: 'Case / Context',
+    evidence: 'Evidence',
+    period: 'Period',
+    technologies: 'Technologies and topics',
+  },
+  es: {
+    title: 'Proyectos seleccionados',
+    description:
+      'Casos de ingeniería y notas de proyectos cuidadosamente delimitadas de Roberto Villafuerte sobre sistemas de IA, datos, backend y aprendizaje automático.',
+    eyebrow: 'Proyectos seleccionados / Casos de ingeniería',
+    heading: 'Sistemas, decisiones y el trabajo que hay detrás.',
+    deck: 'Casos sobre sistemas de IA, arquitectura de datos e infraestructura de aprendizaje automático: qué construí, las decisiones detrás de cada sistema y qué cambió.',
+    case: 'Caso / Contexto',
+    evidence: 'Evidencia',
+    period: 'Periodo',
+    technologies: 'Tecnologías y temas',
+  },
+}[locale];
+
+const projects = (
+  await getCollection(
+    'projects',
+    ({ data }) => data.evidence !== 'hold' && data.locale === locale,
+  )
+).sort((a, b) => {
+  const orderA = a.data.featuredOrder ?? 99;
+  const orderB = b.data.featuredOrder ?? 99;
+  return (
+    orderA - orderB ||
+    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+});
+
+const evidenceLabel =
+  locale === 'es'
+    ? {
+        public: 'Fuente pública',
+        sanitized: 'Nota sin información sensible',
+        private: 'Trabajo privado',
+        hold: 'No publicado',
+      }
+    : {
+        public: 'Public source',
+        sanitized: 'Sanitized note',
+        private: 'Private work',
+        hold: 'Not published',
+      };
 ---
 
-<BaseLayout
-  title="Projects"
-  description="Selected work in data architecture, governance, privacy-aware systems, and production data/ML pipelines."
->
-  <Section>
-    <h1 class="text-3xl sm:text-4xl font-semibold mb-4">Projects</h1>
-    <p class="text-gray-600 mb-8 max-w-2xl">
-      Selected work from data architecture, governance, and production data/ML systems. Each project includes context, design decisions, and technical approach.
-    </p>
-
-    <div class="grid gap-6">
-      {sortedProjects.map((project) => (
-        <Card
-          title={project.title}
-          summary={project.summary}
-          href={`/projects/${project.slug}`}
-          tags={project.tags}
-          date={project.date}
-          variant={project.featured ? 'featured' : 'default'}
-        />
-      ))}
+<BaseLayout title={copy.title} description={copy.description} locale={locale}>
+  <header class="page-hero page-hero--work">
+    <div class="shell page-hero__grid">
+      <div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.heading}</h1>
+      </div>
+      <p class="page-hero__deck">{copy.deck}</p>
     </div>
-  </Section>
+  </header>
+
+  <section class="work-index">
+    <div class="shell">
+      <div class="work-index__header" aria-hidden="true">
+        <span>{copy.case}</span><span>{copy.evidence}</span><span
+          >{copy.period}</span
+        >
+      </div>
+      <div class="work-list">
+        {
+          projects.map((project, index) => (
+            <a
+              class:list={['work-record', index === 0 && 'work-record--lead']}
+              href={`${routes.projects}/${project.data.translationKey ?? project.data.slug}`}
+            >
+              <span class="work-record__number">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div class="work-record__copy">
+                <p>{project.data.organization || project.data.role}</p>
+                <h2>{project.data.shortTitle || project.data.title}</h2>
+                <p>{project.data.summary}</p>
+                <ul aria-label={copy.technologies}>
+                  {project.data.tags.slice(0, 4).map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </div>
+              <span
+                class={`evidence-state evidence-state--${project.data.evidence || 'private'}`}
+              >
+                {evidenceLabel[project.data.evidence || 'private']}
+              </span>
+              <span class="work-record__period">
+                {project.data.projectPeriod || project.data.date.slice(0, 4)}
+              </span>
+              <span class="work-record__arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </BaseLayout>

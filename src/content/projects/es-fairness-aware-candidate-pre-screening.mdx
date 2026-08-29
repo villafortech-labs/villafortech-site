@@ -1,0 +1,135 @@
+---
+title: 'Ingeniería de un flujo auditable de equidad'
+shortTitle: 'Flujo auditable de equidad'
+eyebrow: 'Caso de ingeniería · Aprendizaje automático confiable'
+slug: 'es-fairness-aware-candidate-pre-screening'
+translationKey: 'fairness-aware-candidate-pre-screening'
+locale: 'es'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: '2025 - 2026'
+summary: 'Construí un sistema inspeccionable para auditar equidad que separa el ajuste de modelos, la selección de políticas, la medición sobre datos reservados y el comportamiento de servicio, usando el benchmark UCI Adult.'
+tags: ['Sistemas de ML', 'Equidad', 'Auditabilidad', 'Gobernanza']
+role: 'Colaborador del proyecto'
+organization: 'Universidad de Helsinki'
+collaborators: ['Charles Santhakumar']
+stack: ['Python', 'scikit-learn', 'XGBoost', 'FastAPI', 'Docker']
+featured: true
+featuredOrder: 1
+status: 'completed'
+evidence: 'public'
+links:
+  github: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening'
+  reproduce: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening#reproduce-the-reference-audit'
+---
+
+import EvaluationProtocol from '../../components/EvaluationProtocol.astro';
+import MetricShift from '../../components/MetricShift.astro';
+
+<div class="article-deck">
+  La equidad se convierte en una propiedad de ingeniería solo cuando pueden
+  inspeccionarse el límite de los datos, la política de decisión y el rastro de
+  evidencia.
+</div>
+
+Este proyecto empaqueta un flujo completo de auditoría para clasificación tabular. Permite realizar auditorías separadas con Regresión Logística, Random Forest y XGBoost, mide disparidades entre grupos, selecciona una política de umbrales offline sobre datos dedicados de validación y escribe los artefactos necesarios para inspeccionar la regla de decisión resultante.
+
+La decisión central de diseño es la separación. El ajuste del modelo, la selección de la política, la medición sobre datos reservados y el comportamiento de la API son etapas distintas, con entradas y salidas explícitas.
+
+## El sistema bajo auditoría
+
+Cada ejecución ajusta un modelo seleccionado: Regresión Logística, Random Forest o XGBoost. Reporta medidas convencionales de rendimiento junto con la diferencia de paridad estadística (SPD), el impacto dispar (DI) y la brecha de tasa de verdaderos positivos (TPR).
+
+El conjunto de datos depurado contiene 45,222 registros. Las variables de sexo y raza binaria se conservan para la medición, pero se excluyen de las 12 características del modelo. La partición asigna 25,637 registros al ajuste, 4,525 a la validación y conserva los 15,060 registros de la partición oficial de prueba de UCI. El conjunto de validación se estratifica conjuntamente por ingresos, sexo y raza binaria para que las celdas relevantes permanezcan representadas durante la selección de la política.
+
+<EvaluationProtocol locale="es" />
+
+## Un solo comando orquesta la auditoría
+
+El repositorio expone un paso empaquetado de preparación de datos y un único comando de auditoría instalado. Ese comando coordina cinco límites:
+
+1. Construir datos listos para el modelo y registrar su identidad.
+2. Ajustar el preprocesamiento y el modelo seleccionado sobre la partición de ajuste.
+3. Seleccionar la política de umbrales offline utilizando las etiquetas de validación.
+4. Aplicar una sola vez el modelo y la política congelados a la partición de prueba reservada.
+5. Persistir predicciones, métricas, intervalos de incertidumbre, datos del manifiesto y el veredicto de aceptación.
+
+El directorio de ejecución agrupa el paquete del modelo, la política de decisión, las predicciones pareadas, el informe y el manifiesto. El manifiesto registra las versiones de las dependencias, los conteos de las celdas de cada partición y los hashes del código fuente y de los datos, mientras las predicciones permanecen como una salida separada para inspección. Así, el informe queda conectado con las entradas y la política que lo produjeron, en lugar de existir como una tabla aislada.
+
+## La política de decisión está versionada
+
+Para la ejecución XGBoost de referencia, el umbral global de decisión es `0.500`. La validación selecciona un umbral offline de `0.405` para el grupo `Female` (mujeres), mientras el umbral del grupo `Male` (hombres) permanece en `0.500`. Esos valores se congelan antes de aplicar la política a la partición de prueba.
+
+La política específica por grupo se almacena como un artefacto de análisis. La ruta FastAPI utiliza un único umbral global de `0.500` y marca la política offline como `served_by_api: false`. Ese límite evita que una intervención analítica se convierta silenciosamente en el comportamiento del servicio.
+
+## Resumen de la auditoría de referencia
+
+El informe de referencia revisado registra una ejecución XGBoost con la semilla `42`.
+
+| Medida                            | Umbral global 0.500 | Política offline | Intervalo del 95% de la política offline |
+| --------------------------------- | ------------------: | ---------------: | ---------------------------------------: |
+| Exactitud                         |              0.8694 |           0.8678 |                         [0.8630, 0.8728] |
+| Brecha de TPR (`Male` - `Female`) |              0.0504 |          -0.0124 |                        [-0.0560, 0.0268] |
+| Diferencia de paridad estadística |              0.1754 |           0.1563 |                         [0.1468, 0.1670] |
+| Impacto dispar                    |              0.3400 |           0.4120 |                         [0.3817, 0.4370] |
+
+<MetricShift locale="es" />
+
+Bajo la política offline, la estimación puntual de la brecha de TPR cruza cero mientras la exactitud cambia en `-0.0016`. SPD se acerca a cero y DI se acerca a uno, pero ninguna de las dos alcanza el rango configurado por la política.
+
+Los intervalos provienen de 500 muestras bootstrap pareadas y estratificadas del conjunto fijo de prueba. Describen la incertidumbre para esta muestra de prueba. La sensibilidad a una partición de validación, especificación de modelo, año o población diferentes sigue siendo una pregunta separada.
+
+## Una regla de política determina el veredicto
+
+La regla predeterminada devuelve **`FAIL` (no cumple)**. La ejecución de referencia satisface los requisitos de exactitud mínima, pérdida máxima de exactitud y brecha absoluta de TPR, pero incumple dos restricciones configuradas:
+
+- `DI=0.4120`, por debajo del rango permitido que comienza en `0.80`.
+- `|SPD|=0.1563`, por encima del máximo de `0.10`.
+
+Este es el comportamiento útil del sistema: el movimiento en una medida objetivo no puede imponerse sobre el resto de la política. El veredicto persistido mantiene la regla de decisión y los criterios de aceptación dentro del mismo rastro de evidencia.
+
+<aside
+  class="evidence-note evidence-note--verified"
+  aria-label="Artefacto de referencia"
+>
+  <span>ARTEFACTO DE REFERENCIA</span>
+  El informe registra la semilla, las versiones de Python y de las dependencias,
+  los hashes, las celdas de las particiones, los umbrales, los intervalos y el
+  veredicto de la política.{' '}
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/master/reports/reference/xgb-seed-42-v1/report.json">
+    Examinar report.json
+  </a>
+  .
+</aside>
+
+## Las rutas de auditoría y servicio permanecen separadas
+
+| Límite del sistema           | Responsabilidad                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| Comando de auditoría         | Ajustar el modelo seleccionado, elegir la política offline y ejecutar la regla  |
+| Paquete de referencia        | Empaquetar el modelo, la política, el informe, el manifiesto y las dependencias |
+| Salidas de ejecución         | Almacenar predicciones pareadas junto con el paquete de referencia              |
+| Comprobaciones de validación | Rechazar artefactos mal formados o entradas incompletas de la política          |
+| Ruta FastAPI                 | Cargar un paquete compatible y aplicar la regla de decisión global `0.500`      |
+
+Mantener esas rutas separadas hace explícita la responsabilidad de cada artefacto: la política de umbrales offline permanece inspeccionable, mientras el comportamiento de la API sigue vinculado con su regla global.
+
+## Próximo paso de ingeniería
+
+La siguiente iteración prerregistraría particiones repetidas de validación y reportaría la estabilidad de la política entre ellas, ampliando los intervalos actuales de la muestra de prueba con evidencia sobre la sensibilidad a las particiones. Cualquier extensión orientada a un dominio requeriría un objetivo y un conjunto de datos diseñados para ese contexto, además de revisión legal y de las partes interesadas.
+
+## Examinar la implementación
+
+El repositorio público incluye el entorno bloqueado, el comando de auditoría, las comprobaciones de artefactos y el informe de referencia necesarios para seguir el flujo desde la preparación de datos hasta el veredicto de aceptación.
+
+**Charles Santhakumar** y yo construimos el sistema compartido en la Universidad de Helsinki. Después realicé la auditoría de ingeniería documentada en este caso.
+
+<div class="article-end-link">
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening">
+    Examinar el código en GitHub →
+  </a>
+  {' · '}
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/master/reports/reference/xgb-seed-42-v1/report.json">
+    Abrir el informe de referencia →
+  </a>
+</div>

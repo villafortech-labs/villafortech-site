@@ -1,0 +1,59 @@
+---
+title: 'Componentes de un pipeline de pronóstico y contratos de datos'
+shortTitle: 'Trabajo en un pipeline de pronóstico'
+eyebrow: 'Nota de ingeniería con detalles sensibles omitidos · Pipelines de ML'
+slug: 'es-datalysis-forecasting'
+translationKey: 'datalysis-forecasting'
+locale: 'es'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: 'Febrero - junio de 2025'
+summary: 'Implementé componentes de un pipeline de pronóstico que abarcan preparación de datos, evaluación de modelos, predicción, alertas y exportaciones hacia plataformas de datos con Python y Mage AI.'
+tags: ['Pipelines de ML', 'Pronóstico', 'Contratos de datos', 'Python']
+role: 'Pasante de ingeniería de aprendizaje automático'
+organization: 'Datalysis Group'
+stack: ['Python', 'Mage AI', 'PostgreSQL', 'Snowflake']
+featured: true
+featuredOrder: 4
+status: 'completed'
+evidence: 'sanitized'
+disclosure: 'Trabajo privado · Descripción enfocada de los componentes del pipeline de pronóstico y los contratos de datos en los que contribuí.'
+---
+
+<div class="article-deck">
+  En un pipeline de pronóstico, el modelo es solo una etapa. Los contratos entre
+  preparación, evaluación, predicción y exportación determinan si el resultado
+  puede considerarse confiable.
+</div>
+
+## Contexto
+
+En Datalysis Group, contribuí a un flujo de pronóstico implementado en Python y orquestado con Mage AI. Mi trabajo abarcó componentes de preparación de datos, ingeniería de características, entrenamiento y evaluación de modelos, predicción, alertas y exportaciones hacia plataformas de datos.
+
+El pipeline interactuaba con rutas relacionadas con PostgreSQL y Snowflake. Este caso se centra en el código y los contratos en los que trabajé dentro de ese flujo.
+
+## Contribución de ingeniería
+
+Implementé y corregí componentes del pipeline que transformaban datos de origen, construían las entradas del modelo, evaluaban pronósticos, producían predicciones y preparaban salidas para sistemas posteriores.
+
+Varias correcciones importantes no fueron cambios en los algoritmos. Estaban relacionadas con las unidades utilizadas durante la evaluación, los esquemas de salida, el comportamiento de escritura y los exportadores duplicados. Mantener las predicciones separadas de las métricas de evaluación aclaró el contrato con los sistemas posteriores y redujo la posibilidad de que una ruta de salida sobrescribiera o confundiera a otra.
+
+También documenté los contratos de datos, el flujo del modelo y las salidas programadas, para que los cambios futuros pudieran razonarse a partir de algo más que el grafo de orquestación.
+
+## Por qué importaron los límites
+
+### La evaluación necesita una unidad declarada
+
+Una métrica es ambigua si no está claro si las filas representan transacciones, productos, ubicaciones o ventanas de tiempo. Corregir la unidad de evaluación era necesario antes de interpretar el rendimiento del modelo.
+
+### Las exportaciones son interfaces
+
+Las escrituras en la base de datos no son un detalle posterior de implementación. El esquema, las claves, la política de escritura y la idempotencia determinan si un pipeline programado puede volver a ejecutarse de forma segura y si los consumidores posteriores reciben el significado que esperan.
+
+### La orquestación no sustituye los contratos
+
+Mage AI hacía visible el orden de ejecución, pero la parte confiable del flujo seguía dependiendo de entradas, salidas, validaciones y documentación explícitas en cada etapa.
+
+## Conclusión
+
+El trabajo reforzó una lección de sistemas que ahora aplico más allá del pronóstico: la confiabilidad suele surgir de corregir las uniones alrededor de un modelo, incluidas las unidades, los esquemas, las escrituras y los límites de responsabilidad que vuelven utilizable su resultado.

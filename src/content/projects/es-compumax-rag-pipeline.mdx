@@ -1,0 +1,63 @@
+---
+title: 'Automatización del soporte con recuperación de información y escalamiento humano'
+shortTitle: 'Sistema de automatización de soporte'
+eyebrow: 'Nota de ingeniería con detalles sensibles omitidos · Sistemas de IA'
+slug: 'es-compumax-rag-pipeline'
+translationKey: 'compumax-rag-pipeline'
+locale: 'es'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: 'Diciembre de 2025 - febrero de 2026'
+summary: 'Construí un sistema de automatización de soporte que conecta recuperación de información, orquestación de servicios, escalamiento humano y controles explícitos de contingencia.'
+tags:
+  ['Backend', 'Recuperación', 'Integración de sistemas', 'Escalamiento humano']
+role: 'Ingeniero de IA'
+organization: 'COMPUMAX'
+stack:
+  ['FastAPI', 'Chatwoot', 'Qdrant', 'PostgreSQL', 'Redis', 'Docker Compose']
+featured: true
+featuredOrder: 3
+status: 'completed'
+evidence: 'sanitized'
+disclosure: 'Repositorio privado · Descripción a nivel de sistema de la arquitectura de recuperación, orquestación, contingencia y escalamiento humano que construí.'
+---
+
+import SupportSystemMap from '../../components/SupportSystemMap.astro';
+
+<div class="article-deck">
+  Un asistente de soporte no es solo una llamada a un modelo. Es un recorrido
+  controlado desde un mensaje entrante hasta la recuperación de información, una
+  respuesta o una persona.
+</div>
+
+## Contexto
+
+En COMPUMAX, construí un sistema de automatización de soporte que conectaba conversaciones de Chatwoot con servicios de recuperación de información y backend. El objetivo era estructurar la automatización como un recorrido controlado, manteniendo una ruta clara hacia un operador humano.
+
+El sistema reunió FastAPI, Chatwoot, Qdrant, PostgreSQL con pgvector, Redis y Docker Compose alrededor de un único recorrido controlado para cada solicitud.
+
+## Flujo de una solicitud
+
+Una solicitud entrante pasaba por un enrutamiento de intención antes de que el sistema decidiera si recuperar una respuesta de preguntas frecuentes, escalar el caso a una persona o entrar en una ruta de contingencia exclusivamente humana. Los adaptadores internos mantenían el comportamiento específico de cada servicio en los límites, en lugar de mezclarlo con la lógica de orquestación.
+
+El registro permitía inspeccionar los recorridos procesados de los mensajes de usuario. Un interruptor de desactivación y una ruta exclusivamente humana proporcionaban controles operativos explícitos para los casos en que la automatización no debía responder.
+
+<SupportSystemMap locale="es" />
+
+## Lecciones de arquitectura
+
+### El escalamiento forma parte del recorrido del producto
+
+El escalamiento humano no debe tratarse como una excepción alrededor del sistema. Es un resultado de primera clase, con estado, responsabilidad y comportamiento de recuperación explícitos.
+
+### La recuperación es solo una de las superficies de falla
+
+Incluso un fragmento relevante puede producir un mal resultado de soporte si fallan el enrutamiento, el estado de la conversación, los permisos o los adaptadores posteriores. Por eso, el recorrido del sistema debe poder inspeccionarse de extremo a extremo.
+
+### Las rutas de control necesitan interfaces de primera clase
+
+El interruptor de desactivación, el modo exclusivamente humano, el registro de recorridos procesados y los adaptadores de servicios formaban parte de la propia arquitectura. Mantenerlos explícitos facilitó inspeccionar y modificar el comportamiento del enrutamiento.
+
+## Conclusión
+
+La lección central de ingeniería fue tratar la recuperación, la orquestación, el estado y la responsabilidad humana como un solo sistema. La unidad útil de diseño era el recorrido completo desde una conversación entrante hasta una respuesta o una transferencia a una persona.

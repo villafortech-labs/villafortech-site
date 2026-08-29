@@ -1,0 +1,192 @@
+---
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const copy = {
+  en: {
+    map: 'SYSTEM MAP / 01',
+    title: 'One message, three controlled outcomes.',
+    subtitle:
+      'Retrieval and human handoff remain explicit branches of the same support path.',
+    edge: 'EDGE / 01',
+    intake: 'Conversation intake',
+    incoming: 'Incoming support conversation',
+    control: 'CONTROL / 02',
+    orchestration: 'FastAPI orchestration',
+    routing: 'Intent routing and internal adapters select the next path.',
+    boundaries: 'Control boundaries',
+    intent: 'Intent routing',
+    adapters: 'Internal adapters',
+    outcomes: 'Routing outcomes',
+    outcome: 'OUTCOME',
+    retrieval: 'Retrieval response',
+    retrievalDetail: 'Retrieve an FAQ response.',
+    retrievalPath: 'FAQ retrieval path',
+    escalation: 'Human escalation',
+    escalationDetail: 'Route the conversation to a human.',
+    escalationPath: 'Human handoff path',
+    fallback: 'Human-only fallback',
+    fallbackDetail:
+      'Bypass automated answers when the control path requires it.',
+    fallbackPath: 'Fallback + kill switch',
+    services: 'Integrated services',
+    integrated: 'INTEGRATED',
+    systemService: 'System service',
+    containers: 'Containerized services',
+    operations: 'Operational controls',
+    trace: 'TRACE',
+    logging: 'Processed-path logging',
+    killSwitch: 'Kill switch + human-only path',
+    boundary: 'BOUNDARY',
+    internalAdapters: 'Internal service adapters',
+  },
+  es: {
+    map: 'MAPA DEL SISTEMA / 01',
+    title: 'Un mensaje, tres resultados controlados.',
+    subtitle:
+      'La recuperación y la transferencia a una persona siguen siendo ramas explícitas de la misma ruta de soporte.',
+    edge: 'ENTRADA / 01',
+    intake: 'Recepción de conversaciones',
+    incoming: 'Conversación de soporte entrante',
+    control: 'CONTROL / 02',
+    orchestration: 'Orquestación con FastAPI',
+    routing:
+      'El enrutamiento por intención y los adaptadores internos seleccionan la siguiente ruta.',
+    boundaries: 'Límites de control',
+    intent: 'Enrutamiento por intención',
+    adapters: 'Adaptadores internos',
+    outcomes: 'Resultados del enrutamiento',
+    outcome: 'RESULTADO',
+    retrieval: 'Respuesta con recuperación',
+    retrievalDetail: 'Recuperar una respuesta de preguntas frecuentes.',
+    retrievalPath: 'Ruta de recuperación de FAQ',
+    escalation: 'Escalamiento a una persona',
+    escalationDetail: 'Transferir la conversación a una persona.',
+    escalationPath: 'Ruta de transferencia humana',
+    fallback: 'Contingencia exclusivamente humana',
+    fallbackDetail:
+      'Omitir respuestas automáticas cuando la ruta de control lo requiera.',
+    fallbackPath: 'Contingencia + interruptor de apagado',
+    services: 'Servicios integrados',
+    integrated: 'INTEGRADO',
+    systemService: 'Servicio del sistema',
+    containers: 'Servicios en contenedores',
+    operations: 'Controles operativos',
+    trace: 'TRAZA',
+    logging: 'Registro de la ruta procesada',
+    killSwitch: 'Interruptor de apagado + ruta exclusivamente humana',
+    boundary: 'LÍMITE',
+    internalAdapters: 'Adaptadores de servicios internos',
+  },
+}[locale];
+---
+
+<figure class="support-system-map" aria-labelledby="support-system-map-title">
+  <figcaption class="support-system-map__header">
+    <span class="support-system-map__index">{copy.map}</span>
+    <strong id="support-system-map-title">{copy.title}</strong>
+    <small>{copy.subtitle}</small>
+  </figcaption>
+
+  <div class="support-system-map__flow">
+    <section class="support-system-map__node support-system-map__node--edge">
+      <span>{copy.edge}</span>
+      <h3>Chatwoot</h3>
+      <p>{copy.intake}</p>
+      <small>{copy.incoming}</small>
+    </section>
+
+    <span class="support-system-map__connector" aria-hidden="true">→</span>
+
+    <section class="support-system-map__node support-system-map__node--control">
+      <span>{copy.control}</span>
+      <h3>{copy.orchestration}</h3>
+      <p>{copy.routing}</p>
+      <div
+        class="support-system-map__chips"
+        role="group"
+        aria-label={copy.boundaries}
+      >
+        <span>{copy.intent}</span>
+        <span>{copy.adapters}</span>
+      </div>
+    </section>
+
+    <span class="support-system-map__connector" aria-hidden="true">→</span>
+
+    <div
+      class="support-system-map__outcomes"
+      role="group"
+      aria-label={copy.outcomes}
+    >
+      <section>
+        <span>{copy.outcome} / A</span>
+        <h3>{copy.retrieval}</h3>
+        <p>{copy.retrievalDetail}</p>
+        <small>{copy.retrievalPath}</small>
+      </section>
+      <section>
+        <span>{copy.outcome} / B</span>
+        <h3>{copy.escalation}</h3>
+        <p>{copy.escalationDetail}</p>
+        <small>{copy.escalationPath}</small>
+      </section>
+      <section>
+        <span>{copy.outcome} / C</span>
+        <h3>{copy.fallback}</h3>
+        <p>{copy.fallbackDetail}</p>
+        <small>{copy.fallbackPath}</small>
+      </section>
+    </div>
+  </div>
+
+  <div
+    class="support-system-map__substrate"
+    role="group"
+    aria-label={copy.services}
+  >
+    <section>
+      <span>{copy.integrated} / 01</span>
+      <strong>Qdrant</strong>
+      <small>{copy.systemService}</small>
+    </section>
+    <section>
+      <span>{copy.integrated} / 02</span>
+      <strong>PostgreSQL / pgvector</strong>
+      <small>{copy.systemService}</small>
+    </section>
+    <section>
+      <span>{copy.integrated} / 03</span>
+      <strong>Redis</strong>
+      <small>{copy.systemService}</small>
+    </section>
+    <section>
+      <span>{copy.integrated} / 04</span>
+      <strong>Docker Compose</strong>
+      <small>{copy.containers}</small>
+    </section>
+  </div>
+
+  <div
+    class="support-system-map__operations"
+    role="group"
+    aria-label={copy.operations}
+  >
+    <section>
+      <span>{copy.trace}</span>
+      <strong>{copy.logging}</strong>
+    </section>
+    <section>
+      <span>CONTROL</span>
+      <strong>{copy.killSwitch}</strong>
+    </section>
+    <section>
+      <span>{copy.boundary}</span>
+      <strong>{copy.internalAdapters}</strong>
+    </section>
+  </div>
+</figure>

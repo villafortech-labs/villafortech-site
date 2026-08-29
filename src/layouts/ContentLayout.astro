@@ -1,67 +1,285 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import Tag from '../components/Tag.astro';
+import { sharedCopy, type Locale } from '../i18n';
 
 interface Props {
   frontmatter: {
     title: string;
+    shortTitle?: string;
     date: string;
+    updated?: string;
+    projectPeriod?: string;
     summary: string;
     tags: string[];
     role?: string;
+    organization?: string;
     stack?: string[];
+    eyebrow?: string;
+    evidence?: 'public' | 'sanitized' | 'private' | 'hold';
+    disclosure?: string;
+    collaborators?: string[];
+    links?: {
+      github?: string;
+      reproduce?: string;
+      sourceCommit?: string;
+    };
   };
   readingTime?: string;
   backLink?: {
     href: string;
     label: string;
   };
+  locale?: Locale;
+  alternatePath?: string;
 }
 
-const { frontmatter, readingTime, backLink } = Astro.props;
+const {
+  frontmatter,
+  readingTime,
+  backLink,
+  locale = 'en',
+  alternatePath,
+} = Astro.props;
 
-const formattedDate = new Date(frontmatter.date).toLocaleDateString('en-US', {
+const copy = {
+  en: {
+    caseStudy: 'Engineering case study',
+    published: 'Published',
+    project: 'Project',
+    updated: 'Updated',
+    role: 'Role',
+    context: 'Context',
+    with: 'With',
+    evidence: 'Evidence',
+    evidenceValues: {
+      public: 'Public source',
+      sanitized: 'Sanitized note',
+      private: 'Private work',
+      hold: 'Not published',
+    },
+    source: 'Inspect the source',
+    instructions: 'View run instructions',
+    commit: 'Verified commit',
+    scope: 'Scope:',
+    articleMetadata: 'Article metadata',
+    rail: 'METHOD / RESULT / LIMIT',
+  },
+  es: {
+    caseStudy: 'Caso de estudio de ingeniería',
+    published: 'Publicado',
+    project: 'Proyecto',
+    updated: 'Actualizado',
+    role: 'Rol',
+    context: 'Contexto',
+    with: 'Con',
+    evidence: 'Evidencia',
+    evidenceValues: {
+      public: 'Fuente pública',
+      sanitized: 'Nota sin información sensible',
+      private: 'Trabajo privado',
+      hold: 'No publicado',
+    },
+    source: 'Ver el código fuente',
+    instructions: 'Ver instrucciones de ejecución',
+    commit: 'Commit verificado',
+    scope: 'Alcance:',
+    articleMetadata: 'Metadatos del artículo',
+    rail: 'MÉTODO / RESULTADO / LÍMITE',
+  },
+}[locale];
+const shared = sharedCopy[locale];
+const dateLocale = locale === 'es' ? 'es-EC' : 'en-US';
+
+const formattedDate = new Date(
+  `${frontmatter.date}T00:00:00Z`,
+).toLocaleDateString(dateLocale, {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
+  timeZone: 'UTC',
 });
+const formattedUpdated = frontmatter.updated
+  ? new Date(`${frontmatter.updated}T00:00:00Z`).toLocaleDateString(
+      dateLocale,
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC',
+      },
+    )
+  : undefined;
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.summary}>
-  <article class="container-narrow py-12 sm:py-16">
-    {backLink && (
-      <a href={backLink.href} class="inline-flex items-center text-sm text-gray-600 hover:text-accent mb-8">
-        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        {backLink.label}
-      </a>
-    )}
+<BaseLayout
+  title={frontmatter.shortTitle || frontmatter.title}
+  description={frontmatter.summary}
+  type="article"
+  locale={locale}
+  alternatePath={alternatePath}
+>
+  <article class="case-article">
+    <div class="shell case-article__shell">
+      {
+        backLink && (
+          <a href={backLink.href} class="back-link">
+            <span aria-hidden="true">←</span> {backLink.label}
+          </a>
+        )
+      }
 
-    <header class="mb-8">
-      <h1 class="text-3xl sm:text-4xl font-semibold mb-4">{frontmatter.title}</h1>
-
-      <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
-        <time datetime={frontmatter.date}>{formattedDate}</time>
-        {readingTime && <span>{readingTime}</span>}
-        {frontmatter.role && <span>{frontmatter.role}</span>}
-      </div>
-
-      <div class="flex flex-wrap gap-2 mb-4">
-        {frontmatter.tags.map((tag) => (
-          <Tag>{tag}</Tag>
-        ))}
-      </div>
-
-      {frontmatter.stack && (
-        <div class="text-sm text-gray-600">
-          <span class="font-medium">Stack:</span> {frontmatter.stack.join(', ')}
+      <header class="case-header">
+        <div class="case-header__copy">
+          <p class="eyebrow">
+            {frontmatter.eyebrow || copy.caseStudy}
+          </p>
+          <h1>{frontmatter.title}</h1>
+          <p class="case-header__summary">{frontmatter.summary}</p>
         </div>
-      )}
-    </header>
 
-    <div class="prose">
-      <slot />
+        <dl class="case-meta">
+          <div>
+            <dt>{copy.published}</dt><dd>
+              <time datetime={frontmatter.date}>{formattedDate}</time>
+            </dd>
+          </div>
+          {
+            frontmatter.projectPeriod && (
+              <div>
+                <>
+                  <dt>{copy.project}</dt>
+                  <dd>{frontmatter.projectPeriod}</dd>
+                </>
+              </div>
+            )
+          }
+          {
+            formattedUpdated && frontmatter.updated !== frontmatter.date && (
+              <div>
+                <>
+                  <dt>{copy.updated}</dt>
+                  <dd>
+                    <time datetime={frontmatter.updated}>
+                      {formattedUpdated}
+                    </time>
+                  </dd>
+                </>
+              </div>
+            )
+          }
+          {
+            frontmatter.role && (
+              <div>
+                <>
+                  <dt>{copy.role}</dt>
+                  <dd>{frontmatter.role}</dd>
+                </>
+              </div>
+            )
+          }
+          {
+            frontmatter.organization && (
+              <div>
+                <>
+                  <dt>{copy.context}</dt>
+                  <dd>{frontmatter.organization}</dd>
+                </>
+              </div>
+            )
+          }
+          {
+            frontmatter.collaborators &&
+              frontmatter.collaborators.length > 0 && (
+                <div>
+                  <>
+                    <dt>{copy.with}</dt>
+                    <dd>{frontmatter.collaborators.join(', ')}</dd>
+                  </>
+                </div>
+              )
+          }
+          {
+            frontmatter.evidence && (
+              <div>
+                <>
+                  <dt>{copy.evidence}</dt>
+                  <dd>{copy.evidenceValues[frontmatter.evidence]}</dd>
+                </>
+              </div>
+            )
+          }
+        </dl>
+
+        <div class="case-header__actions">
+          {
+            frontmatter.links?.github && (
+              <a
+                class="button button--primary button--md"
+                href={frontmatter.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {copy.source}{' '}
+                <>
+                  <span aria-hidden="true">↗</span>
+                  <span class="sr-only">{shared.newTab}</span>
+                </>
+              </a>
+            )
+          }
+          {
+            frontmatter.links?.reproduce && (
+              <a
+                class="button button--secondary button--md"
+                href={frontmatter.links.reproduce}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {copy.instructions}{' '}
+                <>
+                  <span aria-hidden="true">↗</span>
+                  <span class="sr-only">{shared.newTab}</span>
+                </>
+              </a>
+            )
+          }
+          {
+            frontmatter.links?.sourceCommit && (
+              <a
+                class="button button--ghost button--md"
+                href={frontmatter.links.sourceCommit}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {copy.commit}{' '}
+                <>
+                  <span aria-hidden="true">↗</span>
+                  <span class="sr-only">{shared.newTab}</span>
+                </>
+              </a>
+            )
+          }
+        </div>
+
+        {
+          frontmatter.disclosure && (
+            <p class="case-disclosure">
+              <strong>{copy.scope}</strong> {frontmatter.disclosure}
+            </p>
+          )
+        }
+      </header>
+
+      <div class="article-grid">
+        <aside class="article-rail" aria-label={copy.articleMetadata}>
+          <p>{copy.rail}</p>
+          <div>{frontmatter.tags.map((tag) => <span>{tag}</span>)}</div>
+          {readingTime && <span>{readingTime}</span>}
+        </aside>
+        <div class="prose article-body">
+          <slot />
+        </div>
+      </div>
     </div>
   </article>
 </BaseLayout>

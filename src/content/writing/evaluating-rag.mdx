@@ -1,21 +1,21 @@
 ---
-title: "How I Evaluate RAG Systems"
-slug: "evaluating-rag"
-date: "2026-01-15"
-summary: "A practical framework for measuring RAG quality — retrieval metrics, answer quality, and the human evaluation patterns that actually predict user satisfaction."
-tags: ["RAG", "Evaluation", "LLMs"]
-draft: false
+title: 'How I Evaluate RAG Systems'
+slug: 'evaluating-rag'
+date: '2026-01-15'
+summary: 'A practical framework for measuring RAG quality: retrieval metrics, answer quality, and the human evaluation patterns that actually predict user satisfaction.'
+tags: ['RAG', 'Evaluation', 'LLMs']
+draft: true
 ---
 
-Evaluating RAG systems is harder than evaluating traditional ML models. You're not just measuring accuracy — you're measuring whether the system found the right information **and** used it correctly.
+Evaluating RAG systems is harder than evaluating traditional ML models. You're measuring both whether the system found the right information **and** whether it used that information correctly.
 
 Here's the framework I use.
 
 ## The Three Layers of RAG Evaluation
 
-1. **Retrieval Quality** — Did we find the right documents?
-2. **Answer Quality** — Did we generate a good response from those documents?
-3. **End-to-End Quality** — Does the user get what they need?
+1. **Retrieval Quality:** Did we find the right documents?
+2. **Answer Quality:** Did we generate a good response from those documents?
+3. **End-to-End Quality:** Does the user get what they need?
 
 Each layer requires different metrics and different evaluation approaches.
 
@@ -27,13 +27,13 @@ Before worrying about generation, make sure your retrieval is working.
 
 ### Key Metrics
 
-- **Recall@K** — Of all relevant documents, how many did we retrieve in the top K?
-- **MRR (Mean Reciprocal Rank)** — How high did the first relevant document rank?
-- **Precision@K** — Of the K documents we retrieved, how many were relevant?
+- **Recall@K:** Of all relevant documents, how many did we retrieve in the top K?
+- **MRR (Mean Reciprocal Rank):** How high did the first relevant document rank?
+- **Precision@K:** Of the K documents we retrieved, how many were relevant?
 
 ### The Catch
 
-You need labeled data — queries paired with their relevant documents. For a production system, this usually means:
+You need labeled data, meaning queries paired with their relevant documents. For a production system, this usually means:
 
 1. Start with synthetic queries generated from your documents
 2. Supplement with real user queries, manually labeled
@@ -51,9 +51,9 @@ Even with perfect retrieval, generation can fail. The model might:
 
 ### What to Measure
 
-- **Faithfulness** — Is the answer grounded in the retrieved context?
-- **Relevance** — Does the answer address the question?
-- **Completeness** — Does the answer cover all important points?
+- **Faithfulness:** Is the answer grounded in the retrieved context?
+- **Relevance:** Does the answer address the question?
+- **Completeness:** Does the answer cover all important points?
 
 ### Evaluation Approaches
 
@@ -85,11 +85,11 @@ Build evaluation into your pipeline:
 
 ## Practical Tips
 
-1. **Start simple** — Recall@10 and a basic faithfulness check get you surprisingly far
-2. **Invest in labeled data** — It's the bottleneck for everything else
-3. **Monitor in production** — Offline eval isn't enough; real queries are different
-4. **Iterate on retrieval first** — Bad retrieval dooms good generation
+1. **Start simple:** Recall@10 and a basic faithfulness check get you surprisingly far
+2. **Invest in labeled data:** It's the bottleneck for everything else
+3. **Monitor in production:** Offline eval isn't enough; real queries are different
+4. **Iterate on retrieval first:** Bad retrieval dooms good generation
 
 ---
 
-RAG evaluation isn't a one-time task — it's an ongoing practice. Build the infrastructure to measure continuously, and you'll catch problems before your users do.
+RAG evaluation isn't a one-time task. It's an ongoing practice. Build the infrastructure to measure continuously, and you'll catch problems before your users do.

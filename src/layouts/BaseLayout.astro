@@ -2,72 +2,130 @@
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import profile from '../data/profile';
+import {
+  alternateLocalePath,
+  localeFromPath,
+  sharedCopy,
+  type Locale,
+} from '../i18n';
 
 interface Props {
   title: string;
   description: string;
   image?: string;
   noIndex?: boolean;
+  type?: 'website' | 'article';
+  locale?: Locale;
+  alternatePath?: string;
 }
 
 const {
   title,
   description,
   image = '/og.png',
-  noIndex = false
+  noIndex = false,
+  type = 'website',
+  locale = localeFromPath(Astro.url.pathname),
+  alternatePath,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const targetLocale: Locale = locale === 'en' ? 'es' : 'en';
+const translatedPath =
+  alternatePath ?? alternateLocalePath(Astro.url.pathname, targetLocale);
+const translatedURL = new URL(translatedPath, Astro.site);
+const englishURL = locale === 'en' ? canonicalURL : translatedURL;
+const spanishURL = locale === 'es' ? canonicalURL : translatedURL;
+const localeCopy = sharedCopy[locale];
+const localizedHeadline =
+  locale === 'es' ? 'Ingeniero de Sistemas de IA y Datos' : profile.headline;
+const pageTitle = title === profile.name ? title : `${title} | ${profile.name}`;
+const imageURL = new URL(image, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="author" content="VillaForTech" />
+    <meta name="theme-color" content="#f2efe8" />
+    <meta name="author" content={profile.name} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang="en" href={englishURL} />
+    <link rel="alternate" hreflang="es" href={spanishURL} />
+    <link rel="alternate" hreflang="x-default" href={englishURL} />
 
-    <title>{title} | VillaForTech</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
 
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={profile.siteName} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={title} />
+    <meta property="og:locale" content={locale === 'es' ? 'es_EC' : 'en_US'} />
+    <meta
+      property="og:locale:alternate"
+      content={locale === 'es' ? 'en_US' : 'es_EC'}
+    />
+    <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:width" content="1732" />
+    <meta property="og:image:height" content="908" />
+    <meta
+      property="og:image:alt"
+      content={`${profile.name} | ${localizedHeadline}`}
+    />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:image" content={imageURL} />
+    <meta
+      name="twitter:image:alt"
+      content={`${profile.name} | ${localizedHeadline}`}
+    />
 
     <!-- JSON-LD -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "VillaForTech",
-      "url": Astro.site,
-    })} />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            name: profile.siteName,
+            url: Astro.site,
+            inLanguage: ['en', 'es'],
+          },
+          {
+            '@type': 'Person',
+            name: profile.name,
+            jobTitle: localizedHeadline,
+            url: Astro.site,
+            sameAs: [profile.links.linkedin, profile.links.github],
+            homeLocation: profile.location,
+          },
+        ],
+      })}
+    />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-accent text-white px-4 py-2 rounded">
-      Skip to main content
-    </a>
+  <body>
+    <a href="#main-content" class="skip-link">{localeCopy.skipLink}</a>
 
-    <Navbar />
+    <Navbar locale={locale} alternatePath={translatedPath} />
 
-    <main id="main-content" class="flex-1">
+    <main id="main-content">
       <slot />
     </main>
 
-    <Footer />
+    <Footer locale={locale} />
   </body>
 </html>

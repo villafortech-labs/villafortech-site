@@ -1,71 +1,176 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Section from '../components/Section.astro';
-import Button from '../components/Button.astro';
-import socials from '../data/socials.json';
+import profileEn from '../data/profile';
+import profileEs from '../data/profile.es';
+import { sharedCopy, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const profile = locale === 'es' ? profileEs : profileEn;
+const shared = sharedCopy[locale];
+const copy = {
+  en: {
+    title: 'Work with me',
+    description:
+      'Work with Roberto Villafuerte on AI systems architecture, data foundations, technical collaboration, startup opportunities, or speaking.',
+    eyebrow: 'Work with me / Quito, Ecuador',
+    heading: 'Bring me the difficult system boundary.',
+    deck: 'If an ambitious product idea is running into questions of AI, data, architecture, or execution, I can help make the system and the next move clearer.',
+    available: 'Available for independent consulting',
+    email: '01 / Email',
+    connect: '02 / Connect',
+    code: '03 / Code',
+    note: 'A useful first message includes what you are building, the constraint that matters, and what a strong outcome would look like.',
+    sectionEyebrow: 'Ways to work together / 01',
+    sectionTitle: 'A focused engagement, or a bigger conversation.',
+    sectionDeck:
+      'I work best with people who care about the product and the underlying system, not just the appearance of an AI feature.',
+    cards: [
+      {
+        title: 'Independent consulting',
+        detail:
+          'Focused architecture discovery, system review, data-flow design, and an implementation path your team can act on.',
+      },
+      {
+        title: 'Technical collaboration',
+        detail:
+          'Targeted work across AI capabilities, data foundations, backend services, and the control paths that connect them.',
+      },
+      {
+        title: 'Startup opportunities',
+        detail:
+          'Early-stage roles and founder-minded conversations around products where technically difficult work creates real leverage.',
+      },
+      {
+        title: 'Speaking',
+        detail:
+          'Practical conversations about AI systems, trustworthy ML, data architecture, and the path from a model to a product.',
+      },
+    ],
+  },
+  es: {
+    title: 'Trabajemos juntos',
+    description:
+      'Trabaja con Roberto Villafuerte en arquitectura de sistemas de IA, fundamentos de datos, colaboración técnica, oportunidades en startups o conferencias.',
+    eyebrow: 'Trabajemos juntos / Quito, Ecuador',
+    heading: 'Hablemos del punto donde el sistema se complica.',
+    deck: 'Si una idea de producto ambiciosa se está topando con preguntas de IA, datos, arquitectura o ejecución, puedo ayudarte a aclarar el sistema y el siguiente paso.',
+    available: 'Disponible para consultoría independiente',
+    email: '01 / Correo',
+    connect: '02 / Contacto',
+    code: '03 / Código',
+    note: 'Un buen primer mensaje incluye qué estás construyendo, cuál es la restricción que importa y cómo se vería un buen resultado.',
+    sectionEyebrow: 'Formas de trabajar juntos / 01',
+    sectionTitle: 'Una colaboración puntual o una conversación más amplia.',
+    sectionDeck:
+      'Trabajo mejor con personas que se preocupan tanto por el producto como por el sistema que lo sostiene, no solo por mostrar una función con IA.',
+    cards: [
+      {
+        title: 'Consultoría independiente',
+        detail:
+          'Diagnóstico de arquitectura, revisión del sistema, diseño de flujos de datos y una ruta de implementación concreta para el equipo.',
+      },
+      {
+        title: 'Colaboración técnica',
+        detail:
+          'Trabajo puntual en capacidades de IA, fundamentos de datos, servicios backend y los flujos de control que los conectan.',
+      },
+      {
+        title: 'Oportunidades en startups',
+        detail:
+          'Roles en etapas tempranas y conversaciones con mentalidad de fundador sobre productos en los que el trabajo técnicamente difícil genera una ventaja real.',
+      },
+      {
+        title: 'Conferencias',
+        detail:
+          'Charlas prácticas sobre sistemas de IA, aprendizaje automático confiable, arquitectura de datos y el camino de un modelo a un producto.',
+      },
+    ],
+  },
+}[locale];
 ---
 
-<BaseLayout
-  title="Contact"
-  description="Get in touch for data architecture, privacy & governance, HealthTech, or data engineering opportunities."
->
-  <Section>
-    <div class="max-w-2xl">
-      <h1 class="text-3xl sm:text-4xl font-semibold mb-4">Get in Touch</h1>
+<BaseLayout title={copy.title} description={copy.description} locale={locale}>
+  <section class="contact-page">
+    <div class="shell contact-page__grid">
+      <div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.heading}</h1>
+        <p class="contact-page__deck">{copy.deck}</p>
+        <p class="availability-line">
+          <span aria-hidden="true"></span>
+          {copy.available}
+        </p>
+      </div>
 
-      <p class="text-gray-600 mb-8">
-        I'm open to conversations about data architecture, privacy and governance, HealthTech data platforms, and production data/ML engineering. I read every message and respond within a few days.
-      </p>
-
-      <div class="space-y-6">
-        <!-- Email -->
-        <div class="p-6 bg-white border border-gray-200 rounded-lg">
-          <h2 class="font-semibold mb-2">Email</h2>
-          <a href={`mailto:${socials.email}`} class="text-accent hover:text-accent-hover">
-            {socials.email}
-          </a>
-        </div>
-
-        <!-- Social Links -->
-        <div class="p-6 bg-white border border-gray-200 rounded-lg">
-          <h2 class="font-semibold mb-4">Elsewhere</h2>
-          <div class="space-y-3">
-            <a
-              href={socials.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center gap-3 text-gray-600 hover:text-accent"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-              GitHub
-            </a>
-            <a
-              href={socials.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center gap-3 text-gray-600 hover:text-accent"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-              LinkedIn
-            </a>
-          </div>
-        </div>
-
-        <!-- Availability -->
-        <div class="p-6 bg-gray-50 border border-gray-200 rounded-lg">
-          <h2 class="font-semibold mb-2">Availability</h2>
-          <p class="text-gray-600 text-sm">
-            Open to roles: Data Architect, Data Engineer, Privacy & Data Governance, HealthTech data platforms, and selected AI/ML systems projects involving production-grade data foundations.
-          </p>
-          <p class="text-gray-600 text-sm mt-2">
-            Based in Quito, Ecuador — open to remote, hybrid, or international collaboration.
-          </p>
-        </div>
+      <div class="contact-ledger">
+        <a
+          class="contact-line contact-line--primary"
+          href={profile.links.email}
+        >
+          <span>{copy.email}</span>
+          <strong>{profile.links.emailAddress}</strong>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          class="contact-line"
+          href={profile.links.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>{copy.connect}</span>
+          <strong>LinkedIn</strong>
+          <span aria-hidden="true">↗</span>
+          <span class="sr-only">{shared.newTab}</span>
+        </a>
+        <a
+          class="contact-line"
+          href={profile.links.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>{copy.code}</span>
+          <strong>GitHub</strong>
+          <span aria-hidden="true">↗</span>
+          <span class="sr-only">{shared.newTab}</span>
+        </a>
+        <p class="contact-note">{copy.note}</p>
       </div>
     </div>
-  </Section>
+  </section>
+
+  <section
+    class="collaboration-section"
+    aria-labelledby="collaboration-heading"
+  >
+    <div class="shell">
+      <header class="section-heading section-heading--split">
+        <div>
+          <p class="eyebrow">{copy.sectionEyebrow}</p>
+          <h2 id="collaboration-heading">{copy.sectionTitle}</h2>
+        </div>
+        <p>{copy.sectionDeck}</p>
+      </header>
+
+      <ol class="collaboration-grid">
+        {
+          copy.cards.map((card, index) => (
+            <li
+              class:list={[
+                'collaboration-card',
+                index === 0 && 'collaboration-card--featured',
+              ]}
+            >
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>{card.title}</h3>
+              <p>{card.detail}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
 </BaseLayout>

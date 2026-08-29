@@ -1,41 +1,113 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Section from '../../components/Section.astro';
-import Card from '../../components/Card.astro';
 import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { localeRoutes, type Locale } from '../../i18n';
 
-const posts = await getCollection('writing', ({ data }) => !data.draft);
-const sortedPosts = posts.sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const routes = localeRoutes[locale];
+const copy = {
+  en: {
+    title: 'Writing',
+    description:
+      'Technical notes by Roberto Villafuerte, published only when the evidence and argument are ready.',
+    eyebrow: 'Writing / Working archive',
+    heading: 'Notes that earn publication.',
+    deck: 'I use this archive for technical arguments that can be tied to an implementation, an experiment, or a clearly stated boundary.',
+    note: 'Technical note',
+    published: 'Published',
+    emptyLabel: '00 / Published notes',
+    empty:
+      'No generic advice posts. The first independent essay will appear here when it has an evidence trail worth inspecting.',
+    currentCase: 'Read the current engineering case study',
+  },
+  es: {
+    title: 'Artículos',
+    description:
+      'Notas técnicas de Roberto Villafuerte, publicadas únicamente cuando la evidencia y el argumento están listos.',
+    eyebrow: 'Artículos / Archivo en desarrollo',
+    heading: 'Notas que merecen publicarse.',
+    deck: 'Uso este archivo para argumentos técnicos vinculados con una implementación, un experimento o un límite declarado con claridad.',
+    note: 'Nota técnica',
+    published: 'Publicado',
+    emptyLabel: '00 / Notas publicadas',
+    empty:
+      'No publico consejos genéricos. El primer ensayo independiente aparecerá aquí cuando cuente con un rastro de evidencia que valga la pena examinar.',
+    currentCase: 'Leer el caso de ingeniería actual',
+  },
+}[locale];
+
+const posts = (
+  await getCollection(
+    'writing',
+    ({ data }) => !data.draft && data.locale === locale,
+  )
+).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
 ---
 
 <BaseLayout
-  title="Writing"
-  description="Notes on data architecture, governance, privacy-aware systems, ML in production, and trustworthy analytics."
+  title={copy.title}
+  description={copy.description}
+  noIndex={posts.length === 0}
+  locale={locale}
 >
-  <Section>
-    <h1 class="text-3xl sm:text-4xl font-semibold mb-4">Writing</h1>
-    <p class="text-gray-600 mb-8 max-w-2xl">
-      Notes on data architecture, governance, privacy-aware systems, and ML in production. Short, practical, systems-focused.
-    </p>
+  <header class="page-hero page-hero--compact">
+    <div class="shell page-hero__grid">
+      <div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.heading}</h1>
+      </div>
+      <p class="page-hero__deck">{copy.deck}</p>
+    </div>
+  </header>
 
-    {sortedPosts.length > 0 ? (
-      <div class="grid gap-6">
-        {sortedPosts.map((post) => (
-          <Card
-            title={post.data.title}
-            summary={post.data.summary}
-            href={`/writing/${post.data.slug}`}
-            tags={post.data.tags}
-            date={post.data.date}
-          />
-        ))}
-      </div>
-    ) : (
-      <div class="text-center py-12 text-gray-500">
-        <p>No posts yet. Check back soon.</p>
-      </div>
-    )}
-  </Section>
+  <section class="work-index">
+    <div class="shell">
+      {
+        posts.length > 0 ? (
+          <div class="work-list">
+            {posts.map((post, index) => (
+              <a
+                class="work-record"
+                href={`${routes.writing}/${post.data.translationKey ?? post.data.slug}`}
+              >
+                <span class="work-record__number">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div class="work-record__copy">
+                  <p>{copy.note}</p>
+                  <h2>{post.data.title}</h2>
+                  <p>{post.data.summary}</p>
+                </div>
+                <span class="evidence-state evidence-state--public">
+                  {copy.published}
+                </span>
+                <time datetime={post.data.date}>
+                  {post.data.date.slice(0, 4)}
+                </time>
+                <span class="work-record__arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class="empty-ledger">
+            <span>{copy.emptyLabel}</span>
+            <p>{copy.empty}</p>
+            <a
+              href={`${routes.projects}/fairness-aware-candidate-pre-screening`}
+            >
+              {copy.currentCase} →
+            </a>
+          </div>
+        )
+      }
+    </div>
+  </section>
 </BaseLayout>

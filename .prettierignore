@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.gstack/
+tmp/
+output/
+context.md
+plan.md

@@ -1,66 +1,211 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Section from '../components/Section.astro';
 import Button from '../components/Button.astro';
+import profileEn from '../data/profile';
+import profileEs from '../data/profile.es';
+import { localeRoutes, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const profile = locale === 'es' ? profileEs : profileEn;
+const routes = localeRoutes[locale];
+const copy = {
+  en: {
+    title: 'About',
+    description:
+      'The story behind Roberto Villafuerte’s path from the Ecuadorian Amazon to AI systems engineering and his long-term goal of building companies.',
+    heroEyebrow: 'About / Origin and direction',
+    heroTitle: 'From curiosity about computing to building AI systems.',
+    heroDeck:
+      'I grew up in Puyo, in the Ecuadorian Amazon. Alan Turing drew me to computer science; a scholarship, work across different contexts, and an exchange semester turned that curiosity into a direction.',
+    indexLabel: 'About page sections',
+    index: [
+      '01 / Origin',
+      '02 / Opportunity',
+      '03 / AI',
+      '04 / Experience',
+      '05 / Direction',
+      '06 / Education',
+    ],
+    originEyebrow: 'Puyo / Ecuadorian Amazon',
+    originTitle: 'A first question about computation.',
+    scholarshipEyebrow: 'Scholarship / USFQ',
+    scholarshipTitle: 'A scholarship made university possible.',
+    aiEyebrow: 'The AI turn',
+    aiTitle: 'ChatGPT made me want to understand how AI systems work.',
+    aiDetail:
+      'That question still organizes my work. Models matter, but products become useful at the boundaries between models, data, services, people, and business constraints.',
+    experienceEyebrow: 'Work and wider contexts',
+    experienceTitle: 'Experience made the path concrete.',
+    helsinkiDetail:
+      'The semester in Helsinki widened both my technical and cultural perspective and gave me a clearer view of the kind of systems, and eventually companies, I wanted to build.',
+    photoGroup: 'A selected moment from the University of Helsinki',
+    photoAlt:
+      'Roberto Villafuerte beside a portrait of Linus Torvalds outside the Linus Torvalds Auditorium at the University of Helsinki',
+    university: 'University of Helsinki',
+    auditorium: 'Linus Torvalds Auditorium',
+    directionEyebrow: 'Long-term direction',
+    directionTitle: 'The goal is to build companies.',
+    directionDetail:
+      'That means continuing to deepen my engineering judgment while working closely with founders and engineering teams, turning difficult product requirements into systems that can be built, tested, and operated.',
+    educationEyebrow: 'Formal path',
+    educationTitle: 'Computer science across contexts.',
+    workWithMe: 'Work with me',
+    explore: 'Explore my work',
+    resume: 'Read the résumé',
+  },
+  es: {
+    title: 'Sobre mí',
+    description:
+      'La historia del camino de Roberto Villafuerte desde la Amazonía ecuatoriana hasta la ingeniería de sistemas de IA, y su objetivo a largo plazo de construir empresas.',
+    heroEyebrow: 'Sobre mí / Origen y dirección',
+    heroTitle:
+      'La curiosidad por la computación me llevó a construir sistemas de IA.',
+    heroDeck:
+      'Crecí en Puyo, en la Amazonía ecuatoriana. Alan Turing despertó mi interés por las ciencias de la computación; una beca, el trabajo en distintos contextos y un semestre de intercambio convirtieron esa curiosidad en una dirección.',
+    indexLabel: 'Secciones de la página Sobre mí',
+    index: [
+      '01 / Origen',
+      '02 / Oportunidad',
+      '03 / IA',
+      '04 / Experiencia',
+      '05 / Dirección',
+      '06 / Formación',
+    ],
+    originEyebrow: 'Puyo / Amazonía ecuatoriana',
+    originTitle: 'Una primera pregunta sobre la computación.',
+    scholarshipEyebrow: 'Beca / USFQ',
+    scholarshipTitle: 'Una beca hizo posible la universidad.',
+    aiEyebrow: 'El giro hacia la IA',
+    aiTitle:
+      'ChatGPT me hizo querer entender cómo funcionan los sistemas de IA.',
+    aiDetail:
+      'Esa pregunta todavía guía mi trabajo. Los modelos importan, pero los productos se vuelven útiles en los límites entre modelos, datos, servicios, personas y restricciones del negocio.',
+    experienceEyebrow: 'Trabajo y nuevos contextos',
+    experienceTitle: 'La experiencia le dio forma al camino.',
+    helsinkiDetail:
+      'El semestre en Helsinki amplió mi perspectiva técnica y cultural, y me dio una visión más clara de los sistemas y, con el tiempo, de las empresas que quería construir.',
+    photoGroup: 'Un momento seleccionado de la Universidad de Helsinki',
+    photoAlt:
+      'Roberto Villafuerte junto a un retrato de Linus Torvalds, afuera del Auditorio Linus Torvalds de la Universidad de Helsinki',
+    university: 'Universidad de Helsinki',
+    auditorium: 'Auditorio Linus Torvalds',
+    directionEyebrow: 'Dirección a largo plazo',
+    directionTitle: 'El objetivo es construir empresas.',
+    directionDetail:
+      'Eso significa seguir profundizando mi criterio de ingeniería mientras trabajo de cerca con fundadores y equipos de ingeniería, convirtiendo requisitos de producto difíciles en sistemas que se puedan construir, probar y operar.',
+    educationEyebrow: 'Formación',
+    educationTitle: 'Ciencias de la computación en distintos contextos.',
+    workWithMe: 'Trabajemos juntos',
+    explore: 'Explora mi trabajo',
+    resume: 'Ver el currículum',
+  },
+}[locale];
 ---
 
-<BaseLayout
-  title="About"
-  description="Data Architect with a privacy-by-design mindset, building scalable data foundations for HealthTech. Background in ML systems, data governance, and secure data handling."
->
-  <Section>
-    <div class="max-w-2xl">
-      <h1 class="text-3xl sm:text-4xl font-semibold mb-8">About</h1>
-
-      <div class="prose">
-        <p class="text-xl text-gray-600 mb-8">
-          I'm a Data Architect building privacy-first data foundations for HealthTech and analytics products.
-        </p>
-
-        <p>
-          My work focuses on designing scalable data systems that handle sensitive information — PII, PHI, health records — responsibly. I build data models, governance frameworks, and ETL pipelines that turn raw signals into actionable insights while maintaining strict privacy controls, auditability, and data quality.
-        </p>
-
-        <h2>Background</h2>
-        <p>
-          I started in computer science and software engineering, then moved through ML systems and data pipelines before focusing on data architecture and governance. The pattern I kept seeing was that organizations needed strong data foundations before they could do anything meaningful with analytics or AI — and that privacy couldn't be bolted on after the fact.
-        </p>
-        <p>
-          I completed Master's-level coursework at the University of Helsinki in Trustworthy ML, Big Data Platforms, and Software Architecture, which shaped how I think about building data systems that are both technically sound and aligned with privacy and trust requirements.
-        </p>
-
-        <p>Most of my work involves:</p>
-        <ul>
-          <li><strong>Data modeling & schema design</strong> — multi-tenant architectures, longitudinal data, relational schemas</li>
-          <li><strong>Data governance & access control</strong> — privacy policies, audit trails, role-based permissions</li>
-          <li><strong>ETL & data pipelines</strong> — transforming raw data into structured, queryable insights</li>
-          <li><strong>Privacy-by-design</strong> — building compliance (LOPD, GDPR) into the data layer from day one</li>
-          <li><strong>Production ML systems</strong> — RAG pipelines, forecasting, evaluation workflows</li>
-        </ul>
-
-        <h2>Current Focus</h2>
-        <p>
-          I'm leading data architecture at SaliHub, designing the data foundation for a preventive health ecosystem. This means building the core data model, governance framework, and pipeline infrastructure to support scalable, privacy-compliant health analytics.
-        </p>
-
-        <h2>Values</h2>
-        <ul>
-          <li><strong>Privacy by default.</strong> Sensitive data deserves careful handling from the start, not as an afterthought.</li>
-          <li><strong>Measure data quality.</strong> If you can't trust the data, you can't trust the decisions it drives.</li>
-          <li><strong>Simplicity scales.</strong> Complex systems fail in complex ways.</li>
-          <li><strong>Governance enables speed.</strong> Clear rules and good structure let teams move faster, not slower.</li>
-        </ul>
-
-        <hr />
-
-        <p>
-          If you're working on something interesting in data architecture, HealthTech, or privacy-aware systems, I'd like to hear about it.
-        </p>
+<BaseLayout title={copy.title} description={copy.description} locale={locale}>
+  <header class="page-hero">
+    <div class="shell page-hero__grid">
+      <div>
+        <p class="eyebrow">{copy.heroEyebrow}</p>
+        <h1>{copy.heroTitle}</h1>
       </div>
+      <p class="page-hero__deck">{copy.heroDeck}</p>
+    </div>
+  </header>
 
-      <div class="mt-8">
-        <Button href="/contact">Get in Touch</Button>
+  <section class="narrative-section">
+    <div class="shell narrative-grid">
+      <aside class="narrative-index" aria-label={copy.indexLabel}>
+        {copy.index.map((item) => <span>{item}</span>)}
+      </aside>
+
+      <div class="narrative-copy">
+        <section>
+          <p class="eyebrow">{copy.originEyebrow}</p>
+          <h2>{copy.originTitle}</h2>
+          <p>{profile.story.paragraphs[0]}</p>
+        </section>
+
+        <section>
+          <p class="eyebrow">{copy.scholarshipEyebrow}</p>
+          <h2>{copy.scholarshipTitle}</h2>
+          <p>{profile.story.paragraphs[1]}</p>
+        </section>
+
+        <section>
+          <p class="eyebrow">{copy.aiEyebrow}</p>
+          <h2>{copy.aiTitle}</h2>
+          <p>{profile.story.paragraphs[2]}</p>
+          <p>{copy.aiDetail}</p>
+        </section>
+
+        <section>
+          <p class="eyebrow">{copy.experienceEyebrow}</p>
+          <h2>{copy.experienceTitle}</h2>
+          <p>{profile.story.paragraphs[3]}</p>
+          <p>{copy.helsinkiDetail}</p>
+
+          <div
+            class="about-photo-spread about-photo-spread--single"
+            role="group"
+            aria-label={copy.photoGroup}
+          >
+            <figure class="about-photo">
+              <div class="about-photo__frame">
+                <img
+                  src="/images/roberto-linus-torvalds-auditorium.jpeg"
+                  width="768"
+                  height="1024"
+                  alt={copy.photoAlt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption>
+                <span>{copy.university}</span>
+                <span>{copy.auditorium}</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <p class="eyebrow">{copy.directionEyebrow}</p>
+          <h2>{copy.directionTitle}</h2>
+          <p>{profile.story.paragraphs[4]}</p>
+          <p>{copy.directionDetail}</p>
+        </section>
+
+        <section>
+          <p class="eyebrow">{copy.educationEyebrow}</p>
+          <h2>{copy.educationTitle}</h2>
+          <div class="education-ledger">
+            {
+              profile.education.map((item) => (
+                <article>
+                  <span>{item.period}</span>
+                  <h3>{item.institution}</h3>
+                  <p class="education-ledger__program">{item.program}</p>
+                  <p>{item.detail}</p>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <div class="narrative-actions">
+          <Button href={routes.contact}>{copy.workWithMe}</Button>
+          <Button href={routes.projects} variant="secondary"
+            >{copy.explore}</Button
+          >
+          <Button href={routes.resume} variant="secondary">{copy.resume}</Button
+          >
+        </div>
       </div>
     </div>
-  </Section>
+  </section>
 </BaseLayout>

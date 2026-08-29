@@ -1,0 +1,83 @@
+---
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const copy = {
+  en: {
+    caption: 'Reference audit protocol',
+    aria: 'Fit, validation, and test workflow',
+    fit: 'Fit',
+    fitDetail: 'Fit preprocessing and models',
+    validate: 'Validate',
+    validateDetail: 'Joint-stratified threshold selection',
+    test: 'Test',
+    testDetail: 'Preserved official UCI partition',
+    records: 'records',
+    policy: 'Validation-selected offline policy',
+    thresholds: 'Male 0.500 · Female 0.405',
+  },
+  es: {
+    caption: 'Protocolo de la auditoría de referencia',
+    aria: 'Flujo de ajuste, validación y prueba',
+    fit: 'Ajuste',
+    fitDetail: 'Ajuste del preprocesamiento y los modelos',
+    validate: 'Validación',
+    validateDetail: 'Selección de umbral con estratificación conjunta',
+    test: 'Prueba',
+    testDetail: 'Partición oficial de UCI preservada',
+    records: 'registros',
+    policy: 'Política offline seleccionada en validación',
+    thresholds: 'Hombres 0.500 · Mujeres 0.405',
+  },
+}[locale];
+---
+
+<figure class="protocol-figure" aria-labelledby="protocol-caption">
+  <figcaption id="protocol-caption" class="figure-label">
+    {copy.caption}
+  </figcaption>
+
+  <ol class="protocol-lanes" aria-label={copy.aria}>
+    <li class="protocol-lane">
+      <span class="protocol-index">01</span>
+      <strong>{copy.fit}</strong>
+      <span>25,637 {copy.records}</span>
+      <small>{copy.fitDetail}</small>
+    </li>
+
+    <li class="protocol-connector" aria-hidden="true">→</li>
+
+    <li class="protocol-lane protocol-lane--accent">
+      <span class="protocol-index">02</span>
+      <strong>{copy.validate}</strong>
+      <span>4,525 {copy.records}</span>
+      <small>{copy.validateDetail}</small>
+    </li>
+
+    <li class="protocol-connector" aria-hidden="true">→</li>
+
+    <li class="protocol-lane protocol-lane--sealed">
+      <span class="protocol-index">03</span>
+      <strong>{copy.test}</strong>
+      <span>15,060 {copy.records}</span>
+      <small>{copy.testDetail}</small>
+    </li>
+  </ol>
+
+  <div class="threshold-ruler">
+    <div class="threshold-copy">
+      <span>{copy.policy}</span>
+      <strong>{copy.thresholds}</strong>
+    </div>
+    <div class="ruler-track" aria-hidden="true">
+      <span class="ruler-mark ruler-mark--selected ruler-mark--405"
+        ><b>0.405</b></span
+      >
+      <span class="ruler-mark ruler-mark--50"><b>0.500</b></span>
+    </div>
+  </div>
+</figure>

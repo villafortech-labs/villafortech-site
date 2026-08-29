@@ -23,6 +23,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Local planning and generated QA artifacts
+context.md
+plan.md
+tmp/
+output/
+
 # Vercel
 .vercel/
 .claude/

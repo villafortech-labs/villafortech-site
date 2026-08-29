@@ -1,57 +1,54 @@
 ---
-title: "Founding Data Architecture for a Preventive Health Ecosystem"
-slug: "salihub-data-architecture"
-date: "2026-02-01"
-summary: "Designed the core data model, privacy governance framework, and multi-tenant schema for SaliHub's HealthTech platform — handling sensitive health data (PII/PHI) under LOPD requirements."
-tags: ["Data Architecture", "Privacy-by-Design", "PostgreSQL", "HealthTech", "Data Governance"]
-role: "Lead Data Architect"
-stack: ["PostgreSQL", "Python", "SQL", "ETL Pipelines"]
+title: 'Data Architecture for a Preventive-Health Platform'
+shortTitle: 'SaliHub Data Architecture'
+eyebrow: 'Sanitized engineering note · Data systems'
+slug: 'salihub-data-architecture'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: 'February – June 2026'
+summary: 'Designed and evolved PostgreSQL data architecture for a multi-tenant preventive-health platform, including access control, auditability, reporting, and data-correctness work.'
+tags: ['Data Architecture', 'PostgreSQL', 'Access Control', 'Data Quality']
+role: 'Lead Data Architect'
+organization: 'SaliHub'
+stack: ['PostgreSQL', 'SQL', 'Python']
 featured: true
-status: "in-progress"
+featuredOrder: 2
+status: 'completed'
+evidence: 'sanitized'
+disclosure: 'Private repository · Focused account of my PostgreSQL architecture, access-control, auditability, consent, and reporting work.'
 ---
+
+<div class="article-deck">
+  The job was to turn product, privacy, consent, and reporting requirements into
+  data structures that the rest of the system could rely on.
+</div>
 
 ## Context
 
-SaliHub is building a preventive health ecosystem that transforms daily health signals into longitudinal user insights and real-time dashboards. The platform handles sensitive health data — including PII and PHI — and must comply with LOPD privacy regulations from day one.
+SaliHub was developing a multi-tenant preventive-health platform with data arriving from people, devices, and application workflows. That combination makes ordinary schema choices consequential: tenant boundaries, source identity, consent state, and audit history have to survive as the product changes.
 
-As the first data hire, my role was to design the entire data foundation from scratch: the data model, the governance framework, and the infrastructure to support a scalable, multi-tenant architecture.
+My role covered the PostgreSQL data architecture and the implementation work needed to evolve it safely. This case study focuses on that engineering contribution.
 
----
+## Engineering scope
 
-## Approach
+I designed and evolved relational structures for core product data, and translated changing requirements into schema migrations and technical documentation. The work included access-control policies, audit logging, consent-related data, and reporting structures.
 
-### Data Model Design
+I also contributed database health checks and test scaffolding. For health signals arriving from multiple devices, I worked on source-aware deduplication so that repeated observations could be reconciled without erasing provenance.
 
-Architected the founding data model and core database schema, translating complex LOPD privacy requirements and business logic into a secure, multi-tenant architecture. The schema was designed to support longitudinal health tracking while maintaining strict tenant isolation.
+## Decisions that mattered
 
-### Privacy & Governance Framework
+### Tenant boundaries belong in the data model
 
-Established Privacy-by-Design as a core principle and defined the organization's data governance framework:
+Multi-tenancy is not just an application filter. The schema and access rules have to make ownership explicit, keep cross-tenant reads difficult, and remain testable as new workflows appear.
 
-- Strict access controls with role-based permissions
-- Audit trails for all data access and modifications
-- Data classification and handling policies for PII/PHI
-- Consent management integrated into the data layer
+### Auditability is a data product
 
-### Data Infrastructure
+An audit trail must record events in a form that can answer concrete questions later. That means defining actors, affected records, actions, and timestamps consistently, not merely turning on logs.
 
-Building scalable ETL pipelines using Python and SQL to transform raw health signals into structured, queryable insights. The pipeline architecture supports both batch processing for historical analysis and near-real-time updates for dashboards.
+### Deduplication must preserve source context
 
-### Cross-Functional Collaboration
+Two measurements that look the same may be separate observations; two that look different may describe the same event. The approach therefore used source identity and domain context rather than treating equality as a universal rule.
 
-Partnering with Product and Engineering to translate business goals into measurable data capabilities — ensuring the data architecture supports both current product needs and future analytics requirements.
+## Takeaway
 
----
-
-## Technical Details
-
-- **Database:** PostgreSQL with multi-tenant schema design
-- **Privacy:** LOPD compliance, PII/PHI handling, audit trails, access control
-- **Pipelines:** Python and SQL-based ETL for health data transformation
-- **Outputs:** Longitudinal user insights, real-time dashboards
-
----
-
-## Status
-
-This is an ongoing project. The founding data model and governance framework are in place, and I am actively building out the pipeline infrastructure and analytics capabilities.
+The durable lesson was that data architecture is the negotiated boundary between product behavior and system truth. Good schemas do more than store records: they make ownership, history, and failure modes inspectable.

@@ -1,14 +1,28 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://villafortech.com',
+  site: 'https://www.villafortech.com',
+  trailingSlash: 'always',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'es'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
   integrations: [
-    tailwind(),
     mdx(),
-    sitemap(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en',
+          es: 'es',
+        },
+      },
+    }),
   ],
   markdown: {
     shikiConfig: {

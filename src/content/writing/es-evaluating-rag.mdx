@@ -1,0 +1,97 @@
+---
+title: 'Cómo evalúo los sistemas RAG'
+slug: 'es-evaluating-rag'
+translationKey: 'evaluating-rag'
+locale: 'es'
+date: '2026-01-15'
+summary: 'Un marco práctico para medir la calidad de un sistema RAG: métricas de recuperación, calidad de las respuestas y patrones de evaluación humana que realmente predicen la satisfacción de los usuarios.'
+tags: ['RAG', 'Evaluación', 'LLMs']
+draft: true
+---
+
+Evaluar sistemas RAG es más difícil que evaluar modelos tradicionales de machine learning. Hay que medir tanto si el sistema encontró la información correcta **como** si la utilizó correctamente.
+
+Este es el marco que utilizo.
+
+## Las tres capas de la evaluación de sistemas RAG
+
+1. **Calidad de la recuperación:** ¿Encontramos los documentos correctos?
+2. **Calidad de la respuesta:** ¿Generamos una buena respuesta a partir de esos documentos?
+3. **Calidad de extremo a extremo:** ¿El usuario obtiene lo que necesita?
+
+Cada capa requiere métricas y enfoques de evaluación diferentes.
+
+---
+
+## Capa 1: métricas de recuperación
+
+Antes de preocuparte por la generación, asegúrate de que la recuperación funcione.
+
+### Métricas clave
+
+- **Recall@K:** De todos los documentos relevantes, ¿cuántos recuperamos entre los primeros K?
+- **MRR (Mean Reciprocal Rank):** ¿En qué posición apareció el primer documento relevante?
+- **Precision@K:** De los K documentos que recuperamos, ¿cuántos eran relevantes?
+
+### La dificultad
+
+Necesitas datos etiquetados, es decir, consultas asociadas con sus documentos relevantes. En un sistema en producción, esto normalmente implica:
+
+1. Comenzar con consultas sintéticas generadas a partir de tus documentos
+2. Complementarlas con consultas reales de usuarios, etiquetadas manualmente
+3. Mejorar continuamente a medida que recopilas más datos
+
+---
+
+## Capa 2: calidad de la respuesta
+
+Incluso con una recuperación perfecta, la generación puede fallar. El modelo podría:
+
+- Ignorar el contexto y alucinar
+- Interpretar mal la información recuperada
+- Generar una respuesta técnicamente correcta, pero poco útil
+
+### Qué medir
+
+- **Fidelidad:** ¿La respuesta se sustenta en el contexto recuperado?
+- **Relevancia:** ¿La respuesta aborda la pregunta?
+- **Completitud:** ¿La respuesta cubre todos los puntos importantes?
+
+### Enfoques de evaluación
+
+**LLM como juez**: utiliza un LLM distinto para puntuar las respuestas. Es más rápido y barato que la evaluación humana, pero debe calibrarse con juicios humanos.
+
+**Evaluación humana**: es el estándar de referencia, pero resulta costosa. Úsala para validar tus métricas automatizadas.
+
+---
+
+## Capa 3: calidad de extremo a extremo
+
+En última instancia, lo importante es que los usuarios obtengan lo que necesitan.
+
+### Métricas indirectas
+
+- Calificaciones de satisfacción de los usuarios, si puedes recopilarlas
+- Tasa de preguntas de seguimiento, que normalmente es mejor cuando es más baja
+- Tiempo hasta la resolución, en casos de uso de soporte
+
+### El ciclo de retroalimentación
+
+Integra la evaluación en tu pipeline:
+
+1. Registra cada consulta, recuperación y respuesta
+2. Selecciona muestras periódicamente para evaluación humana
+3. Monitorea las métricas a lo largo del tiempo para detectar regresiones
+
+---
+
+## Consejos prácticos
+
+1. **Empieza de forma sencilla:** Recall@10 y una comprobación básica de fidelidad permiten avanzar sorprendentemente lejos
+2. **Invierte en datos etiquetados:** son el cuello de botella para todo lo demás
+3. **Monitorea en producción:** la evaluación offline no es suficiente; las consultas reales son diferentes
+4. **Itera primero sobre la recuperación:** una mala recuperación condena incluso a una buena generación
+
+---
+
+La evaluación de sistemas RAG no es una tarea que se realiza una sola vez. Es una práctica continua. Construye la infraestructura necesaria para medir de forma constante y detectarás los problemas antes de que afecten a tus usuarios.

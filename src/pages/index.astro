@@ -1,96 +1,260 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Section from '../components/Section.astro';
-import Card from '../components/Card.astro';
 import Button from '../components/Button.astro';
-import projects from '../data/projects.json';
+import profileEn from '../data/profile';
+import profileEs from '../data/profile.es';
+import { localeRoutes, type Locale } from '../i18n';
 
-const featuredProjects = projects.projects
-  .filter((p) => p.featured)
-  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  .slice(0, 3);
+interface Props {
+  locale?: Locale;
+}
 
-const proofCards = [
-  {
-    title: 'What I Build',
-    description: 'Secure data platforms — scalable schemas, multi-tenant architectures, ETL pipelines, and privacy-aware analytics foundations. I design data systems that handle sensitive information responsibly and deliver measurable insights.',
+const { locale = 'en' } = Astro.props;
+const profile = locale === 'es' ? profileEs : profileEn;
+const routes = localeRoutes[locale];
+const copy = {
+  en: {
+    description:
+      'Roberto Villafuerte works with founders and engineering leaders on the AI, data, and backend systems behind ambitious products.',
+    heroEyebrow: 'AI systems & data architecture',
+    workWithMe: 'Work with me',
+    explore: 'Explore my work',
+    selectedEvidence: 'Selected evidence',
+    servicesEyebrow: 'Where I’m useful / 01',
+    servicesTitle: 'Between the idea and the system that has to carry it.',
+    servicesDeck:
+      'I help teams make the architecture explicit: what the product needs, how its data moves, where AI belongs, and how the system should behave when the easy path fails.',
+    systemsEyebrow: 'Selected systems / 02',
+    systemsTitle: 'Work that made the architecture concrete.',
+    systemsDeck:
+      'Across health data, support automation, and trustworthy ML, the common thread is turning an ambiguous requirement into an inspectable system.',
+    system: 'SYSTEM',
+    technologies: 'Technologies and topics',
+    readCase: 'Read the case study',
+    allWork: 'View all selected work',
+    storyEyebrow: 'Path and direction / 03',
+    pointOfView: 'Point of view / 04',
+    closeEyebrow: 'Work with me / 05',
+    closeTitle: 'Building something technically ambitious?',
+    closeDeck:
+      'I’m available for independent consulting, technical collaboration, startup opportunities, and speaking with teams building AI-enabled products.',
   },
-  {
-    title: 'How I Work',
-    description: 'Governance first. I start with privacy requirements and data quality constraints, then design for auditability, access control, and observability. Every system I build has clear data lineage and a path to iterate safely.',
+  es: {
+    description:
+      'Roberto Villafuerte trabaja con fundadores y líderes de ingeniería en los sistemas de IA, datos y backend detrás de productos ambiciosos.',
+    heroEyebrow: 'Sistemas de IA y arquitectura de datos',
+    workWithMe: 'Trabajemos juntos',
+    explore: 'Explora mi trabajo',
+    selectedEvidence: 'Evidencia seleccionada',
+    servicesEyebrow: 'Dónde aporto / 01',
+    servicesTitle: 'Entre la idea y el sistema que debe sostenerla.',
+    servicesDeck:
+      'Ayudo a los equipos a hacer explícita la arquitectura: qué necesita el producto, cómo se mueven sus datos, dónde aporta la IA y cómo debe responder el sistema fuera del caso ideal.',
+    systemsEyebrow: 'Sistemas seleccionados / 02',
+    systemsTitle: 'Trabajo que llevó la arquitectura a la práctica.',
+    systemsDeck:
+      'En datos de salud, automatización de soporte y aprendizaje automático confiable, el hilo común es convertir requisitos ambiguos en sistemas que se pueden inspeccionar.',
+    system: 'SISTEMA',
+    technologies: 'Tecnologías y temas',
+    readCase: 'Leer el caso de estudio',
+    allWork: 'Ver todos los proyectos',
+    storyEyebrow: 'Camino y dirección / 03',
+    pointOfView: 'Punto de vista / 04',
+    closeEyebrow: 'Trabajemos juntos / 05',
+    closeTitle: '¿Estás construyendo algo técnicamente ambicioso?',
+    closeDeck:
+      'Estoy disponible para consultoría independiente, colaboración técnica, oportunidades en startups y conferencias con equipos que construyen productos habilitados por IA.',
   },
-  {
-    title: 'What I Care About',
-    description: 'Privacy and integrity over speed. I\'d rather build a well-governed, auditable data foundation than rush a system that leaks trust. The goal is data you can act on — reliably and responsibly.',
-  },
-];
+}[locale];
+
+const projects = await getCollection(
+  'projects',
+  ({ data }) => data.evidence !== 'hold' && data.locale === locale,
+);
+const projectIndex = new Map(
+  projects.map((project) => [
+    project.data.translationKey ?? project.data.slug,
+    project,
+  ]),
+);
+const featuredSystems = [
+  'salihub-data-architecture',
+  'compumax-rag-pipeline',
+  'fairness-aware-candidate-pre-screening',
+].flatMap((slug) => {
+  const project = projectIndex.get(slug);
+  return project ? [project] : [];
+});
+const homeStoryParagraphs = profile.story.paragraphs.slice(2);
+const homeStoryMilestones = profile.story.milestones.slice(1);
 ---
 
-<BaseLayout
-  title="Roberto Villafuerte | Data Architect | Privacy & Data Governance | HealthTech"
-  description="Data Architect building privacy-first, governance-driven data systems for HealthTech and analytics products. Data modeling, secure pipelines, and actionable insights from sensitive data."
->
-  <!-- Hero -->
-  <section class="py-20 sm:py-32">
-    <div class="container-narrow">
-      <h1 class="text-4xl sm:text-5xl font-semibold text-gray-900 mb-6">
-        I build privacy-first data systems for health and analytics.
-      </h1>
-      <p class="text-xl text-gray-600 mb-8 max-w-2xl">
-        Data Architect focused on data modeling, governance, secure data handling, and scalable ETL pipelines. I turn sensitive health signals into actionable insights — without compromising privacy or trust.
-      </p>
-      <div class="flex flex-wrap gap-4">
-        <Button href="/projects" size="lg">View Projects</Button>
-        <Button href="/contact" variant="secondary" size="lg">Get in Touch</Button>
+<BaseLayout title={profile.name} description={copy.description} locale={locale}>
+  <section class="hero">
+    <div class="shell hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow">{copy.heroEyebrow}</p>
+        <h1>{profile.positioning.statement}</h1>
+        <p class="hero__lede">{profile.positioning.detail}</p>
+        <div class="hero__actions">
+          <Button href={routes.contact} size="lg">{copy.workWithMe}</Button>
+          <Button href={routes.projects} variant="secondary" size="lg"
+            >{copy.explore}</Button
+          >
+        </div>
+        <p class="hero__opportunities">{profile.positioning.opportunities}</p>
+      </div>
+
+      <figure class="hero-portrait">
+        <div class="hero-portrait__image">
+          <img
+            src="/images/roberto-villafuerte-portrait.jpeg"
+            width="724"
+            height="1086"
+            alt="Roberto Villafuerte"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+        <figcaption>
+          <span>Roberto Villafuerte</span>
+          <span>{profile.headline}</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="proof-strip" aria-labelledby="proof-heading">
+    <div class="shell">
+      <h2 id="proof-heading" class="sr-only">{copy.selectedEvidence}</h2>
+      <ul class="proof-strip__grid">
+        {
+          profile.proof.map((item) => (
+            <li class="proof-item">
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <small>{item.detail}</small>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="home-services" id="services">
+    <div class="shell">
+      <header class="section-heading section-heading--split">
+        <div>
+          <p class="eyebrow">{copy.servicesEyebrow}</p>
+          <h2>{copy.servicesTitle}</h2>
+        </div>
+        <p>{copy.servicesDeck}</p>
+      </header>
+
+      <ol class="service-grid">
+        {
+          profile.services.map((service, index) => (
+            <li class="service-card">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <h3>{service.title}</h3>
+              <p>{service.detail}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="home-systems">
+    <div class="shell">
+      <header class="section-heading section-heading--split">
+        <div>
+          <p class="eyebrow">{copy.systemsEyebrow}</p>
+          <h2>{copy.systemsTitle}</h2>
+        </div>
+        <p>{copy.systemsDeck}</p>
+      </header>
+
+      <div class="system-card-grid">
+        {
+          featuredSystems.map((project, index) => (
+            <a
+              href={`${routes.projects}/${project.data.translationKey ?? project.data.slug}`}
+              class="system-card"
+            >
+              <div class="system-card__meta">
+                <span>
+                  {copy.system} / {String(index + 1).padStart(2, '0')}
+                </span>
+                <span>{project.data.organization || project.data.role}</span>
+              </div>
+              <h3>{project.data.shortTitle || project.data.title}</h3>
+              <p>{project.data.summary}</p>
+              <ul aria-label={copy.technologies}>
+                {project.data.tags.slice(0, 3).map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+              <span class="system-card__link">
+                {copy.readCase} <span aria-hidden="true">↗</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      <a class="all-work-link" href={routes.projects}>
+        {copy.allWork}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="home-story">
+    <div class="shell home-story__grid">
+      <div>
+        <p class="eyebrow">{copy.storyEyebrow}</p>
+        <h2>{profile.story.title}</h2>
+      </div>
+
+      <div class="home-story__copy">
+        {homeStoryParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+
+        <ol class="story-milestones">
+          {
+            homeStoryMilestones.map((milestone, index) => (
+              <li>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{milestone.place}</strong>
+                <small>{milestone.detail}</small>
+              </li>
+            ))
+          }
+        </ol>
       </div>
     </div>
   </section>
 
-  <!-- Proof Row -->
-  <Section class="bg-white border-y border-gray-200">
-    <h2 class="sr-only">What I Do</h2>
-    <div class="grid md:grid-cols-3 gap-8">
-      {proofCards.map((card) => (
-        <div>
-          <h3 class="font-semibold text-gray-900 mb-3">{card.title}</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">{card.description}</p>
-        </div>
-      ))}
+  <section class="home-principle">
+    <div class="shell home-principle__grid">
+      <p class="eyebrow">{copy.pointOfView}</p>
+      <h2>{profile.pointOfView.statement}</h2>
+      <p>{profile.pointOfView.detail}</p>
     </div>
-  </Section>
+  </section>
 
-  <!-- Featured Projects -->
-  <Section title="Featured Projects">
-    <div class="grid gap-6">
-      {featuredProjects.map((project) => (
-        <Card
-          title={project.title}
-          summary={project.summary}
-          href={`/projects/${project.slug}`}
-          tags={project.tags}
-          date={project.date}
-          variant="featured"
-        />
-      ))}
+  <section class="home-close">
+    <div class="shell home-close__grid">
+      <p class="eyebrow">{copy.closeEyebrow}</p>
+      <h2>{copy.closeTitle}</h2>
+      <div>
+        <p>{copy.closeDeck}</p>
+        <Button href={routes.contact} variant="secondary"
+          >{copy.workWithMe}</Button
+        >
+      </div>
     </div>
-    <div class="mt-8">
-      <Button href="/projects" variant="ghost">
-        View all projects
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </Button>
-    </div>
-  </Section>
-
-  <!-- CTA -->
-  <Section class="bg-white border-y border-gray-200">
-    <div class="text-center">
-      <h2 class="text-2xl font-semibold mb-4">Interested in working together?</h2>
-      <p class="text-gray-600 mb-6">
-        Currently building data infrastructure for HealthTech — open to data architecture, governance, and engineering opportunities.
-      </p>
-      <Button href="/contact">Get in Touch</Button>
-    </div>
-  </Section>
+  </section>
 </BaseLayout>

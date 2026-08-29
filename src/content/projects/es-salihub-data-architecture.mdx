@@ -1,0 +1,63 @@
+---
+title: 'Arquitectura de datos para una plataforma de salud preventiva'
+shortTitle: 'Arquitectura de datos de SaliHub'
+eyebrow: 'Nota de ingeniería con detalles sensibles omitidos · Sistemas de datos'
+slug: 'es-salihub-data-architecture'
+translationKey: 'salihub-data-architecture'
+locale: 'es'
+date: '2026-08-28'
+updated: '2026-08-28'
+projectPeriod: 'Febrero - junio de 2026'
+summary: 'Diseñé y evolucioné la arquitectura de datos en PostgreSQL para una plataforma multi-tenant de salud preventiva, incluido el trabajo de control de acceso, auditabilidad, reportes y corrección de datos.'
+tags:
+  [
+    'Arquitectura de datos',
+    'PostgreSQL',
+    'Control de acceso',
+    'Calidad de datos',
+  ]
+role: 'Arquitecto líder de datos'
+organization: 'SaliHub'
+stack: ['PostgreSQL', 'SQL', 'Python']
+featured: true
+featuredOrder: 2
+status: 'completed'
+evidence: 'sanitized'
+disclosure: 'Repositorio privado · Descripción enfocada de mi trabajo en arquitectura PostgreSQL, control de acceso, auditabilidad, consentimiento y reportes.'
+---
+
+<div class="article-deck">
+  El trabajo consistió en convertir requisitos de producto, privacidad,
+  consentimiento y reportes en estructuras de datos en las que el resto del
+  sistema pudiera apoyarse.
+</div>
+
+## Contexto
+
+SaliHub desarrollaba una plataforma multi-tenant de salud preventiva con datos provenientes de personas, dispositivos y flujos de la aplicación. Esa combinación hace que decisiones ordinarias de esquema tengan consecuencias importantes: los límites entre tenants, la identidad de la fuente, el estado del consentimiento y el historial de auditoría deben mantenerse mientras el producto cambia.
+
+Mi rol abarcó la arquitectura de datos en PostgreSQL y el trabajo de implementación necesario para hacerla evolucionar de forma segura. Este caso se centra en esa contribución de ingeniería.
+
+## Alcance de ingeniería
+
+Diseñé y evolucioné estructuras relacionales para los datos centrales del producto y convertí requisitos cambiantes en migraciones de esquema y documentación técnica. El trabajo incluyó políticas de control de acceso, registros de auditoría, datos relacionados con el consentimiento y estructuras para reportes.
+
+También contribuí con comprobaciones del estado de la base de datos y estructuras iniciales para pruebas. Para las señales de salud provenientes de varios dispositivos, trabajé en una deduplicación consciente de la fuente, de modo que las observaciones repetidas pudieran reconciliarse sin borrar su procedencia.
+
+## Decisiones que importaron
+
+### Los límites entre tenants pertenecen al modelo de datos
+
+El aislamiento multi-tenant no es solo un filtro de la aplicación. El esquema y las reglas de acceso deben hacer explícita la propiedad, dificultar las lecturas entre tenants y seguir siendo comprobables a medida que aparecen nuevos flujos.
+
+### La auditabilidad es un producto de datos
+
+Un rastro de auditoría debe registrar eventos de una forma que permita responder preguntas concretas más adelante. Esto exige definir de manera consistente los actores, los registros afectados, las acciones y las marcas de tiempo, no limitarse a activar registros.
+
+### La deduplicación debe preservar el contexto de origen
+
+Dos mediciones que parecen iguales pueden ser observaciones separadas; dos que parecen distintas pueden describir el mismo evento. Por ello, el enfoque utilizó la identidad de la fuente y el contexto del dominio, en lugar de tratar la igualdad como una regla universal.
+
+## Conclusión
+
+La lección duradera fue que la arquitectura de datos es la frontera negociada entre el comportamiento del producto y la verdad del sistema. Los buenos esquemas hacen más que almacenar registros: permiten inspeccionar la propiedad, el historial y los modos de falla.

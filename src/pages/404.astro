@@ -1,21 +1,45 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
+import { localeFromPath, localeRoutes } from '../i18n';
+
+const locale = localeFromPath(Astro.url.pathname);
+const routes = localeRoutes[locale];
+const copy = {
+  en: {
+    title: 'Page not found',
+    description: 'The requested page could not be found.',
+    eyebrow: 'Route / Unresolved',
+    heading: 'This path has no system behind it.',
+    detail: 'The page may have moved, or the address may be incomplete.',
+    action: 'Return home',
+  },
+  es: {
+    title: 'Página no encontrada',
+    description: 'No se encontró la página solicitada.',
+    eyebrow: 'Ruta / No resuelta',
+    heading: 'No hay un sistema detrás de esta ruta.',
+    detail: 'La página puede haberse movido o la dirección está incompleta.',
+    action: 'Volver al inicio',
+  },
+}[locale];
 ---
 
 <BaseLayout
-  title="Page Not Found"
-  description="This page doesn't exist."
+  title={copy.title}
+  description={copy.description}
   noIndex={true}
+  locale={locale}
 >
-  <section class="py-20 sm:py-32">
-    <div class="container-narrow text-center">
-      <h1 class="text-6xl font-semibold text-gray-300 mb-4">404</h1>
-      <h2 class="text-2xl font-semibold mb-4">Page not found</h2>
-      <p class="text-gray-600 mb-8">
-        This page doesn't exist. It might have moved, or the URL might be wrong.
-      </p>
-      <Button href="/">Go back home</Button>
+  <section class="not-found">
+    <div class="shell not-found__grid">
+      <p class="not-found__code">404</p>
+      <div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.heading}</h1>
+        <p>{copy.detail}</p>
+        <Button href={routes.home}>{copy.action}</Button>
+      </div>
     </div>
   </section>
 </BaseLayout>

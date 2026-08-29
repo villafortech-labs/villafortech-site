@@ -1,76 +1,90 @@
 ---
+import {
+  alternateLocalePath,
+  localeFromPath,
+  localeRoutes,
+  sharedCopy,
+  type Locale,
+} from '../i18n';
+
+interface Props {
+  locale?: Locale;
+  alternatePath?: string;
+}
+
 const pathname = Astro.url.pathname;
+const locale = Astro.props.locale ?? localeFromPath(pathname);
+const copy = sharedCopy[locale];
+const routes = localeRoutes[locale];
+const targetLocale: Locale = locale === 'en' ? 'es' : 'en';
+const languagePath =
+  Astro.props.alternatePath ?? alternateLocalePath(pathname, targetLocale);
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/about', label: 'About' },
-  { href: '/writing', label: 'Writing' },
-  { href: '/contact', label: 'Contact' },
-  { href: '/resume', label: 'Resume' },
+  { href: routes.projects, label: copy.nav.projects },
+  { href: routes.about, label: copy.nav.about },
+  { href: routes.contact, label: copy.nav.contact, cta: true },
 ];
 
 function isActive(href: string): boolean {
-  if (href === '/') return pathname === '/';
   return pathname.startsWith(href);
 }
 ---
 
-<nav class="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50" aria-label="Main navigation">
-  <div class="container-narrow">
-    <div class="flex items-center justify-between h-16">
-      <!-- Logo -->
-      <a href="/" class="font-semibold text-lg text-gray-900 hover:text-accent">
-        VillaForTech
-      </a>
+<nav class="site-nav" aria-label={copy.navLabel}>
+  <div class="shell site-nav__inner">
+    <a href={routes.home} class="site-mark" aria-label={copy.homeLabel}>
+      <span class="site-mark__signal" aria-hidden="true"></span>
+      <span>Roberto Villafuerte</span>
+    </a>
 
-      <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-6" role="menubar">
-        {navLinks.map((link) => (
+    <div class="site-nav__desktop">
+      {
+        navLinks.map((link) => (
           <a
             href={link.href}
-            role="menuitem"
             aria-current={isActive(link.href) ? 'page' : undefined}
-            class:list={[
-              'text-sm transition-colors',
-              isActive(link.href)
-                ? 'text-accent font-medium'
-                : 'text-gray-600 hover:text-gray-900',
-            ]}
+            class:list={['nav-link', { 'nav-link--cta': link.cta }]}
           >
             {link.label}
           </a>
-        ))}
-      </div>
-
-      <!-- Mobile Menu Toggle -->
-      <label for="mobile-menu" class="md:hidden cursor-pointer p-2 -mr-2" aria-label="Toggle navigation menu">
-        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </label>
+        ))
+      }
+      <a
+        href={languagePath}
+        class="nav-link nav-link--language"
+        lang={targetLocale}
+        hreflang={targetLocale}
+        aria-label={copy.switchLanguage}
+      >
+        {targetLocale.toUpperCase()}
+      </a>
     </div>
-  </div>
 
-  <!-- Mobile Menu (CSS-only) -->
-  <input type="checkbox" id="mobile-menu" class="hidden peer" aria-label="Mobile menu toggle" />
-  <div class="md:hidden hidden peer-checked:block border-t border-gray-200 bg-white" role="menu">
-    <div class="container-narrow py-4 space-y-2">
-      {navLinks.map((link) => (
+    <details class="site-nav__mobile">
+      <summary>{copy.menu}</summary>
+      <div class="mobile-links">
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={['nav-link', { 'nav-link--cta': link.cta }]}
+            >
+              {link.label}
+            </a>
+          ))
+        }
         <a
-          href={link.href}
-          role="menuitem"
-          aria-current={isActive(link.href) ? 'page' : undefined}
-          class:list={[
-            'block py-2 text-sm transition-colors',
-            isActive(link.href)
-              ? 'text-accent font-medium'
-              : 'text-gray-600 hover:text-gray-900',
-          ]}
+          href={languagePath}
+          class="nav-link nav-link--language"
+          lang={targetLocale}
+          hreflang={targetLocale}
+          aria-label={copy.switchLanguage}
         >
-          {link.label}
+          {copy.alternateLanguageName}
         </a>
-      ))}
-    </div>
+      </div>
+    </details>
   </div>
 </nav>
