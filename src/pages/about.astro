@@ -156,14 +156,26 @@ const copy = {
           >
             <figure class="about-photo">
               <div class="about-photo__frame">
-                <img
-                  src="/images/roberto-linus-torvalds-auditorium.jpeg"
-                  width="768"
-                  height="1024"
-                  alt={copy.photoAlt}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcset="/images/roberto-linus-torvalds-auditorium-384.avif 384w, /images/roberto-linus-torvalds-auditorium-768.avif 768w"
+                    sizes="(max-width: 470px) 74vw, 380px"
+                  />
+                  <source
+                    type="image/webp"
+                    srcset="/images/roberto-linus-torvalds-auditorium-384.webp 384w, /images/roberto-linus-torvalds-auditorium-768.webp 768w"
+                    sizes="(max-width: 470px) 74vw, 380px"
+                  />
+                  <img
+                    src="/images/roberto-linus-torvalds-auditorium.jpeg"
+                    width="768"
+                    height="1024"
+                    alt={copy.photoAlt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <figcaption>
                 <span>{copy.university}</span>

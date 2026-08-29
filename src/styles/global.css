@@ -3,12 +3,14 @@
   --paper-deep: #e9e3d8;
   --ink: #121417;
   --navy: #0c1830;
-  --muted: #626870;
+  --muted: #5d636b;
+  --muted-on-dark: #bdc8dc;
   --line: #cfc8bc;
   --line-dark: #27354f;
   --cobalt: #3157d5;
   --cobalt-soft: #dfe6ff;
   --signal: #d75b38;
+  --signal-text: #ad4329;
   --verified: #1c6a51;
   --qualified: #8b5a20;
   --font-sans:
@@ -337,6 +339,12 @@ summary:focus-visible {
   overflow: hidden;
   aspect-ratio: 2 / 3;
   background: #b7af9d;
+}
+
+.hero-portrait picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-portrait img {
@@ -980,7 +988,13 @@ summary:focus-visible {
 
 .story-milestones small {
   grid-column: 2;
-  color: #aeb9d0;
+  color: var(--muted-on-dark);
+}
+
+.home-story .story-milestones > li > span,
+.home-story .eyebrow,
+.home-close .eyebrow {
+  color: var(--muted-on-dark);
 }
 
 .home-principle__grid {
@@ -1069,7 +1083,7 @@ summary:focus-visible {
 }
 
 .evidence-chip--failed {
-  color: var(--signal);
+  color: var(--signal-text);
 }
 
 .feature-case h3 {
@@ -2028,7 +2042,7 @@ summary:focus-visible {
   border-left-width: 3px;
 }
 .ruler-mark--selected b {
-  color: var(--signal);
+  color: var(--signal-text);
 }
 
 .ruler-mark--405 {
@@ -2169,8 +2183,13 @@ summary:focus-visible {
 .about-photo img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
+}
+
+.about-photo picture {
+  display: block;
 }
 
 .about-photo figcaption {
@@ -2338,7 +2357,7 @@ summary:focus-visible {
 }
 .evidence-state--hold {
   border-color: var(--signal);
-  color: var(--signal);
+  color: var(--signal-text);
 }
 
 .work-record__arrow {
@@ -2858,6 +2877,9 @@ summary:focus-visible {
 .metric-row > div:first-child {
   display: grid;
   gap: 4px;
+}
+.metric-row > div:first-child strong {
+  color: white;
 }
 .metric-row small {
   color: #aeb9d0;
@@ -3644,7 +3666,7 @@ summary:focus-visible {
     gap: 30px;
   }
   .about-photo-spread--single {
-    grid-template-columns: minmax(0, 86%);
+    grid-template-columns: minmax(0, 74%);
     justify-content: end;
   }
   .about-photo:nth-child(2) {

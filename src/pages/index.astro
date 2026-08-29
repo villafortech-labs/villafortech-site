@@ -252,15 +252,27 @@ const homeStoryMilestones = profile.story.milestones.slice(1);
 
       <figure class="hero-portrait" data-enter="3">
         <div class="hero-portrait__image">
-          <img
-            src="/images/roberto-villafuerte-portrait.jpeg"
-            width="724"
-            height="1086"
-            alt="Roberto Villafuerte"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
+          <picture>
+            <source
+              type="image/avif"
+              srcset="/images/roberto-villafuerte-portrait-362.avif 362w, /images/roberto-villafuerte-portrait-724.avif 724w"
+              sizes="(max-width: 470px) calc(100vw - 82px), 370px"
+            />
+            <source
+              type="image/webp"
+              srcset="/images/roberto-villafuerte-portrait-362.webp 362w, /images/roberto-villafuerte-portrait-724.webp 724w"
+              sizes="(max-width: 470px) calc(100vw - 82px), 370px"
+            />
+            <img
+              src="/images/roberto-villafuerte-portrait.jpeg"
+              width="724"
+              height="1086"
+              alt="Roberto Villafuerte"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
         </div>
         <figcaption>
           <span>Roberto Villafuerte</span>

@@ -14,7 +14,10 @@
     "format:check": "prettier --check .",
     "validate:html": "html-validate \"dist/**/*.html\"",
     "validate:locales": "node scripts/validate-locales.mjs",
-    "verify": "npm run check && npm run format:check && npm run build && npm run validate:html && npm run validate:locales",
+    "validate:site": "node scripts/validate-site.mjs",
+    "audit:runtime": "node scripts/audit-runtime.mjs",
+    "verify:resume": "node scripts/verify-resume-print.mjs",
+    "verify": "npm run check && npm run format:check && npm run build && npm run validate:html && npm run validate:locales && npm run validate:site",
     "preview": "astro preview",
     "astro": "astro"
   },

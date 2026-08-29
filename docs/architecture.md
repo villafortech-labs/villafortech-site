@@ -42,8 +42,8 @@ Project-specific visuals are semantic Astro components:
 - `EvaluationProtocol.astro` shows the train-validation-test boundary.
 - `MetricShift.astro` shows the direction of the verified fairness metrics.
 
-The site-wide social asset is `public/og.png`. Its essential text is kept inside a LinkedIn-safe crop.
+The site-wide social asset is `public/og.jpg`. Its essential text is kept inside a LinkedIn-safe crop. The portrait and Helsinki photograph use responsive AVIF and WebP sources with the original JPEGs as fallbacks.
 
 ## JavaScript policy
 
-Navigation uses native HTML. The only interactive script surface is the résumé's inline `window.print()` action. Add client JavaScript only when a user-visible capability cannot be expressed accessibly with HTML and CSS.
+Navigation uses native HTML. One small progressive-enhancement script marks visible sections for finite CSS motion, while the résumé retains its inline `window.print()` action. Complete content remains visible without JavaScript. Add client JavaScript only when a user-visible capability cannot be expressed accessibly with HTML and CSS.

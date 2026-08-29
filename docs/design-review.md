@@ -186,4 +186,63 @@ Planned candidates:
 2. Add responsive modern image delivery and optimize the social asset.
 3. Expand automated release gates for links, metadata, locale reciprocity, and one-page print output.
 
-Further cycles will be driven only by measured regressions or material review findings. Two final consecutive audits must identify no worthwhile change before release.
+#### Cycle 3 result
+
+Accepted after a final visual matrix, browser-runtime audit, print inspection,
+Lighthouse runs, and an independent read-only review.
+
+- The portrait and Helsinki photograph now use responsive AVIF and WebP sources
+  with stripped JPEG fallbacks. Mobile selects the 362-pixel portrait and the
+  384-pixel Helsinki source; wider screens select only the resolution their
+  rendered slot needs.
+- The Helsinki photograph is now deliberately secondary. At 390 pixels it
+  renders at approximately 248 by 331 pixels. A final scroll inspection also
+  caught and fixed the image height attribute overriding its responsive width.
+- The site-wide social image changed from a 1.88 MiB PNG to a 1200 by 630,
+  126 KiB JPEG with a safe crop and the same editorial identity.
+- Muted and signal colors now meet contrast requirements. The final fairness
+  case Lighthouse run improved from 96 to 100 accessibility after correcting
+  one small threshold label and the dark metric labels.
+- The sitemap now excludes the noindex writing placeholders. The generated-site
+  validator checks canonicals, `og:url`, exact reciprocal alternates, every
+  internal link and asset, `srcset` candidates, anchors, local-path leakage,
+  and exact sitemap membership.
+- The browser gate covers 16 English and Spanish routes at 390, 768, 1440, and
+  1728 pixels. All 64 combinations passed with zero overflow, same-origin
+  request failures, console errors, unnamed controls, positive tabindex values,
+  skip-link failures, mobile-menu failures, or reduced-motion failures.
+- The final visual evidence contains 64 viewport screenshots plus content-aware
+  full-page captures. A targeted About recapture verified the corrected photo
+  at every requested width.
+- English and Spanish résumé PDFs each passed as one Letter page with localized,
+  extractable text and embedded Unicode-mapped fonts. The final rendered pages
+  were inspected and remained byte-identical after the last site-only CSS edit.
+- Representative local production-build Lighthouse runs scored 100 for
+  performance, accessibility, best practices, and SEO on the English homepage,
+  Spanish homepage, About page, and fairness case. Cumulative Layout Shift was
+  zero in every run.
+
+| Category               | Cycle 2 | Cycle 3 | Delta |
+| ---------------------- | ------: | ------: | ----: |
+| Brand originality      |     9.2 |     9.3 |  +0.1 |
+| Visual hierarchy       |     9.2 |     9.4 |  +0.2 |
+| Typography             |     8.5 |     9.2 |  +0.7 |
+| Layout rhythm          |     8.6 |     8.8 |  +0.2 |
+| Motion quality         |     7.8 |     8.3 |  +0.5 |
+| Project storytelling   |     9.3 |     9.3 |   0.0 |
+| Conversion clarity     |     9.0 |     9.0 |   0.0 |
+| Mobile responsiveness  |     8.6 |     9.4 |  +0.8 |
+| Accessibility          |     8.8 |     9.7 |  +0.9 |
+| Performance            |     8.7 |     9.8 |  +1.1 |
+| English-Spanish parity |     9.4 |     9.8 |  +0.4 |
+
+The two sub-9 scores reflect objective constraints rather than open defects.
+Layout rhythm stays at 8.8 because the evidence-rich case studies are
+intentionally long and cannot be compressed into short marketing summaries
+without weakening their credibility. Motion stays at 8.3 because the system is
+deliberately finite and restrained: adding more movement would violate the
+brief's accessibility, performance, and non-theatrical constraints. The
+independent reviewer found no material Cycle 3 issue worth changing.
+
+Further changes now require a measured regression or a material finding. Two
+final consecutive audits must identify no worthwhile change before release.

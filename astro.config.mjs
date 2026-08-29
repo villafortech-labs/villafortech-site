@@ -15,6 +15,10 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
+      filter(page) {
+        const pathname = new URL(page).pathname;
+        return pathname !== '/writing/' && pathname !== '/es/writing/';
+      },
       i18n: {
         defaultLocale: 'en',
         locales: {
