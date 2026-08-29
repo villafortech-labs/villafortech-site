@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'node:child_process';
-import { mkdir, stat, writeFile } from 'node:fs/promises';
+import { mkdir, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import {
   evaluate,
@@ -57,6 +57,13 @@ function runTool(name, args) {
 }
 
 function parsePdfInfo(output, file) {
+  const tagged = output.match(/^Tagged:\s+(yes|no)\s*$/im)?.[1]?.toLowerCase();
+  if (tagged !== 'no') {
+    throw new Error(
+      `${file}: expected an untagged PDF for renderer portability, found Tagged: ${tagged ?? 'unknown'}.`,
+    );
+  }
+
   const pages = Number(output.match(/^Pages:\s+(\d+)\s*$/m)?.[1]);
   if (!Number.isInteger(pages)) {
     throw new Error(`${file}: pdfinfo did not report a page count.`);
@@ -106,6 +113,9 @@ function verifyFonts(output, file) {
   }
 
   for (const line of fontLines) {
+    if (/\bType 3\b/i.test(line)) {
+      throw new Error(`${file}: contains a Type 3 font: ${line}`);
+    }
     const flags = line.match(
       /\s+(yes|no)\s+(yes|no)\s+(yes|no)\s+\d+\s+\d+\s*$/i,
     );
@@ -139,6 +149,19 @@ async function verifyPdf(path, resume) {
   verifyFonts(runTool('pdffonts', [path]), path);
 }
 
+function normalizePdf(source, destination) {
+  runTool('gs', [
+    '-sDEVICE=pdfwrite',
+    '-dCompatibilityLevel=1.7',
+    '-dPDFSETTINGS=/prepress',
+    '-dNOPAUSE',
+    '-dQUIET',
+    '-dBATCH',
+    `-sOutputFile=${destination}`,
+    source,
+  ]);
+}
+
 async function main() {
   const args = parseArguments(process.argv.slice(2), {
     'base-url': 'http://127.0.0.1:4321/',
@@ -158,7 +181,9 @@ async function main() {
     throw new Error('--output DIRECTORY is required.');
   }
 
-  for (const tool of ['pdfinfo', 'pdftotext', 'pdffonts']) requireTool(tool);
+  for (const tool of ['gs', 'pdfinfo', 'pdftotext', 'pdffonts']) {
+    requireTool(tool);
+  }
 
   const baseURL = normalizedBaseURL(String(args['base-url']));
   const outputDirectory = resolve(String(args.output));
@@ -182,6 +207,7 @@ async function main() {
         'Page.printToPDF',
         {
           displayHeaderFooter: false,
+          generateTaggedPDF: false,
           paperHeight: 11,
           paperWidth: 8.5,
           preferCSSPageSize: true,
@@ -190,20 +216,43 @@ async function main() {
         },
         { timeoutMs: 30_000 },
       );
-      const path = resolve(outputDirectory, resume.file);
-      await writeFile(path, Buffer.from(result.data, 'base64'));
-      outputs.push({ path, resume });
+      const finalPath = resolve(outputDirectory, resume.file);
+      const rawPath = resolve(outputDirectory, `.${resume.file}.chromium`);
+      const normalizedPath = resolve(
+        outputDirectory,
+        `.${resume.file}.normalized`,
+      );
+      await rm(normalizedPath, { force: true });
+      await writeFile(rawPath, Buffer.from(result.data, 'base64'));
+      try {
+        normalizePdf(rawPath, normalizedPath);
+      } catch (error) {
+        await rm(normalizedPath, { force: true });
+        throw error;
+      } finally {
+        await rm(rawPath, { force: true });
+      }
+      outputs.push({ finalPath, path: normalizedPath, resume });
     }
   } finally {
     await chrome.close();
   }
 
-  for (const { path, resume } of outputs) {
-    await verifyPdf(path, resume);
-    console.log(`Verified ${resume.label}: ${path}`);
+  try {
+    for (const { path, resume } of outputs) {
+      await verifyPdf(path, resume);
+    }
+  } catch (error) {
+    await Promise.all(outputs.map(({ path }) => rm(path, { force: true })));
+    throw error;
+  }
+
+  for (const { finalPath, path, resume } of outputs) {
+    await rename(path, finalPath);
+    console.log(`Verified ${resume.label}: ${finalPath}`);
   }
   console.log(
-    'Résumé print gate passed: both files are one Letter page with localized text and embedded Unicode-mapped fonts.',
+    'Résumé print gate passed: both files are portable untagged Letter PDFs with localized text and embedded Unicode-mapped fonts.',
   );
 }
 

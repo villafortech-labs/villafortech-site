@@ -309,10 +309,15 @@ technical-diagram state changes. The opening promise and portrait paint once
 and stay stable, so motion no longer participates in the homepage LCP. The
 release audits reset again from this final motion boundary.
 
-The bilingual print gate also exposed a renderer-portability problem in the
-Spanish PDF. Chrome embedded the locally installed Inter faces as Type 3 glyphs
-with invalid bounding boxes: text extraction and page geometry passed, but
-Preview and Poppler could clip unrelated regions at some raster sizes. The
-print-only typography now uses stable document font faces while the screen
-identity remains unchanged. Both PDFs must pass one-page, embedded-font,
-extractable-text, and multi-renderer visual checks before release.
+The bilingual print gate also exposed a renderer-portability problem in
+Chromium's direct PDF output. Its document structure tree was malformed and,
+even without generated tags, some Poppler raster sizes could clip unrelated
+regions. Earlier Type 3 font output made the symptom worse, so print typography
+now uses stable document font faces while the screen identity remains
+unchanged. The exporter disables Chromium's broken generated tags, normalizes
+the file with Ghostscript's PDF writer, and only publishes the normalized copy
+after its structural checks pass. The resulting PDFs remain searchable,
+copyable, localized, preserve their links, and use embedded Unicode-mapped CID
+TrueType fonts; the accessible HTML résumé remains the semantic source. Both
+files must pass one-page, font, text, and multi-renderer visual checks before
+release.

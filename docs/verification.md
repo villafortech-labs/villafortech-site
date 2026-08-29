@@ -47,10 +47,13 @@ same-origin resources, horizontal overflow, unnamed interactive controls,
 positive `tabindex` values, a broken skip link, an inoperable mobile menu, or
 motion that remains active when reduced motion is requested.
 
-The résumé print gate creates English and Spanish Letter-size PDFs and requires
-each file to contain exactly one page, localized extractable text, and embedded
-Unicode-mapped fonts. The resulting PDFs still require a rendered-page visual
-inspection before release.
+The résumé print gate requires Ghostscript and Poppler's `pdfinfo`, `pdftotext`,
+and `pdffonts` commands. It creates English and Spanish Letter-size PDFs,
+normalizes Chromium's output for renderer portability, and requires each file
+to contain exactly one page, localized extractable text, an intentionally
+untagged structure, and embedded Unicode-mapped CID TrueType fonts. The
+resulting PDFs still require rendered-page inspection with Poppler and macOS
+Preview before release.
 
 For a performance release gate, audit a freshly served production build with
 Lighthouse in both languages. Performance, accessibility, best practices, and
