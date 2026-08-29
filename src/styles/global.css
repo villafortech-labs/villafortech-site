@@ -1572,7 +1572,7 @@ summary:focus-visible {
 }
 
 .about-photo-spread--single {
-  grid-template-columns: minmax(0, 520px);
+  grid-template-columns: minmax(0, 400px);
   justify-content: end;
 }
 
@@ -2759,6 +2759,10 @@ summary:focus-visible {
   .about-photo-spread {
     grid-template-columns: 1fr;
     gap: 30px;
+  }
+  .about-photo-spread--single {
+    grid-template-columns: minmax(0, 86%);
+    justify-content: end;
   }
   .about-photo:nth-child(2) {
     width: 82%;
