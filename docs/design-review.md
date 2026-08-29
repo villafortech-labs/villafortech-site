@@ -298,3 +298,21 @@ stable on first paint while the eyebrow, supporting copy, actions, and portrait
 retain the composed entrance. This preserves the motion hierarchy and removes
 animation timing from the LCP gate. The release audits reset again from this
 change.
+
+The next isolated production sequence showed that stabilizing only the heading
+was insufficient. Transforming its surrounding hero elements could still
+repaint the same compositing region, and Lighthouse timestamped the unchanged
+heading one or two seconds late. The initial above-the-fold entrance sequence
+has therefore been removed. Motion now begins with navigation and link
+feedback, below-fold section reveals, project-card interaction, and finite
+technical-diagram state changes. The opening promise and portrait paint once
+and stay stable, so motion no longer participates in the homepage LCP. The
+release audits reset again from this final motion boundary.
+
+The bilingual print gate also exposed a renderer-portability problem in the
+Spanish PDF. Chrome embedded the locally installed Inter faces as Type 3 glyphs
+with invalid bounding boxes: text extraction and page geometry passed, but
+Preview and Poppler could clip unrelated regions at some raster sizes. The
+print-only typography now uses stable document font faces while the screen
+identity remains unchanged. Both PDFs must pass one-page, embedded-font,
+extractable-text, and multi-renderer visual checks before release.

@@ -3152,26 +3152,6 @@ summary:focus-visible {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  [data-enter] {
-    animation: composed-enter var(--motion-enter) var(--ease-out) both;
-  }
-
-  [data-enter='1'] {
-    animation-delay: 40ms;
-  }
-
-  [data-enter='2'] {
-    animation-delay: 85ms;
-  }
-
-  [data-enter='3'] {
-    animation-delay: 130ms;
-  }
-
-  [data-enter='4'] {
-    animation-delay: 175ms;
-  }
-
   [data-reveal].is-revealed {
     animation: section-reveal var(--motion-enter) var(--ease-out) both;
   }
@@ -3234,16 +3214,6 @@ summary:focus-visible {
 
   .architecture-figure.is-revealed [data-diagram-step]:nth-child(5) {
     animation-delay: 180ms;
-  }
-}
-
-@keyframes composed-enter {
-  from {
-    transform: translateY(8px);
-  }
-
-  to {
-    transform: none;
   }
 }
 
@@ -3771,6 +3741,9 @@ summary:focus-visible {
   :root {
     --paper: #fff;
     --paper-deep: #fff;
+    --font-sans: Arial, Helvetica, sans-serif;
+    --font-display: Georgia, 'Times New Roman', serif;
+    --font-mono: Menlo, 'Courier New', monospace;
   }
 
   html,
@@ -4024,7 +3997,6 @@ summary:focus-visible {
     transition-duration: 0.01ms !important;
   }
 
-  [data-enter],
   [data-reveal],
   [data-reveal] > * {
     opacity: 1 !important;
