@@ -18,6 +18,8 @@ evidence: 'sanitized'
 disclosure: 'Private work · Focused account of the forecasting pipeline components and data contracts I contributed.'
 ---
 
+import PipelineContractMap from '../../components/PipelineContractMap.astro';
+
 <div class="article-deck">
   In a forecasting pipeline, the model is only one stage. The contracts between
   preparation, evaluation, prediction, and export determine whether the result
@@ -37,6 +39,8 @@ I implemented and corrected pipeline components that transformed source data, co
 Several important fixes were not algorithm changes. They concerned the units used during evaluation, output schemas, write behavior, and duplicate exporters. Keeping predictions separate from evaluation metrics made the downstream contract clearer and reduced the chance that one output path would overwrite or confuse another.
 
 I also documented data contracts, the model workflow, and scheduled outputs so future changes could be reasoned about from more than the orchestration graph alone.
+
+<PipelineContractMap />
 
 ## Why the boundaries mattered
 

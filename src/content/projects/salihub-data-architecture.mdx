@@ -18,6 +18,8 @@ evidence: 'sanitized'
 disclosure: 'Private repository · Focused account of my PostgreSQL architecture, access-control, auditability, consent, and reporting work.'
 ---
 
+import DataBoundaryMap from '../../components/DataBoundaryMap.astro';
+
 <div class="article-deck">
   The job was to turn product, privacy, consent, and reporting requirements into
   data structures that the rest of the system could rely on.
@@ -34,6 +36,8 @@ My role covered the PostgreSQL data architecture and the implementation work nee
 I designed and evolved relational structures for core product data, and translated changing requirements into schema migrations and technical documentation. The work included access-control policies, audit logging, consent-related data, and reporting structures.
 
 I also contributed database health checks and test scaffolding. For health signals arriving from multiple devices, I worked on source-aware deduplication so that repeated observations could be reconciled without erasing provenance.
+
+<DataBoundaryMap />
 
 ## Decisions that mattered
 

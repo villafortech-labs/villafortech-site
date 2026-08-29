@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { sharedCopy, type Locale } from '../i18n';
+import Button from '../components/Button.astro';
+import { localeRoutes, sharedCopy, type Locale } from '../i18n';
 
 interface Props {
   frontmatter: {
@@ -31,6 +32,7 @@ interface Props {
   };
   locale?: Locale;
   alternatePath?: string;
+  showCaseEnding?: boolean;
 }
 
 const {
@@ -39,6 +41,7 @@ const {
   backLink,
   locale = 'en',
   alternatePath,
+  showCaseEnding = false,
 } = Astro.props;
 
 const copy = {
@@ -63,6 +66,12 @@ const copy = {
     scope: 'Scope:',
     articleMetadata: 'Article metadata',
     rail: 'METHOD / RESULT / LIMIT',
+    nextEyebrow: 'From case to conversation',
+    nextTitle: 'Is your product running into a boundary like this?',
+    nextDetail:
+      'If an AI or data product is getting difficult at the interfaces, send me the context, the constraint, and what a strong outcome would look like.',
+    discuss: 'Discuss your system',
+    exploreMore: 'Explore more work',
   },
   es: {
     caseStudy: 'Caso de estudio de ingeniería',
@@ -85,9 +94,16 @@ const copy = {
     scope: 'Alcance:',
     articleMetadata: 'Metadatos del artículo',
     rail: 'MÉTODO / RESULTADO / LÍMITE',
+    nextEyebrow: 'Del caso a la conversación',
+    nextTitle: '¿Tu producto está llegando a un punto crítico como este?',
+    nextDetail:
+      'Si un producto de IA o datos se está complicando en sus interfaces, cuéntame el contexto, la restricción y cómo se vería un buen resultado.',
+    discuss: 'Conversemos sobre tu sistema',
+    exploreMore: 'Explorar más proyectos',
   },
 }[locale];
 const shared = sharedCopy[locale];
+const routes = localeRoutes[locale];
 const dateLocale = locale === 'es' ? 'es-EC' : 'en-US';
 
 const formattedDate = new Date(
@@ -280,6 +296,28 @@ const formattedUpdated = frontmatter.updated
           <slot />
         </div>
       </div>
+
+      {
+        showCaseEnding && (
+          <footer
+            class="case-next"
+            aria-labelledby="case-next-heading"
+            data-reveal
+          >
+            <p class="eyebrow">{copy.nextEyebrow}</p>
+            <div class="case-next__copy">
+              <h2 id="case-next-heading">{copy.nextTitle}</h2>
+              <p>{copy.nextDetail}</p>
+            </div>
+            <div class="case-next__actions">
+              <Button href={routes.contact}>{copy.discuss}</Button>
+              <Button href={routes.projects} variant="secondary">
+                {copy.exploreMore}
+              </Button>
+            </div>
+          </footer>
+        )
+      }
     </div>
   </article>
 </BaseLayout>

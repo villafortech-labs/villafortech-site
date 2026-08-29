@@ -1,0 +1,121 @@
+---
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const copy = {
+  en: {
+    index: 'DATA BOUNDARY MAP / 01',
+    title: 'One health observation, five contexts to preserve.',
+    subtitle:
+      'The data model carries ownership, permission, provenance, and history before information becomes useful for reporting.',
+    aria: 'Health observation data-boundary sequence',
+    nodes: [
+      {
+        title: 'Observation',
+        detail: 'Person, device, or application workflow',
+      },
+      { title: 'Identity', detail: 'Tenant and source context' },
+      { title: 'Permission', detail: 'Access and consent state' },
+      { title: 'History', detail: 'Auditable change record' },
+      { title: 'Use', detail: 'Product and reporting structures' },
+    ],
+    coreLabel: 'RELATIONAL CORE',
+    core: 'PostgreSQL data architecture',
+    coreDetail:
+      'Schemas, migrations, access rules, health checks, and test scaffolding evolve together.',
+    foundations: 'FOUNDATIONS',
+    source: 'Source-aware deduplication',
+    sourceDetail: 'Reconcile repeated signals without erasing provenance.',
+    ownership: 'Explicit tenant ownership',
+    ownershipDetail: 'Keep boundaries visible and testable in the data model.',
+    trace: 'Consistent audit vocabulary',
+    traceDetail: 'Record actor, record, action, and time for later questions.',
+  },
+  es: {
+    index: 'MAPA DE LÍMITES DE DATOS / 01',
+    title: 'Una observación de salud, cinco contextos que conservar.',
+    subtitle:
+      'El modelo de datos conserva propiedad, permisos, procedencia e historial antes de que la información se vuelva útil para reportes.',
+    aria: 'Secuencia de límites para una observación de salud',
+    nodes: [
+      {
+        title: 'Observación',
+        detail: 'Persona, dispositivo o flujo de la aplicación',
+      },
+      { title: 'Identidad', detail: 'Contexto del tenant y de la fuente' },
+      { title: 'Permiso', detail: 'Estado de acceso y consentimiento' },
+      { title: 'Historial', detail: 'Registro auditable de cambios' },
+      { title: 'Uso', detail: 'Estructuras de producto y reportes' },
+    ],
+    coreLabel: 'NÚCLEO RELACIONAL',
+    core: 'Arquitectura de datos en PostgreSQL',
+    coreDetail:
+      'Esquemas, migraciones, reglas de acceso, comprobaciones y pruebas evolucionan juntos.',
+    foundations: 'FUNDAMENTOS',
+    source: 'Deduplicación consciente de la fuente',
+    sourceDetail: 'Reconciliar señales repetidas sin borrar su procedencia.',
+    ownership: 'Pertenencia explícita de cada organización',
+    ownershipDetail:
+      'Mantener los límites visibles y comprobables en el modelo de datos.',
+    trace: 'Vocabulario consistente de auditoría',
+    traceDetail:
+      'Registrar actor, registro, acción y momento para responder preguntas posteriores.',
+  },
+}[locale];
+---
+
+<figure
+  class="architecture-figure data-boundary-map"
+  aria-labelledby="data-boundary-map-title"
+  data-reveal
+>
+  <figcaption class="architecture-figure__header">
+    <span>{copy.index}</span>
+    <strong id="data-boundary-map-title">{copy.title}</strong>
+    <small>{copy.subtitle}</small>
+  </figcaption>
+
+  <ol class="data-boundary-map__path" aria-label={copy.aria}>
+    {
+      copy.nodes.map((node, index) => (
+        <li data-diagram-step>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{node.title}</strong>
+          <small>{node.detail}</small>
+        </li>
+      ))
+    }
+  </ol>
+
+  <section class="data-boundary-map__core" data-diagram-step>
+    <span>{copy.coreLabel}</span>
+    <strong>{copy.core}</strong>
+    <small>{copy.coreDetail}</small>
+  </section>
+
+  <div
+    class="architecture-figure__foundations"
+    role="group"
+    aria-label={copy.foundations}
+  >
+    <section data-diagram-step>
+      <span>{copy.foundations} / A</span>
+      <strong>{copy.source}</strong>
+      <small>{copy.sourceDetail}</small>
+    </section>
+    <section data-diagram-step>
+      <span>{copy.foundations} / B</span>
+      <strong>{copy.ownership}</strong>
+      <small>{copy.ownershipDetail}</small>
+    </section>
+    <section data-diagram-step>
+      <span>{copy.foundations} / C</span>
+      <strong>{copy.trace}</strong>
+      <small>{copy.traceDetail}</small>
+    </section>
+  </div>
+</figure>

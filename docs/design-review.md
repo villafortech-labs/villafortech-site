@@ -150,6 +150,34 @@ Planned candidates:
 2. Give each case a contextual ending and related next path.
 3. Route founders and engineering leaders with concise, concrete language.
 
+#### Cycle 2 result
+
+Accepted after the complete verification gate, 80 screenshots across the requested device classes, and an independent read-only review.
+
+- SaliHub now explains how an observation moves through identity, permission, history, use, and the relational core. Datalysis now separates evaluation metrics from operational prediction records across one pipeline. Both graphics are bilingual, content-specific, legible without motion, and bounded by the corresponding sanitized case-study evidence.
+- Every project case now ends with a localized route to discuss a similar system or inspect more work. Writing layouts remain unaffected.
+- The homepage now distinguishes founders from engineering leaders and gives each audience a concrete starting brief. Each path opens a pre-addressed email with prompts suited to that audience, preserving the choice instead of collapsing both routes into the same generic action.
+- Supporting project cards now expose boundary, decision, and evidence consistently. Repeated summaries were removed from those cards, the motion sequence was shortened, and diagram microcopy was enlarged.
+- The mobile capability ledger was recomposed as a compact two-column record to reduce the added reading distance.
+
+All measured Cycle 2 pages reported zero horizontal overflow at 390, 768, 1440, and 1728 pixels. The detailed case captures covered SaliHub and Datalysis in both languages. `npm run verify` passed after correcting one invalid ARIA label in the first implementation.
+
+| Category               | Cycle 1 | Cycle 2 | Delta |
+| ---------------------- | ------: | ------: | ----: |
+| Brand originality      |     8.9 |     9.2 |  +0.3 |
+| Visual hierarchy       |     9.1 |     9.2 |  +0.1 |
+| Typography             |     8.5 |     8.5 |   0.0 |
+| Layout rhythm          |     8.5 |     8.6 |  +0.1 |
+| Motion quality         |     7.4 |     7.8 |  +0.4 |
+| Project storytelling   |     8.6 |     9.3 |  +0.7 |
+| Conversion clarity     |     7.7 |     9.0 |  +1.3 |
+| Mobile responsiveness  |     8.7 |     8.6 |  -0.1 |
+| Accessibility          |     8.9 |     8.8 |  -0.1 |
+| Performance            |     8.7 |     8.7 |   0.0 |
+| English-Spanish parity |     9.2 |     9.4 |  +0.2 |
+
+Cycle 3 will address the remaining objective gates: contrast, responsive image delivery, sitemap correctness, metadata and link validation, keyboard and reduced-motion checks, one-page résumé PDFs, and production Lighthouse scores.
+
 ### Cycle 3: responsive, accessibility, and performance finish
 
 Planned candidates:

@@ -1,0 +1,109 @@
+---
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const copy = {
+  en: {
+    index: 'PIPELINE CONTRACT MAP / 01',
+    title: 'One pipeline, two output contracts.',
+    subtitle:
+      'Evaluation describes model behavior. Predictions feed operational paths. Keeping them separate protects meaning downstream.',
+    aria: 'Forecasting pipeline stages and separate output contracts',
+    stages: [
+      { title: 'Prepare', detail: 'Source data and declared unit' },
+      { title: 'Features', detail: 'Model-ready inputs' },
+      { title: 'Train', detail: 'Fit the forecasting model' },
+      { title: 'Evaluate', detail: 'Measure on the correct unit' },
+      { title: 'Predict', detail: 'Produce scheduled forecasts' },
+    ],
+    fork: 'CONTRACT FORK',
+    metrics: 'Evaluation metrics',
+    metricsDetail: 'Evidence about model behavior; not a prediction table.',
+    predictions: 'Prediction records',
+    predictionsDetail:
+      'Schema-bound outputs for alerts, databases, and downstream consumers.',
+    controls: 'INTERFACE CONTROLS',
+    unit: 'Declared evaluation unit',
+    schema: 'Explicit output schema',
+    write: 'Declared write and rerun behavior',
+    docs: 'Documented ownership',
+  },
+  es: {
+    index: 'MAPA DE CONTRATOS DEL PIPELINE / 01',
+    title: 'Un pipeline, dos contratos de salida.',
+    subtitle:
+      'La evaluación describe el comportamiento del modelo. Las predicciones alimentan rutas operativas. Separarlas protege el significado para los sistemas posteriores.',
+    aria: 'Etapas del pipeline de pronóstico y contratos de salida separados',
+    stages: [
+      { title: 'Preparar', detail: 'Datos de origen y unidad declarada' },
+      { title: 'Características', detail: 'Entradas listas para el modelo' },
+      { title: 'Entrenar', detail: 'Ajustar el modelo de pronóstico' },
+      { title: 'Evaluar', detail: 'Medir sobre la unidad correcta' },
+      { title: 'Predecir', detail: 'Producir pronósticos programados' },
+    ],
+    fork: 'BIFURCACIÓN DE CONTRATOS',
+    metrics: 'Métricas de evaluación',
+    metricsDetail:
+      'Evidencia sobre el modelo; no es una tabla de predicciones.',
+    predictions: 'Registros de predicciones',
+    predictionsDetail:
+      'Salidas con esquema para alertas, bases de datos y consumidores posteriores.',
+    controls: 'CONTROLES DE INTERFAZ',
+    unit: 'Unidad de evaluación declarada',
+    schema: 'Esquema de salida explícito',
+    write: 'Comportamiento declarado de escritura y reejecución',
+    docs: 'Responsabilidad documentada',
+  },
+}[locale];
+---
+
+<figure
+  class="architecture-figure pipeline-contract-map"
+  aria-labelledby="pipeline-contract-map-title"
+  data-reveal
+>
+  <figcaption class="architecture-figure__header">
+    <span>{copy.index}</span>
+    <strong id="pipeline-contract-map-title">{copy.title}</strong>
+    <small>{copy.subtitle}</small>
+  </figcaption>
+
+  <ol class="pipeline-contract-map__stages" aria-label={copy.aria}>
+    {
+      copy.stages.map((stage, index) => (
+        <li data-diagram-step>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{stage.title}</strong>
+          <small>{stage.detail}</small>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="pipeline-contract-map__fork">
+    <span>{copy.fork}</span>
+    <div>
+      <section data-diagram-step>
+        <span>OUTPUT / A</span>
+        <strong>{copy.metrics}</strong>
+        <small>{copy.metricsDetail}</small>
+      </section>
+      <section data-diagram-step>
+        <span>OUTPUT / B</span>
+        <strong>{copy.predictions}</strong>
+        <small>{copy.predictionsDetail}</small>
+      </section>
+    </div>
+  </div>
+
+  <ul class="pipeline-contract-map__controls" aria-label={copy.controls}>
+    <li>{copy.unit}</li>
+    <li>{copy.schema}</li>
+    <li>{copy.write}</li>
+    <li>{copy.docs}</li>
+  </ul>
+</figure>

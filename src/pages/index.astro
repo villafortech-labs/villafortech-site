@@ -25,6 +25,30 @@ const copy = {
     servicesTitle: 'Between the idea and the system that has to carry it.',
     servicesDeck:
       'I help teams make the architecture explicit: what the product needs, how its data moves, where AI belongs, and how the system should behave when the easy path fails.',
+    audienceEyebrow: 'Who I work with',
+    audienceTitle: 'Two ways into the same kind of hard problem.',
+    audiences: [
+      {
+        label: 'Path / 01',
+        title: 'For founders',
+        detail:
+          'Turn an ambitious AI product idea into a clear system boundary, a first architecture, and an implementation path the team can test.',
+        prompt: 'Start with: the user, the constraint, the outcome.',
+        cta: 'Define the first system',
+        subject: 'Founder system conversation',
+        body: 'User:\n\nConstraint:\n\nStrong outcome:\n',
+      },
+      {
+        label: 'Path / 02',
+        title: 'For engineering leaders',
+        detail:
+          'Review a difficult interface between models, data, services, and people, then carry a focused part from decision to implementation.',
+        prompt: 'Start with: the current system, the bottleneck, the decision.',
+        cta: 'Review a hard boundary',
+        subject: 'Engineering system review',
+        body: 'Current system:\n\nBottleneck:\n\nDecision to make:\n',
+      },
+    ],
     systemsEyebrow: 'Selected systems / 02',
     systemsTitle: 'Work that made the architecture concrete.',
     systemsDeck:
@@ -65,6 +89,31 @@ const copy = {
     servicesTitle: 'Entre la idea y el sistema que debe sostenerla.',
     servicesDeck:
       'Ayudo a los equipos a hacer explícita la arquitectura: qué necesita el producto, cómo se mueven sus datos, dónde aporta la IA y cómo debe responder el sistema fuera del caso ideal.',
+    audienceEyebrow: 'Con quién trabajo',
+    audienceTitle: 'Dos formas de entrar al mismo tipo de problema difícil.',
+    audiences: [
+      {
+        label: 'Ruta / 01',
+        title: 'Para fundadores',
+        detail:
+          'Convierte una idea ambiciosa de producto con IA en límites claros, una arquitectura inicial y una ruta de implementación que el equipo pueda poner a prueba.',
+        prompt: 'Empecemos por: el usuario, la restricción y el resultado.',
+        cta: 'Definir el primer sistema',
+        subject: 'Conversación sobre un sistema para fundadores',
+        body: 'Usuario:\n\nRestricción:\n\nBuen resultado:\n',
+      },
+      {
+        label: 'Ruta / 02',
+        title: 'Para líderes de ingeniería',
+        detail:
+          'Revisa una interfaz difícil entre modelos, datos, servicios y personas, y lleva una parte concreta desde la decisión hasta la implementación.',
+        prompt:
+          'Empecemos por: el sistema actual, el cuello de botella y la decisión.',
+        cta: 'Revisar un punto crítico',
+        subject: 'Revisión de un sistema de ingeniería',
+        body: 'Sistema actual:\n\nCuello de botella:\n\nDecisión por tomar:\n',
+      },
+    ],
     systemsEyebrow: 'Sistemas seleccionados / 02',
     systemsTitle: 'Trabajo que llevó la arquitectura a la práctica.',
     systemsDeck:
@@ -172,6 +221,11 @@ const recordsByLocale: Record<Locale, Record<string, SystemRecord>> = {
   },
 };
 const systemRecords = recordsByLocale[locale];
+const systemRecordFor = (project: (typeof featuredSystems)[number]) =>
+  systemRecords[project.data.translationKey ?? project.data.slug];
+const flagshipRecord = flagshipSystem
+  ? systemRecordFor(flagshipSystem)
+  : undefined;
 const homeStoryParagraphs = profile.story.paragraphs.slice(2);
 const homeStoryMilestones = profile.story.milestones.slice(1);
 ---
@@ -243,10 +297,35 @@ const homeStoryMilestones = profile.story.milestones.slice(1);
         <p>{copy.servicesDeck}</p>
       </header>
 
-      <ol class="service-grid" data-reveal data-reveal-group>
+      <div class="audience-routing" data-reveal>
+        <header class="audience-routing__header">
+          <p>{copy.audienceEyebrow}</p>
+          <h3>{copy.audienceTitle}</h3>
+        </header>
+        <div class="audience-routing__paths">
+          {
+            copy.audiences.map((audience) => (
+              <a
+                class="audience-route"
+                href={`${profile.links.email}?subject=${encodeURIComponent(audience.subject)}&body=${encodeURIComponent(audience.body)}`}
+              >
+                <span>{audience.label}</span>
+                <h3>{audience.title}</h3>
+                <p>{audience.detail}</p>
+                <small>{audience.prompt}</small>
+                <strong>
+                  {audience.cta} <span aria-hidden="true">↗</span>
+                </strong>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <ol class="capability-ledger" data-reveal data-reveal-group>
         {
           profile.services.map((service, index) => (
-            <li class="service-card">
+            <li>
               <span>{String(index + 1).padStart(2, '0')}</span>
               <h3>{service.title}</h3>
               <p>{service.detail}</p>
@@ -268,7 +347,7 @@ const homeStoryMilestones = profile.story.milestones.slice(1);
       </header>
 
       {
-        flagshipSystem && (
+        flagshipSystem && flagshipRecord && (
           <article class="feature-case feature-case--home" data-reveal>
             <div class="feature-case__copy">
               <div class="feature-case__labels">
@@ -282,36 +361,15 @@ const homeStoryMilestones = profile.story.milestones.slice(1);
               <dl class="system-record">
                 <div>
                   <dt>{copy.boundary}</dt>
-                  <dd>
-                    {
-                      systemRecords[
-                        flagshipSystem.data.translationKey ??
-                          flagshipSystem.data.slug
-                      ].boundary
-                    }
-                  </dd>
+                  <dd>{flagshipRecord.boundary}</dd>
                 </div>
                 <div>
                   <dt>{copy.decision}</dt>
-                  <dd>
-                    {
-                      systemRecords[
-                        flagshipSystem.data.translationKey ??
-                          flagshipSystem.data.slug
-                      ].decision
-                    }
-                  </dd>
+                  <dd>{flagshipRecord.decision}</dd>
                 </div>
                 <div>
                   <dt>{copy.evidence}</dt>
-                  <dd>
-                    {
-                      systemRecords[
-                        flagshipSystem.data.translationKey ??
-                          flagshipSystem.data.slug
-                      ].evidence
-                    }
-                  </dd>
+                  <dd>{flagshipRecord.evidence}</dd>
                 </div>
               </dl>
               <a
@@ -346,51 +404,47 @@ const homeStoryMilestones = profile.story.milestones.slice(1);
         data-reveal-group
       >
         {
-          supportingSystems.map((project, index) => (
-            <a
-              href={`${routes.projects}/${project.data.translationKey ?? project.data.slug}`}
-              class="system-card"
-            >
-              <div class="system-card__meta">
-                <span>
-                  {copy.system} / {String(index + 2).padStart(2, '0')}
+          supportingSystems.map((project, index) => {
+            const record = systemRecordFor(project);
+            if (!record) return null;
+
+            return (
+              <a
+                href={`${routes.projects}/${project.data.translationKey ?? project.data.slug}`}
+                class="system-card"
+              >
+                <div class="system-card__meta">
+                  <span>
+                    {copy.system} / {String(index + 2).padStart(2, '0')}
+                  </span>
+                  <span>{project.data.organization || project.data.role}</span>
+                </div>
+                <h3>{project.data.shortTitle || project.data.title}</h3>
+                <dl class="system-card__record">
+                  <div>
+                    <dt>{copy.boundary}</dt>
+                    <dd>{record.boundary}</dd>
+                  </div>
+                  <div>
+                    <dt>{copy.decision}</dt>
+                    <dd>{record.decision}</dd>
+                  </div>
+                  <div>
+                    <dt>{copy.evidence}</dt>
+                    <dd>{record.evidence}</dd>
+                  </div>
+                </dl>
+                <ul aria-label={copy.technologies}>
+                  {project.data.tags.slice(0, 3).map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+                <span class="system-card__link">
+                  {copy.readCase} <span aria-hidden="true">↗</span>
                 </span>
-                <span>{project.data.organization || project.data.role}</span>
-              </div>
-              <h3>{project.data.shortTitle || project.data.title}</h3>
-              <p>{project.data.summary}</p>
-              <dl class="system-card__record">
-                <div>
-                  <dt>{copy.decision}</dt>
-                  <dd>
-                    {
-                      systemRecords[
-                        project.data.translationKey ?? project.data.slug
-                      ].decision
-                    }
-                  </dd>
-                </div>
-                <div>
-                  <dt>{copy.evidence}</dt>
-                  <dd>
-                    {
-                      systemRecords[
-                        project.data.translationKey ?? project.data.slug
-                      ].evidence
-                    }
-                  </dd>
-                </div>
-              </dl>
-              <ul aria-label={copy.technologies}>
-                {project.data.tags.slice(0, 3).map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-              <span class="system-card__link">
-                {copy.readCase} <span aria-hidden="true">↗</span>
-              </span>
-            </a>
-          ))
+              </a>
+            );
+          })
         }
       </div>
 

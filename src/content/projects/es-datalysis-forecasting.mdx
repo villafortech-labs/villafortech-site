@@ -20,6 +20,8 @@ evidence: 'sanitized'
 disclosure: 'Trabajo privado · Descripción enfocada de los componentes del pipeline de pronóstico y los contratos de datos en los que contribuí.'
 ---
 
+import PipelineContractMap from '../../components/PipelineContractMap.astro';
+
 <div class="article-deck">
   En un pipeline de pronóstico, el modelo es solo una etapa. Los contratos entre
   preparación, evaluación, predicción y exportación determinan si el resultado
@@ -39,6 +41,8 @@ Implementé y corregí componentes del pipeline que transformaban datos de orige
 Varias correcciones importantes no fueron cambios en los algoritmos. Estaban relacionadas con las unidades utilizadas durante la evaluación, los esquemas de salida, el comportamiento de escritura y los exportadores duplicados. Mantener las predicciones separadas de las métricas de evaluación aclaró el contrato con los sistemas posteriores y redujo la posibilidad de que una ruta de salida sobrescribiera o confundiera a otra.
 
 También documenté los contratos de datos, el flujo del modelo y las salidas programadas, para que los cambios futuros pudieran razonarse a partir de algo más que el grafo de orquestación.
+
+<PipelineContractMap locale="es" />
 
 ## Por qué importaron los límites
 
