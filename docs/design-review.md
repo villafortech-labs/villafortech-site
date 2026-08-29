@@ -288,3 +288,13 @@ against the rebuilt local production server returned 100 in every category on
 the English homepage, Spanish homepage, About page, and fairness case, with
 zero layout shift. Production must be measured again after deployment, and the
 two no-change audits must restart from that measured release state.
+
+The first inline-CSS production probe still produced two 94 performance runs
+out of six. The blocker was gone, but those slow reports attributed roughly
+1.07 seconds of render delay to the transformed homepage heading. The same
+routes scored 98 to 100 when the heading was recorded before the animation
+completed, so a pass depended on audit timing. The primary promise is now
+stable on first paint while the eyebrow, supporting copy, actions, and portrait
+retain the composed entrance. This preserves the motion hierarchy and removes
+animation timing from the LCP gate. The release audits reset again from this
+change.

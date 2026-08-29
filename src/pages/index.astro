@@ -235,22 +235,22 @@ const homeStoryMilestones = profile.story.milestones.slice(1);
     <div class="shell hero__grid">
       <div class="hero__copy">
         <p class="eyebrow" data-enter="1">{copy.heroEyebrow}</p>
-        <h1 data-enter="2">{profile.positioning.statement}</h1>
-        <p class="hero__lede" data-enter="3">
+        <h1>{profile.positioning.statement}</h1>
+        <p class="hero__lede" data-enter="2">
           {profile.positioning.detail}
         </p>
-        <div class="hero__actions" data-enter="4">
+        <div class="hero__actions" data-enter="3">
           <Button href={routes.contact} size="lg">{copy.workWithMe}</Button>
           <Button href={routes.projects} variant="secondary" size="lg"
             >{copy.explore}</Button
           >
         </div>
-        <p class="hero__opportunities" data-enter="4">
+        <p class="hero__opportunities" data-enter="3">
           {profile.positioning.opportunities}
         </p>
       </div>
 
-      <figure class="hero-portrait" data-enter="3">
+      <figure class="hero-portrait" data-enter="2">
         <div class="hero-portrait__image">
           <picture>
             <source
