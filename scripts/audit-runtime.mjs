@@ -34,6 +34,7 @@ const ROUTES = [
 const VIEWPORTS = [
   ['390', 390, 844],
   ['768', 768, 1024],
+  ['1280', 1280, 800],
   ['1440', 1440, 900],
   ['1728', 1728, 1117],
 ];
@@ -217,8 +218,8 @@ const INSPECT_REDUCED_MOTION = String.raw`(() => {
 function usage() {
   console.log(`Usage: node scripts/audit-runtime.mjs [--base-url URL]
 
-Audits representative English and Spanish routes at widths 390, 768, 1440,
-and 1728 pixels. The default base URL is http://127.0.0.1:4321/.`);
+Audits representative English and Spanish routes at widths 390, 768, 1280,
+1440, and 1728 pixels. The default base URL is http://127.0.0.1:4321/.`);
 }
 
 function formatDetail(value) {

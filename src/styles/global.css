@@ -3028,6 +3028,12 @@ summary:focus-visible {
   border: 0;
 }
 
+@media (min-width: 901px) and (max-width: 1416px) {
+  .architecture-figure {
+    width: min(1120px, calc(100vw - 296px));
+  }
+}
+
 @media (max-width: 900px) {
   .hero__grid,
   .feature-case,
