@@ -59,14 +59,14 @@ const copy = {
     boundary: 'Boundary',
     decision: 'Decision',
     evidence: 'Evidence',
-    flowEyebrow: 'Decision path / one policy, four explicit stages',
+    flowEyebrow: 'Control path / one evidence trace, four explicit stages',
     flowLabel:
-      'Fairness audit flow from model fitting to the service decision rule',
+      'Fairness system flow from data identity to the governance verdict',
     flow: [
-      { title: 'Fit', detail: 'Training partition' },
-      { title: 'Select', detail: 'Validation policy' },
-      { title: 'Measure', detail: 'Held-out test' },
-      { title: 'Serve', detail: 'Global API rule' },
+      { title: 'Trace', detail: 'Digest-bound data' },
+      { title: 'Optimize', detail: 'Validation frontier' },
+      { title: 'Review', detail: 'Shared uncertainty band' },
+      { title: 'Gate', detail: 'Persisted policy' },
     ],
     technologies: 'Technologies and topics',
     readCase: 'Read the case study',
@@ -124,14 +124,15 @@ const copy = {
     boundary: 'Límite',
     decision: 'Decisión',
     evidence: 'Evidencia',
-    flowEyebrow: 'Ruta de decisión / una política, cuatro etapas explícitas',
+    flowEyebrow:
+      'Ruta de control / una traza de evidencia, cuatro etapas explícitas',
     flowLabel:
-      'Flujo de auditoría de equidad desde el ajuste del modelo hasta la regla de decisión del servicio',
+      'Flujo del sistema de equidad desde la identidad de datos hasta el veredicto de gobernanza',
     flow: [
-      { title: 'Ajustar', detail: 'Partición de entrenamiento' },
-      { title: 'Seleccionar', detail: 'Política de validación' },
-      { title: 'Medir', detail: 'Prueba reservada' },
-      { title: 'Servir', detail: 'Regla global de la API' },
+      { title: 'Trazar', detail: 'Datos ligados por huella' },
+      { title: 'Optimizar', detail: 'Frontera de validación' },
+      { title: 'Revisar', detail: 'Banda común de incertidumbre' },
+      { title: 'Evaluar', detail: 'Política persistida' },
     ],
     technologies: 'Tecnologías y temas',
     readCase: 'Leer el caso de estudio',
@@ -176,9 +177,11 @@ type SystemRecord = {
 const recordsByLocale: Record<Locale, Record<string, SystemRecord>> = {
   en: {
     'fairness-aware-candidate-pre-screening': {
-      boundary: 'Validation selects the policy; held-out data measures it.',
-      decision: 'Offline thresholds stay separate from the API rule.',
-      evidence: 'Source, run instructions, report, and artifact trail.',
+      boundary: 'Training fits, validation searches, official test measures.',
+      decision:
+        'Group-aware offline audit, protected-attribute-free service boundary.',
+      evidence:
+        'Digest-bound audit, integrity-checked bundle, gate, stability, and monitoring.',
     },
     'salihub-data-architecture': {
       boundary: 'Product, privacy, consent, and reporting meet in the schema.',
@@ -196,11 +199,11 @@ const recordsByLocale: Record<Locale, Record<string, SystemRecord>> = {
   es: {
     'fairness-aware-candidate-pre-screening': {
       boundary:
-        'La validación selecciona la política; los datos reservados la miden.',
+        'Entrenamiento ajusta, validación busca y la prueba oficial mide.',
       decision:
-        'Los umbrales offline permanecen separados de la regla de la API.',
+        'Auditoría offline consciente de grupos, servicio sin atributos protegidos.',
       evidence:
-        'Código, instrucciones, informe y rastro de artefactos públicos.',
+        'Auditoría ligada por huella, paquete íntegro, regla, estabilidad y monitoreo.',
     },
     'salihub-data-architecture': {
       boundary:

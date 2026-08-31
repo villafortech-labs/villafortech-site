@@ -1,12 +1,12 @@
 ---
-title: 'Engineering an Auditable Fairness Workflow'
-shortTitle: 'Auditable Fairness Workflow'
-eyebrow: 'Engineering case study · Trustworthy ML'
+title: 'Building a Fair-ML Policy Lab That Can Reject Its Own Result'
+shortTitle: 'Auditable Fair-ML Policy Lab'
+eyebrow: 'Flagship engineering case study · Trustworthy ML'
 slug: 'fairness-aware-candidate-pre-screening'
 date: '2026-08-28'
-updated: '2026-08-28'
-projectPeriod: '2025 – 2026'
-summary: 'Built an inspectable fairness-audit system that separates model fitting, policy selection, held-out measurement, and serving behavior on the UCI Adult benchmark.'
+updated: '2026-08-31'
+projectPeriod: '2025 - 2026'
+summary: 'I rebuilt candidate pre-screening as an auditable policy lab that connects data identity, validation-only policy search, uncertainty-aware governance, strict service contracts, and monitoring.'
 tags: ['ML Systems', 'Fairness', 'Auditability', 'Governance']
 role: 'Project collaborator'
 organization: 'University of Helsinki'
@@ -18,115 +18,162 @@ status: 'completed'
 evidence: 'public'
 links:
   github: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening'
-  reproduce: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/a58a381e8b9aeb92c7b01aca8b8cc52ec6f14d33/README.md#reproduce-the-reference-audit'
-  sourceCommit: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/tree/a58a381e8b9aeb92c7b01aca8b8cc52ec6f14d33'
+  reproduce: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/7d81ae068f2a945c4eab405d486b2ab743aafd70/reports/reference/README.md'
+  sourceCommit: 'https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/commit/9c5560363dbcbe07bd48a6f651a9dd5c5b135ea9'
 ---
 
-import EvaluationProtocol from '../../components/EvaluationProtocol.astro';
-import MetricShift from '../../components/MetricShift.astro';
+import FairnessSystemMap from '../../components/FairnessSystemMap.astro';
 
 <div class="article-deck">
-  Fairness becomes an engineering property only when the data boundary, decision
-  policy, and evidence trail can all be inspected.
+  The hard part was not training a classifier. It was building a system where
+  data identity, policy search, held-out evidence, serving behavior, and the
+  authority to reject a result could be inspected together.
 </div>
 
-This project packages a complete audit workflow for tabular classification. It supports separate Logistic Regression, Random Forest, and XGBoost audits, measures group disparities, selects an offline threshold policy on dedicated validation data, and writes the artifacts needed to inspect the resulting decision rule.
+The repository began with a candidate pre-screening framing. Its data, however, is UCI Adult, a 1994 Census-income benchmark rather than applicant or job-performance records. I kept the difficult engineering question and rebuilt the surrounding system: what evidence should exist before a model score is allowed to become policy?
 
-The central design choice is separation. Model fitting, policy selection, held-out measurement, and API behavior are distinct stages with explicit inputs and outputs.
+I rebuilt the project around that idea. It is now an auditable policy lab for tabular classification on the UCI Adult benchmark, with Logistic Regression, Random Forest, and XGBoost as interchangeable scoring models. The model is only one component. Every run must also explain which records it used, how it chose a decision policy, what the held-out data says, whether the governance gate accepts the evidence, and what an operating system would monitor.
 
-## The system under audit
+<FairnessSystemMap />
 
-Each run fits one selected model: Logistic Regression, Random Forest, or XGBoost. It reports conventional performance measures alongside statistical parity difference (SPD), disparate impact (DI), and true-positive-rate (TPR) gap.
+## Read the published result first
 
-The cleaned dataset contains 45,222 records. Sex and binary race are retained for measurement but excluded from the 12 model features. The split assigns 25,637 records to fitting, 4,525 to validation, and preserves all 15,060 records from the official UCI test partition. The validation set is jointly stratified by income, sex, and binary race so the relevant cells remain represented during policy selection.
+The reference study repeats the complete XGBoost workflow across five seeds. It does not select the friendliest run. Each run rebuilds the fit and validation split, searches the policy, evaluates the fixed result on the same official test partition, and then enters a strict comparability check before aggregation.
 
-<EvaluationProtocol />
+<div id="five-seed-evidence" class="fairness-evidence-ledger" data-reveal>
+  <div>
+    <span>COMPARABLE RUNS</span>
+    <strong>5</strong>
+    <small>Seeds 0 through 4</small>
+  </div>
+  <div>
+    <span>POLICY CANDIDATES</span>
+    <strong>10,201</strong>
+    <small>Threshold pairs per seed</small>
+  </div>
+  <div>
+    <span>PAIRED BOOTSTRAPS</span>
+    <strong>500</strong>
+    <small>Per seed</small>
+  </div>
+  <div class="fairness-evidence-ledger__verdict">
+    <span>GOVERNANCE</span>
+    <strong>0 / 5</strong>
+    <small>Bundles accepted</small>
+  </div>
+  <div>
+    <span>MODEL-READY ROWS</span>
+    <strong>45,222</strong>
+    <small>From 48,842 raw rows</small>
+  </div>
+  <div>
+    <span>HELD-OUT OVERLAP</span>
+    <strong>3,581</strong>
+    <small>Exact feature identities isolated</small>
+  </div>
+</div>
 
-## One command owns the audit
+Across the five seeds, median adjusted accuracy was **0.8689** with a range of **0.8649 to 0.8709**. Median disparate impact was **0.3657** with a range of **0.3142 to 0.4146**; median selection-rate difference was **0.1754** with a range of **0.1236 to 0.1808**; and the median signed true-positive-rate gap was **0.0368** with a range of **-0.0233 to 0.0849**. Every report was structurally valid, and every report was rejected by the configured gate. That separation between a valid artifact and an unacceptable policy result is the central outcome.
 
-The repository exposes a packaged data-preparation step and one installed audit command. That command coordinates five boundaries:
+The five seeds reuse the same official test partition. Their spread measures sensitivity to the fit-validation split, model fitting, and policy selection, not five independent samples from a target population.
 
-1. Build model-ready data and record its identity.
-2. Fit preprocessing and the selected model on the fitting partition.
-3. Select the offline threshold policy using validation labels.
-4. Apply the frozen model and policy once to the held-out test partition.
-5. Persist predictions, metrics, uncertainty intervals, manifest data, and the gate verdict.
+The benchmark also contains substantial identity repetition. **3,581 of 15,060** held-out rows share the exact 11-feature identity of a fitting or validation row. The fixed-policy novel-only view keeps **11,479** rows and reports it beside the primary evaluation rather than silently changing the official partition.
 
-The run directory groups the model bundle, decision policy, paired predictions, report, and manifest. The manifest records dependency versions, split-cell counts, and source and data hashes, while predictions remain a separate inspection output. The report is therefore connected to the inputs and policy that produced it instead of existing as an isolated table.
+## Start with an exact data boundary
 
-## The decision policy is versioned
+The pipeline exposes an exact 11-feature input contract. `fnlwgt`, the target, the source split marker, and the protected fields used for auditing do not enter the model. Sex and binary race remain available to the evaluation path so disparity can be measured without leaking those fields into prediction.
 
-For the reference XGBoost run, the global decision threshold is `0.500`. Validation selects an offline Female threshold of `0.405`, while the Male threshold remains at `0.500`. Those values are frozen before the policy is applied to the test partition.
+Preparation begins with a raw-data audit. Missing-value handling, duplicate identities, repeated feature vectors, conflicting labels, and cross-split overlap are recorded in a quality sidecar. A cryptographic digest binds that sidecar to the model-ready table, so a report cannot quietly describe a different dataset than the one used by the run.
 
-The group-specific policy is stored as an analysis artifact. The FastAPI path uses one global `0.500` threshold and marks the offline policy as `served_by_api: false`. That boundary prevents an analytical intervention from silently becoming service behavior.
+The source-defined test partition remains intact. The source training partition is divided into fitting and validation sets, and each has one job:
 
-## Reference audit snapshot
+| Partition     | Responsibility                                                         |
+| ------------- | ---------------------------------------------------------------------- |
+| Training      | Fit preprocessing and the selected scoring model                       |
+| Validation    | Search thresholds, select the review band, and test policy sensitivity |
+| Official test | Measure the frozen model and frozen policy once                        |
 
-The checked reference report records an XGBoost run with seed `42`.
+This separation matters because the threshold pair is a learned policy. Treating it as a harmless post-processing constant would create the same leakage problem as tuning model parameters on the test set.
 
-| Measure                       | Global 0.500 | Offline policy | Offline-policy 95% interval |
-| ----------------------------- | -----------: | -------------: | --------------------------: |
-| Accuracy                      |       0.8694 |         0.8678 |            [0.8630, 0.8728] |
-| TPR gap (Male − Female)       |       0.0504 |        -0.0124 |           [-0.0560, 0.0268] |
-| Statistical parity difference |       0.1754 |         0.1563 |            [0.1468, 0.1670] |
-| Disparate impact              |       0.3400 |         0.4120 |            [0.3817, 0.4370] |
+## Search a policy, not a convenient threshold
 
-<MetricShift />
+After the model is frozen, the validation scores enter an exhaustive two-dimensional search over protected-group thresholds. Every permitted threshold pair is evaluated, dominated candidates are removed, and the remaining Pareto frontier exposes the tradeoff between utility and disparity instead of hiding it inside one hand-tuned objective.
 
-Under the offline policy, the TPR-gap point estimate crosses zero while accuracy changes by `-0.0016`. SPD moves toward zero and DI moves toward one, but neither reaches the configured policy range.
+The selected offline policy also carries one global review band around uncertainty. The band depends only on model probability, not group membership. It routes borderline cases away from an automatic outcome and makes review load a measurable part of the policy.
 
-The intervals come from 500 paired, stratified bootstrap samples of the fixed test set. They describe uncertainty for this test sample. Sensitivity to a different validation split, model specification, year, or population remains a separate question.
+Policy search remains validation-only. The official test set receives the already selected thresholds and review band without another optimization pass.
 
-## A policy gate owns the verdict
+## Ask two different overlap questions
 
-The default gate returns **FAIL**. The reference run satisfies minimum accuracy, maximum accuracy loss, and absolute TPR-gap requirements, but it fails two configured constraints:
+Exact feature identities can recur across partitions in tabular benchmarks. The system treats that as evidence to investigate, not a reason to silently rewrite the official split.
 
-- `DI=0.4120`, below the allowed range beginning at `0.80`.
-- `|SPD|=0.1563`, above the maximum `0.10`.
+First, an overlap-excluded validation sensitivity removes validation identities already present in training and reruns policy selection. This asks whether the chosen policy depends on repeated identities during tuning.
 
-This is the useful system behavior: movement in one targeted measure cannot override the rest of the policy. The persisted verdict keeps the decision rule and the acceptance criteria in the same evidence trail.
+Second, the held-out sensitivity keeps the fitted model and policy fixed, then separates test records into overlapping and novel identities. This asks whether the reported evaluation changes when only unseen feature identities are considered. Because neither the predictions nor the policy are refit, the check stays diagnostic rather than becoming a second test-set optimization.
 
-<aside
-  class="evidence-note evidence-note--verified"
-  aria-label="Reference artifact"
->
-  <span>REFERENCE ARTIFACT</span>
-  The report records the seed, Python and dependency versions, hashes, split
-  cells, thresholds, intervals, and policy verdict.{' '}
-  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/c942c259d791c1a3202dad7d585f3e81c6aca18e/reports/reference/xgb-seed-42-v1/report.json">
-    Inspect report.json
-  </a>
-  .
-</aside>
+## Make uncertainty part of the evidence
 
-## Audit and service paths stay distinct
+The report goes beyond aggregate sex metrics. It includes sex-by-race intersections, weighted and unweighted views, calibration diagnostics, paired bootstrap comparisons, and uncertainty intervals for disparity and utility measures.
 
-| System boundary   | Responsibility                                                      |
-| ----------------- | ------------------------------------------------------------------- |
-| Audit command     | Fit the selected model, choose the offline policy, and run the gate |
-| Reference bundle  | Package the model, policy, report, manifest, and dependencies       |
-| Run outputs       | Store paired predictions alongside the reference bundle             |
-| Validation checks | Reject malformed artifacts or incomplete policy inputs              |
-| FastAPI path      | Load a compatible bundle and apply the global `0.500` decision rule |
+Each subgroup receives an evidence state based on effective support. Sparse cells are marked as insufficient rather than converted into confident-looking point estimates. Worst observed spans remain visible, which prevents a favorable aggregate from erasing a smaller intersection with weaker behavior.
 
-Keeping those paths separate makes each artifact's responsibility explicit: the offline threshold policy remains inspectable, while the API behavior remains tied to its global rule.
+Repeated-seed stability is part of the implementation. The study runner executes the same resolved configuration across seeds, verifies that gate thresholds and policy settings remain comparable, and summarizes the distribution of decisions and diagnostics. Incomparable runs are rejected instead of being averaged together.
 
-## Next engineering step
+## Keep the audit policy and service boundary distinct
 
-The next iteration would pre-register repeated validation splits and report policy stability across them, extending the current test-sample intervals with split-sensitivity evidence. Any domain-facing extension would require a target and dataset designed for that context, plus legal and stakeholder review.
+The offline policy may use protected-group thresholds because its purpose is to study a fairness intervention. The service simulation has a different contract: protected attributes are absent from its request schema and never reconstructed inside the API.
 
-## Inspect the implementation
+| Boundary           | Inputs                                                  | Decision behavior                                                                                                                       |
+| ------------------ | ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Offline audit      | Predictors plus protected fields held outside the model | Applies the frozen group-specific thresholds and the shared review band for evaluation                                                  |
+| FastAPI simulation | Exactly the 11 declared predictor fields                | Applies the persisted protected-attribute-free service policy and returns `auto_negative`, `manual_review_required`, or `auto_positive` |
 
-The public repository includes the locked environment, audit command, artifact checks, and reference report needed to follow the workflow from data preparation to gate verdict.
+The API rejects extra or missing fields, out-of-domain numbers, and unknown categories. It validates the fitted preprocessing vocabulary against the manifest before serving and refuses an integrity mismatch. The normal load path also refuses a bundle whose governance result is not accepted.
 
-**Charles Santhakumar** and I built the shared system at the University of Helsinki. I later carried out the engineering audit documented in this case study.
+This boundary is deliberate. An offline fairness intervention cannot become live service behavior simply because both artifacts happen to sit in the same directory.
+
+## Let governance reject the result
+
+The acceptance policy is persisted with the report. It evaluates utility, disparity, uncertainty, evidence sufficiency, and whether validation found a feasible policy candidate. Those thresholds are part of the run record, so rerunning the gate uses the same contract instead of whatever defaults happen to exist later.
+
+All five reference runs were rejected by the configured governance gate. That is informative system behavior: progress on one measure cannot override a violation elsewhere, and an infeasible frontier cannot fall back to a baseline policy that appears to pass. The verdict travels with each bundle and controls whether the standard service path may load it.
+
+## Bind the implementation to its evidence
+
+A completed audit writes a seven-file bundle through atomic publication:
+
+| Artifact          | Role in the trace                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| `manifest.json`   | Binds file digests, versions, feature contract, data identity, and governance state |
+| `model.joblib`    | Stores fitted preprocessing and the scoring model                                   |
+| `policy.json`     | Versions the offline evaluation policy and protected-attribute-free service rule    |
+| `predictions.csv` | Preserves paired scores and decisions for inspection                                |
+| `report.json`     | Records protocol, metrics, uncertainty, sensitivity checks, and gate result         |
+| `audit.html`      | Provides a self-contained, print-ready engineering report                           |
+| `monitoring.json` | Captures the aggregate operational baseline                                         |
+
+Loading is fail-closed. Required files, digests, schemas, feature order, categorical vocabulary, policy fields, and report bindings must agree before the bundle is considered usable.
+
+The monitoring path works from aggregate counts rather than row-level records. It compares outcome mix, review pressure, score distribution, subgroup rates when available, and data-quality signals, then returns `PASS`, `FAIL`, or `INSUFFICIENT_EVIDENCE`. Derived rates are checked against their counts so a malformed snapshot cannot change the verdict unnoticed.
+
+## What the rebuild demonstrates
+
+The project now connects ML experimentation with the engineering controls that make a consequential decision workflow reviewable:
+
+1. Data provenance is part of the executable contract.
+2. Policy optimization is isolated from held-out measurement.
+3. Fairness diagnostics include uncertainty, intersections, and overlap sensitivity.
+4. Offline protected-group analysis does not leak across the service boundary.
+5. Governance can stop artifact loading, and that refusal is preserved as evidence.
+6. Repeated-seed stability and aggregate monitoring share the same policy trace.
+
+**Charles Santhakumar** and I built the original shared system at the University of Helsinki. I designed and implemented this expanded engineering architecture, audit workflow, governance layer, service boundary, and portfolio case study.
 
 <div class="article-end-link">
-  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/tree/a58a381e8b9aeb92c7b01aca8b8cc52ec6f14d33">
-    Inspect the source on GitHub →
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/tree/9c5560363dbcbe07bd48a6f651a9dd5c5b135ea9">
+    Inspect the evidence-bound source →
   </a>
-  {' · '}
-  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/blob/c942c259d791c1a3202dad7d585f3e81c6aca18e/reports/reference/xgb-seed-42-v1/report.json">
-    Open the reference report →
+  <a href="https://github.com/VillaforTech/Fairness-Aware-Candidate-Pre-Screening/tree/7d81ae068f2a945c4eab405d486b2ab743aafd70/reports/reference/xgb-five-seed-v2">
+    Open the five-seed evidence →
   </a>
 </div>

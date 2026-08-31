@@ -1,0 +1,296 @@
+---
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const titleId = `fairness-system-map-title-${locale}`;
+const descriptionId = `fairness-system-map-description-${locale}`;
+
+const copy = {
+  en: {
+    index: 'SYSTEM MAP / TRUSTWORTHY ML',
+    title: 'Three planes keep a fairness audit inspectable.',
+    subtitle:
+      'The workflow binds data identity, policy search, and serving evidence without turning an offline intervention into an unreviewed service rule.',
+    aria: 'Fairness audit system map with data contract, policy lab, and governance operations planes',
+    plane: 'PLANE',
+    step: 'STEP',
+    planes: [
+      {
+        key: 'data',
+        state: 'BOUND INPUT',
+        title: 'Data contract',
+        detail:
+          'What the run may read and how every partition remains identifiable.',
+        steps: [
+          {
+            title: 'Raw audit',
+            detail:
+              'Canonical records retain the protected attributes needed for measurement.',
+          },
+          {
+            title: 'Digest-bound quality sidecar',
+            detail:
+              'Quality findings and the model-ready table resolve to the same data identity.',
+          },
+          {
+            title: 'Exact 11-feature boundary',
+            detail:
+              'Only declared prediction fields enter the model; audit fields stay outside.',
+          },
+          {
+            title: 'Official split',
+            detail:
+              'The source test partition stays sealed while fit and validation remain distinct.',
+          },
+        ],
+      },
+      {
+        key: 'policy',
+        state: 'SEARCH + STRESS',
+        title: 'Policy lab',
+        detail:
+          'Where scores become candidate decisions, with sensitivity checks before selection.',
+        steps: [
+          {
+            title: 'Scores',
+            detail:
+              'The frozen model emits probabilities before any threshold is applied.',
+          },
+          {
+            title: 'Exhaustive two-threshold Pareto frontier',
+            detail:
+              'Every allowed threshold pair is evaluated against utility and disparity objectives.',
+          },
+          {
+            title: 'Global review band',
+            detail:
+              'One shared uncertainty band routes borderline decisions for review.',
+          },
+          {
+            title: 'Intersectional and overlap sensitivity',
+            detail:
+              'Intersections, validation retuning, and fixed-policy held-out overlap receive separate checks.',
+          },
+        ],
+      },
+      {
+        key: 'governance',
+        state: 'VERIFY + OBSERVE',
+        title: 'Governance and operations',
+        detail:
+          'What may pass, load, serve, and remain observable after the audit.',
+        steps: [
+          {
+            title: 'Uncertainty-aware gate',
+            detail:
+              'Configured constraints and intervals own the verdict, not one point estimate.',
+          },
+          {
+            title: 'Seven-file integrity-bound bundle',
+            detail:
+              'The manifest binds every required artifact and refuses a mismatched load.',
+          },
+          {
+            title: 'Strict API simulation',
+            detail:
+              'Schema, domains, categories, and policy behavior are exercised as service requests.',
+          },
+          {
+            title: 'Aggregate monitoring',
+            detail:
+              'Operational rates surface drift and review pressure without row-level exposure.',
+          },
+        ],
+      },
+    ],
+    spineLabel: 'END-TO-END CONTROL SPINE',
+    spineTitle: 'One trace crosses all three planes.',
+    spineAria: 'Evidence handoff from data identity to aggregate signals',
+    spine: [
+      'Dataset identity',
+      'Quality evidence',
+      'Selected policy',
+      'Gate verdict',
+      'Operational signals',
+    ],
+  },
+  es: {
+    index: 'MAPA DEL SISTEMA / ML CONFIABLE',
+    title: 'Tres planos mantienen inspeccionable una auditoría de equidad.',
+    subtitle:
+      'El flujo vincula la identidad de los datos, la búsqueda de políticas y la evidencia del servicio sin convertir una intervención offline en una regla de servicio no revisada.',
+    aria: 'Mapa del sistema de auditoría de equidad con los planos de contrato de datos, laboratorio de políticas y gobernanza operativa',
+    plane: 'PLANO',
+    step: 'PASO',
+    planes: [
+      {
+        key: 'data',
+        state: 'ENTRADA LIGADA',
+        title: 'Contrato de datos',
+        detail:
+          'Qué puede leer la ejecución y cómo cada partición conserva su identidad.',
+        steps: [
+          {
+            title: 'Auditoría de datos brutos',
+            detail:
+              'Los registros canónicos conservan los atributos protegidos necesarios para medir.',
+          },
+          {
+            title: 'Informe de calidad ligado a la huella',
+            detail:
+              'Los hallazgos de calidad y la tabla para el modelo resuelven a la misma identidad de datos.',
+          },
+          {
+            title: 'Límite exacto de 11 características',
+            detail:
+              'Solo los campos de predicción declarados entran al modelo; los campos de auditoría quedan fuera.',
+          },
+          {
+            title: 'Partición oficial',
+            detail:
+              'La prueba definida por la fuente permanece sellada, separada del ajuste y la validación.',
+          },
+        ],
+      },
+      {
+        key: 'policy',
+        state: 'BÚSQUEDA + ESTRÉS',
+        title: 'Laboratorio de políticas',
+        detail:
+          'Donde los puntajes se convierten en decisiones candidatas y se prueban antes de elegir.',
+        steps: [
+          {
+            title: 'Puntajes',
+            detail:
+              'El modelo congelado emite probabilidades antes de aplicar cualquier umbral.',
+          },
+          {
+            title: 'Frontera de Pareto exhaustiva de dos umbrales',
+            detail:
+              'Cada par de umbrales permitido se evalúa frente a objetivos de utilidad y disparidad.',
+          },
+          {
+            title: 'Banda global de revisión',
+            detail:
+              'Una banda compartida de incertidumbre dirige las decisiones limítrofes a revisión.',
+          },
+          {
+            title: 'Sensibilidad interseccional y al solapamiento',
+            detail:
+              'Las intersecciones, el reajuste en validación y el solapamiento reservado con política fija reciben pruebas separadas.',
+          },
+        ],
+      },
+      {
+        key: 'governance',
+        state: 'VERIFICA + OBSERVA',
+        title: 'Gobernanza y operaciones',
+        detail:
+          'Qué puede aprobarse, cargarse, servirse y mantenerse observable después de la auditoría.',
+        steps: [
+          {
+            title: 'Regla de aceptación sensible a la incertidumbre',
+            detail:
+              'Las restricciones y los intervalos configurados determinan el veredicto, no una sola estimación.',
+          },
+          {
+            title: 'Paquete de siete archivos ligado por integridad',
+            detail:
+              'El manifiesto liga cada artefacto requerido y rechaza una carga que no coincida.',
+          },
+          {
+            title: 'Simulación estricta de la API',
+            detail:
+              'El esquema, los dominios, las categorías y la política se ejercitan como solicitudes del servicio.',
+          },
+          {
+            title: 'Monitoreo agregado',
+            detail:
+              'Las tasas operativas exponen deriva y presión de revisión sin revelar registros individuales.',
+          },
+        ],
+      },
+    ],
+    spineLabel: 'COLUMNA DE CONTROL DE EXTREMO A EXTREMO',
+    spineTitle: 'Una sola traza cruza los tres planos.',
+    spineAria:
+      'Transferencia de evidencia desde la identidad de los datos hasta las señales agregadas',
+    spine: [
+      'Identidad de datos',
+      'Evidencia de calidad',
+      'Política elegida',
+      'Veredicto de la regla',
+      'Señales operativas',
+    ],
+  },
+}[locale];
+---
+
+<figure
+  class="architecture-figure fairness-system-map"
+  aria-labelledby={titleId}
+  aria-describedby={descriptionId}
+  data-reveal
+>
+  <figcaption class="architecture-figure__header">
+    <span>{copy.index}</span>
+    <strong id={titleId}>{copy.title}</strong>
+    <small id={descriptionId}>{copy.subtitle}</small>
+  </figcaption>
+
+  <ol class="fairness-system-map__planes" aria-label={copy.aria}>
+    {
+      copy.planes.map((plane, planeIndex) => (
+        <li
+          class={`fairness-system-map__plane fairness-system-map__plane--${plane.key}`}
+          data-diagram-step
+        >
+          <header class="fairness-system-map__plane-header">
+            <span aria-hidden="true">
+              {copy.plane} / {String(planeIndex + 1).padStart(2, '0')}
+            </span>
+            <h3>{plane.title}</h3>
+            <p>{plane.detail}</p>
+            <small>{plane.state}</small>
+          </header>
+
+          <ol class="fairness-system-map__flow">
+            {plane.steps.map((step, stepIndex) => (
+              <li>
+                <span aria-hidden="true">
+                  {copy.step} / {String(stepIndex + 1).padStart(2, '0')}
+                </span>
+                <strong>{step.title}</strong>
+                <small>{step.detail}</small>
+              </li>
+            ))}
+          </ol>
+        </li>
+      ))
+    }
+  </ol>
+
+  <section
+    class="fairness-system-map__spine"
+    aria-labelledby={`${titleId}-spine`}
+  >
+    <div>
+      <span>{copy.spineLabel}</span>
+      <strong id={`${titleId}-spine`}>{copy.spineTitle}</strong>
+    </div>
+    <ol aria-label={copy.spineAria}>
+      {
+        copy.spine.map((item, index) => (
+          <li>
+            <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <strong>{item}</strong>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</figure>
