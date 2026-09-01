@@ -2,7 +2,7 @@
 
 The website and LinkedIn should describe the same professional identity:
 
-> AI & Data Systems Engineer
+> Applied AI Engineer
 
 The site may add technical depth, but it must not upgrade the certainty of a LinkedIn claim or turn implementation artifacts into deployment or business-impact claims.
 

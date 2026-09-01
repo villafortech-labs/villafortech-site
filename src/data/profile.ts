@@ -1,10 +1,10 @@
 export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'VillaForTech',
-  headline: 'AI & Data Systems Engineer',
+  headline: 'Applied AI Engineer',
   location: 'Quito, Ecuador',
   currentRole: {
-    title: 'AI & Data Systems Engineer',
+    title: 'Applied AI Engineer',
     organization: 'COMPUMAX',
     period: 'August 2026 - Present',
     summary:
@@ -72,7 +72,7 @@ export const profile = {
   ],
   experience: [
     {
-      title: 'AI & Data Systems Engineer',
+      title: 'Applied AI Engineer',
       organization: 'COMPUMAX',
       period: 'August 2026 - Present',
       details: [
@@ -178,7 +178,7 @@ export const profile = {
     {
       label: 'Current',
       value: 'COMPUMAX',
-      detail: 'AI & Data Systems Engineer',
+      detail: 'Applied AI Engineer',
     },
     {
       label: 'International study',
@@ -196,7 +196,7 @@ export const profile = {
       detail: 'IEEEXtreme 18.0 · IEEE',
     },
   ],
-  lastVerified: '2026-08-28',
+  lastVerified: '2026-09-01',
 } as const;
 
 export default profile;

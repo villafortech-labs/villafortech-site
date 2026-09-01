@@ -1,10 +1,10 @@
 export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'VillaForTech',
-  headline: 'Ingeniero de Sistemas de IA y Datos',
+  headline: 'Ingeniero de IA Aplicada',
   location: 'Quito, Ecuador',
   currentRole: {
-    title: 'Ingeniero de Sistemas de IA y Datos',
+    title: 'Ingeniero de IA Aplicada',
     organization: 'COMPUMAX',
     period: 'Agosto de 2026 - actualidad',
     summary:
@@ -80,7 +80,7 @@ export const profile = {
   ],
   experience: [
     {
-      title: 'Ingeniero de Sistemas de IA y Datos',
+      title: 'Ingeniero de IA Aplicada',
       organization: 'COMPUMAX',
       period: 'Agosto de 2026 - actualidad',
       details: [
@@ -186,7 +186,7 @@ export const profile = {
     {
       label: 'Actual',
       value: 'COMPUMAX',
-      detail: 'Ingeniero de Sistemas de IA y Datos',
+      detail: 'Ingeniero de IA Aplicada',
     },
     {
       label: 'Estudios internacionales',
@@ -205,7 +205,7 @@ export const profile = {
       detail: 'IEEEXtreme 18.0 · IEEE',
     },
   ],
-  lastVerified: '2026-08-28',
+  lastVerified: '2026-09-01',
 } as const;
 
 export default profile;
