@@ -12,13 +12,16 @@ const { locale = 'en' } = Astro.props;
 const profile = locale === 'es' ? profileEs : profileEn;
 const copy = {
   en: {
-    title: 'Résumé',
+    title: 'Resume',
     description:
-      'Résumé of Roberto Villafuerte, Applied AI Engineer: experience, education, selected credentials, and technical skills.',
-    eyebrow: 'Résumé / Updated September 2026',
+      'Resume of Roberto Villafuerte, Applied AI Engineer: experience, education, leadership, selected credentials, and technical skills.',
+    eyebrow: 'Resume / Updated September 2026',
+    printTitle: 'Resume | Roberto Villafuerte',
+    printDate: 'September 3, 2026',
     print: 'Print / save PDF',
     experience: 'Experience',
     education: 'Education',
+    leadership: 'Leadership & Teaching',
     credentials: 'Credentials',
     languages: 'Languages',
     skills: 'Selected skills',
@@ -27,11 +30,14 @@ const copy = {
   es: {
     title: 'Currículum',
     description:
-      'Currículum de Roberto Villafuerte, Ingeniero de IA Aplicada: experiencia, formación, credenciales seleccionadas y habilidades técnicas.',
+      'Currículum de Roberto Villafuerte, Ingeniero de IA Aplicada: experiencia, formación, liderazgo, credenciales seleccionadas y habilidades técnicas.',
     eyebrow: 'Currículum / Actualizado en septiembre de 2026',
+    printTitle: 'Currículum | Roberto Villafuerte',
+    printDate: '3 de septiembre de 2026',
     print: 'Imprimir / guardar PDF',
     experience: 'Experiencia',
     education: 'Formación',
+    leadership: 'Liderazgo y docencia',
     credentials: 'Credenciales',
     languages: 'Idiomas',
     skills: 'Habilidades seleccionadas',
@@ -42,6 +48,12 @@ const copy = {
 
 <BaseLayout title={copy.title} description={copy.description} locale={locale}>
   <article class="resume-page">
+    <div class="resume-print-meta" aria-hidden="true">
+      <span>{copy.printTitle}</span>
+      <span class="resume-print-meta__update">{copy.eyebrow}</span>
+      <time datetime="2026-09-03">{copy.printDate}</time>
+    </div>
+
     <header class="resume-header shell">
       <div>
         <p class="eyebrow">{copy.eyebrow}</p>
@@ -70,13 +82,17 @@ const copy = {
             href={profile.links.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            >LinkedIn <span class="external-mark" aria-hidden="true">↗</span></a
+            ><span>LinkedIn</span><span class="resume-contact__url"
+              >{profile.links.linkedinDisplay}</span
+            ></a
           >
           <a
             href={profile.links.github}
             target="_blank"
             rel="noopener noreferrer"
-            >GitHub <span class="external-mark" aria-hidden="true">↗</span></a
+            ><span>GitHub</span><span class="resume-contact__url"
+              >{profile.links.githubDisplay}</span
+            ></a
           >
         </div>
       </aside>
@@ -137,6 +153,21 @@ const copy = {
         </section>
 
         <div class="resume-columns">
+          <section class="resume-section">
+            <h2>{copy.leadership}</h2>
+            <div class="compact-ledger">
+              {
+                profile.leadership.map((item) => (
+                  <div>
+                    <span>{item.period}</span>
+                    <strong>{item.title}</strong>
+                    <small>{item.organization}</small>
+                  </div>
+                ))
+              }
+            </div>
+          </section>
+
           <section class="resume-section">
             <h2>{copy.credentials}</h2>
             <div class="compact-ledger">

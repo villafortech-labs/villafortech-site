@@ -14,14 +14,48 @@ import {
 const RESUMES = [
   {
     file: 'resume-en.pdf',
-    headings: ['Experience', 'Education'],
-    label: 'English résumé',
+    headings: [
+      'Experience',
+      'Education',
+      'Leadership & Teaching',
+      'Credentials',
+      'Languages',
+    ],
+    label: 'English resume',
+    requiredText: [
+      'Resume | Roberto Villafuerte',
+      'September 3, 2026',
+      'Resume / Updated September 2026',
+      'AI Safety Ecuador',
+      'Competitive Programming Instructor',
+      'HSK 2',
+      'linkedin.com/in/robertovillafuerte',
+      'github.com/VillaforTech',
+      'Expected Spring 2027',
+    ],
     route: '/resume/',
   },
   {
     file: 'resume-es.pdf',
-    headings: ['Experiencia', 'Formación'],
-    label: 'Spanish résumé',
+    headings: [
+      'Experiencia',
+      'Formación',
+      'Liderazgo y docencia',
+      'Credenciales',
+      'Idiomas',
+    ],
+    label: 'Spanish resume',
+    requiredText: [
+      'Currículum | Roberto Villafuerte',
+      '3 de septiembre de 2026',
+      'Currículum / Actualizado en septiembre de 2026',
+      'AI Safety Ecuador',
+      'Profesor de programación competitiva',
+      'Nivel HSK 2',
+      'linkedin.com/in/robertovillafuerte',
+      'github.com/VillaforTech',
+      'primavera de 2027',
+    ],
     route: '/es/resume/',
   },
 ];
@@ -29,7 +63,7 @@ const RESUMES = [
 function usage() {
   console.log(`Usage: node scripts/verify-resume-print.mjs --output DIRECTORY [--base-url URL]
 
-Prints and verifies English and Spanish Letter-size, one-page résumé PDFs.
+Prints and verifies English and Spanish Letter-size, one-page resume PDFs.
 The default base URL is http://127.0.0.1:4321/.`);
 }
 
@@ -87,6 +121,7 @@ function parsePdfInfo(output, file) {
 
 function verifyText(text, resume, file) {
   const normalized = text.normalize('NFC').replace(/\s+/g, ' ').trim();
+  const normalizedFolded = normalized.toLocaleLowerCase();
   const words = normalized.split(/\s+/).filter(Boolean);
   if (normalized.length < 500 || words.length < 80) {
     throw new Error(
@@ -97,6 +132,12 @@ function verifyText(text, resume, file) {
   for (const heading of resume.headings) {
     if (!normalized.toLocaleLowerCase().includes(heading.toLocaleLowerCase())) {
       throw new Error(`${file}: missing localized heading "${heading}".`);
+    }
+  }
+
+  for (const required of resume.requiredText) {
+    if (!normalizedFolded.includes(required.toLocaleLowerCase())) {
+      throw new Error(`${file}: missing required text "${required}".`);
     }
   }
 }
@@ -145,7 +186,7 @@ async function verifyPdf(path, resume) {
   }
 
   parsePdfInfo(runTool('pdfinfo', [path]), path);
-  verifyText(runTool('pdftotext', ['-layout', path, '-']), resume, path);
+  verifyText(runTool('pdftotext', [path, '-']), resume, path);
   verifyFonts(runTool('pdffonts', [path]), path);
 }
 
@@ -252,13 +293,13 @@ async function main() {
     console.log(`Verified ${resume.label}: ${finalPath}`);
   }
   console.log(
-    'Résumé print gate passed: both files are portable untagged Letter PDFs with localized text and embedded Unicode-mapped fonts.',
+    'Resume print gate passed: both files are portable untagged Letter PDFs with localized text and embedded Unicode-mapped fonts.',
   );
 }
 
 main().catch((error) => {
   console.error(
-    `Résumé print verification failed: ${error.stack ?? error.message}`,
+    `Resume print verification failed: ${error.stack ?? error.message}`,
   );
   process.exitCode = 1;
 });

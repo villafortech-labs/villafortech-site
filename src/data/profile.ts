@@ -116,7 +116,7 @@ export const profile = {
     {
       institution: 'Universidad San Francisco de Quito (USFQ)',
       program: 'BEng, Computer Science Engineering',
-      period: '2022 - Expected December 2026',
+      period: '2022 - Expected Spring 2027',
       detail:
         'Scholarship-supported undergraduate studies in computer science and software engineering; currently in the final year.',
     },
@@ -126,6 +126,18 @@ export const profile = {
       period: 'August - December 2025',
       detail:
         'Exchange semester with a 4.83 / 5.0 average. MSc-level coursework in Engineering of ML Systems, Big Data Platforms, Trustworthy ML, and Software Architectures.',
+    },
+  ],
+  leadership: [
+    {
+      title: 'Coordinator',
+      organization: 'AI Safety Ecuador',
+      period: '2025',
+    },
+    {
+      title: 'Competitive Programming Instructor',
+      organization: 'Competitive Programming Club',
+      period: '2025',
     },
   ],
   certifications: [
@@ -167,12 +179,15 @@ export const profile = {
   languages: [
     { name: 'English', level: 'Native or bilingual proficiency' },
     { name: 'Spanish', level: 'Native or bilingual proficiency' },
+    { name: 'Chinese', level: 'HSK 2' },
   ],
   links: {
     email: 'mailto:contact@villafortech.com',
     emailAddress: 'contact@villafortech.com',
     github: 'https://github.com/VillaforTech',
+    githubDisplay: 'github.com/VillaforTech',
     linkedin: 'https://www.linkedin.com/in/robertovillafuerte/',
+    linkedinDisplay: 'linkedin.com/in/robertovillafuerte',
   },
   proof: [
     {
@@ -196,7 +211,7 @@ export const profile = {
       detail: 'IEEEXtreme 18.0 · IEEE',
     },
   ],
-  lastVerified: '2026-09-01',
+  lastVerified: '2026-09-03',
 } as const;
 
 export default profile;
