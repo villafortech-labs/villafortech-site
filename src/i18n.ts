@@ -33,11 +33,10 @@ export const sharedCopy = {
     nav: {
       projects: 'Work',
       about: 'About',
-      contact: 'Work with me',
+      contact: 'Contact',
     },
     footerLabel: 'Site and contact links',
-    footerNote:
-      'AI systems, data foundations, and the road to building companies.',
+    footerNote: 'Think rigorously. Live curiously.',
     footer: {
       projects: 'Work',
       about: 'About',
@@ -57,11 +56,10 @@ export const sharedCopy = {
     nav: {
       projects: 'Proyectos',
       about: 'Sobre mí',
-      contact: 'Trabajemos juntos',
+      contact: 'Contacto',
     },
     footerLabel: 'Enlaces del sitio y de contacto',
-    footerNote:
-      'Sistemas de IA, bases de datos y el camino hacia construir empresas.',
+    footerNote: 'Pensar con rigor. Vivir con curiosidad.',
     footer: {
       projects: 'Proyectos',
       about: 'Sobre mí',

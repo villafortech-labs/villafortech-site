@@ -1,7 +1,7 @@
 export const profile = {
   name: 'Roberto Villafuerte',
-  siteName: 'VillaForTech',
-  headline: 'Applied AI Engineer',
+  siteName: 'Roberto Villafuerte',
+  headline: 'AI Engineer',
   location: 'Quito, Ecuador',
   currentRole: {
     title: 'Applied AI Engineer',
@@ -17,11 +17,11 @@ export const profile = {
   introduction:
     'I design and build AI and data systems, with an emphasis on the architecture that makes them reliable, secure, and maintainable.',
   positioning: {
-    statement: 'I build the systems behind ambitious AI products.',
+    statement: 'I build, test, and explain AI and data systems.',
     detail:
-      'I work with founders and engineering leaders to turn technically demanding AI ideas into reliable products, from data foundations and system architecture through implementation.',
+      'I document projects, architecture decisions, and what I learn when models, data, and software have to work together.',
     opportunities:
-      'Available for independent consulting, technical collaboration, startup opportunities, and speaking.',
+      'Projects, failures, and lessons learned. From Quito, Ecuador.',
   },
   services: [
     {

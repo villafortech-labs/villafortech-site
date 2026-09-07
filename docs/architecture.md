@@ -35,12 +35,11 @@ Indexes query the collection directly. There is no duplicate JSON project regist
 
 ## Design system
 
-`src/styles/global.css` defines a warm-paper editorial system with midnight navy, cobalt, and a single burnt-orange signal color. Display typography uses a system serif stack; labels use a system monospace stack. There are no remote font requests.
+`src/styles/global.css` is the new Criterio vivo screen design, built independently of the previous layout. It uses the approved paper (#F3EEE3), forest (#162F2B), leaf (#34644F), sage (#D9DDCC), and clay (#A44438) palette. Instrument Serif is used for the signature and editorial headings; Manrope is used for reading and the homepage opening. Local font files and OFL licenses live in `public/fonts/`; no remote font service is required.
 
-Project-specific visuals are semantic Astro components:
+The approved outlined signatures, clover, and micro mark live in `public/brand/`. The header switches between the original horizontal and principal signatures without distorting either. Photography retains its natural colors. `src/styles/print.css` isolates the résumé print layout from screen styling.
 
-- `EvaluationProtocol.astro` shows the train-validation-test boundary.
-- `MetricShift.astro` shows the direction of the verified fairness metrics.
+Project diagrams remain semantic Astro components representing the documented data and control flows. Their visual presentation follows the same brand colors and readable text hierarchy.
 
 The site-wide social asset is `public/og.jpg`. Its essential text is kept inside a LinkedIn-safe crop. The portrait and Helsinki photograph use responsive AVIF and WebP sources with the original JPEGs as fallbacks.
 

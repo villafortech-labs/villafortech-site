@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/print.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import profile from '../data/profile';
@@ -38,8 +39,7 @@ const translatedURL = new URL(translatedPath, Astro.site);
 const englishURL = locale === 'en' ? canonicalURL : translatedURL;
 const spanishURL = locale === 'es' ? canonicalURL : translatedURL;
 const localeCopy = sharedCopy[locale];
-const localizedHeadline =
-  locale === 'es' ? 'Ingeniero de IA Aplicada' : profile.headline;
+const localizedHeadline = profile.headline;
 const pageTitle = title === profile.name ? title : `${title} | ${profile.name}`;
 const imageURL = new URL(image, Astro.site);
 ---
@@ -49,9 +49,23 @@ const imageURL = new URL(image, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f2efe8" />
+    <meta name="theme-color" content="#F3EEE3" />
     <meta name="author" content={profile.name} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/manrope/Manrope%5Bwght%5D.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/instrumentserif/InstrumentSerif-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="en" href={englishURL} />

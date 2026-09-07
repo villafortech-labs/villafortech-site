@@ -1,7 +1,7 @@
 export const profile = {
   name: 'Roberto Villafuerte',
-  siteName: 'VillaForTech',
-  headline: 'Ingeniero de IA Aplicada',
+  siteName: 'Roberto Villafuerte',
+  headline: 'AI Engineer',
   location: 'Quito, Ecuador',
   currentRole: {
     title: 'Ingeniero de IA Aplicada',
@@ -17,11 +17,10 @@ export const profile = {
   introduction:
     'Diseño y construyo sistemas de IA y datos, con énfasis en la arquitectura que los hace confiables, seguros y mantenibles.',
   positioning: {
-    statement: 'Construyo los sistemas detrás de productos de IA ambiciosos.',
+    statement: 'Construyo, pruebo y explico sistemas de IA y datos.',
     detail:
-      'Trabajo con fundadores y líderes de ingeniería para convertir ideas de IA técnicamente exigentes en productos confiables, desde los fundamentos de datos y la arquitectura del sistema hasta la implementación.',
-    opportunities:
-      'Disponible para consultoría independiente, colaboración técnica, oportunidades en startups y conferencias.',
+      'Documento proyectos, decisiones de arquitectura y lo que aprendo cuando modelos, datos y software tienen que funcionar juntos.',
+    opportunities: 'Proyectos, fallos y aprendizajes. Desde Quito, Ecuador.',
   },
   services: [
     {

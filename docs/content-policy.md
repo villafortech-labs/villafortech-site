@@ -2,9 +2,11 @@
 
 The website and LinkedIn should describe the same professional identity:
 
-> Applied AI Engineer
+> AI Engineer
 
 The site may add technical depth, but it must not upgrade the certainty of a LinkedIn claim or turn implementation artifacts into deployment or business-impact claims.
+
+The Criterio vivo brand manual and the approved September 2026 channel identity guide the public voice. The homepage introduces the work with "Construyo, pruebo y explico sistemas de IA y datos." Contact invites a conversation; it does not advertise consulting services. Historical employment titles remain unchanged.
 
 ## Evidence labels
 

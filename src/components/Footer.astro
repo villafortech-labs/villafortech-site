@@ -14,7 +14,19 @@ const routes = localeRoutes[locale];
 <footer class="site-footer">
   <div class="shell site-footer__inner">
     <div>
-      <p class="footer-name">{profile.name}</p>
+      <a
+        href={routes.home}
+        class="footer-signature"
+        aria-label={copy.homeLabel}
+      >
+        <img
+          src="/brand/signature-inverse.svg"
+          width="850"
+          height="320"
+          alt={profile.name}
+          loading="lazy"
+        />
+      </a>
       <p class="footer-note">{copy.footerNote}</p>
     </div>
 
@@ -33,7 +45,7 @@ const routes = localeRoutes[locale];
     </nav>
 
     <p class="footer-copyright">
-      © {new Date().getFullYear()} · {profile.siteName}
+      © {new Date().getFullYear()} · Roberto Villafuerte · Villa for Tech
     </p>
   </div>
 </footer>

@@ -4,11 +4,9 @@ import Button from '../components/Button.astro';
 import profileEn from '../data/profile';
 import profileEs from '../data/profile.es';
 import { localeRoutes, type Locale } from '../i18n';
-
 interface Props {
   locale?: Locale;
 }
-
 const { locale = 'en' } = Astro.props;
 const profile = locale === 'es' ? profileEs : profileEn;
 const routes = localeRoutes[locale];
@@ -16,205 +14,143 @@ const copy = {
   en: {
     title: 'About',
     description:
-      'The story behind Roberto Villafuerte’s path from the Ecuadorian Amazon to AI systems engineering and his long-term goal of building companies.',
-    heroEyebrow: 'About / Origin and direction',
-    heroTitle: 'From curiosity about computing to building AI systems.',
-    heroDeck:
-      'I grew up in Puyo, in the Ecuadorian Amazon. Alan Turing drew me to computer science; a scholarship, work across different contexts, and an exchange semester turned that curiosity into a direction.',
-    indexLabel: 'About page sections',
-    index: [
-      '01 / Origin',
-      '02 / Opportunity',
-      '03 / AI',
-      '04 / Experience',
-      '05 / Direction',
-      '06 / Education',
+      'Roberto Villafuerte: from Puyo to engineering AI and data systems. The experiences, questions, and people behind the work.',
+    eyebrow: 'The person behind the work',
+    heading: 'Curiosity brought me here.',
+    intro:
+      'I grew up in Puyo, in the Ecuadorian Amazon. Today I build AI and data systems, and keep asking how they work and what they make possible.',
+    photo:
+      'Roberto Villafuerte next to a portrait of Linus Torvalds at the University of Helsinki',
+    caption: 'University of Helsinki / Linus Torvalds Auditorium',
+    timeline: 'Places along the way',
+    headings: [
+      'A first question.',
+      'The chance to study.',
+      'Looking beyond the model.',
+      'Learning in different contexts.',
+      'What I am building toward.',
     ],
-    originEyebrow: 'Puyo / Ecuadorian Amazon',
-    originTitle: 'A first question about computation.',
-    scholarshipEyebrow: 'Scholarship / USFQ',
-    scholarshipTitle: 'A scholarship made university possible.',
-    aiEyebrow: 'The AI turn',
-    aiTitle: 'ChatGPT made me want to understand how AI systems work.',
-    aiDetail:
-      'That question still organizes my work. Models matter, but products become useful at the boundaries between models, data, services, people, and business constraints.',
-    experienceEyebrow: 'Work and wider contexts',
-    experienceTitle: 'Experience made the path concrete.',
-    helsinkiDetail:
-      'The semester in Helsinki widened both my technical and cultural perspective and gave me a clearer view of the kind of systems, and eventually companies, I wanted to build.',
-    photoGroup: 'A selected moment from the University of Helsinki',
-    photoAlt:
-      'Roberto Villafuerte beside a portrait of Linus Torvalds outside the Linus Torvalds Auditorium at the University of Helsinki',
-    university: 'University of Helsinki',
-    auditorium: 'Linus Torvalds Auditorium',
-    directionEyebrow: 'Long-term direction',
-    directionTitle: 'The goal is to build companies.',
-    directionDetail:
-      'That means continuing to deepen my engineering judgment while working closely with founders and engineering teams, turning difficult product requirements into systems that can be built, tested, and operated.',
-    educationEyebrow: 'Formal path',
-    educationTitle: 'Computer science across contexts.',
-    workWithMe: 'Work with me',
-    explore: 'Explore my work',
+    education: 'Education',
+    educationTitle: 'A foundation to keep building on.',
     resume: 'Read the résumé',
+    projects: 'Explore the projects',
   },
   es: {
     title: 'Sobre mí',
     description:
-      'La historia del camino de Roberto Villafuerte desde la Amazonía ecuatoriana hasta la ingeniería de sistemas de IA, y su objetivo a largo plazo de construir empresas.',
-    heroEyebrow: 'Sobre mí / Origen y dirección',
-    heroTitle:
-      'La curiosidad por la computación me llevó a construir sistemas de IA.',
-    heroDeck:
-      'Crecí en Puyo, en la Amazonía ecuatoriana. Alan Turing despertó mi interés por las ciencias de la computación; una beca, el trabajo en distintos contextos y un semestre de intercambio convirtieron esa curiosidad en una dirección.',
-    indexLabel: 'Secciones de la página Sobre mí',
-    index: [
-      '01 / Origen',
-      '02 / Oportunidad',
-      '03 / IA',
-      '04 / Experiencia',
-      '05 / Dirección',
-      '06 / Formación',
+      'Roberto Villafuerte: de Puyo a la ingeniería de sistemas de IA y datos. Las experiencias, preguntas y personas detrás del trabajo.',
+    eyebrow: 'La persona detrás del trabajo',
+    heading: 'La curiosidad me trajo hasta aquí.',
+    intro:
+      'Crecí en Puyo, en la Amazonía ecuatoriana. Hoy construyo sistemas de IA y datos, y sigo preguntándome cómo funcionan y qué hacen posible.',
+    photo:
+      'Roberto Villafuerte junto a un retrato de Linus Torvalds en la Universidad de Helsinki',
+    caption: 'Universidad de Helsinki / Auditorio Linus Torvalds',
+    timeline: 'Lugares del camino',
+    headings: [
+      'Una primera pregunta.',
+      'La oportunidad de estudiar.',
+      'Mirar más allá del modelo.',
+      'Aprender en distintos contextos.',
+      'Hacia dónde quiero ir.',
     ],
-    originEyebrow: 'Puyo / Amazonía ecuatoriana',
-    originTitle: 'Una primera pregunta sobre la computación.',
-    scholarshipEyebrow: 'Beca / USFQ',
-    scholarshipTitle: 'Una beca hizo posible la universidad.',
-    aiEyebrow: 'El giro hacia la IA',
-    aiTitle:
-      'ChatGPT me hizo querer entender cómo funcionan los sistemas de IA.',
-    aiDetail:
-      'Esa pregunta todavía guía mi trabajo. Los modelos importan, pero los productos se vuelven útiles en los límites entre modelos, datos, servicios, personas y restricciones del negocio.',
-    experienceEyebrow: 'Trabajo y nuevos contextos',
-    experienceTitle: 'La experiencia le dio forma al camino.',
-    helsinkiDetail:
-      'El semestre en Helsinki amplió mi perspectiva técnica y cultural, y me dio una visión más clara de los sistemas y, con el tiempo, de las empresas que quería construir.',
-    photoGroup: 'Un momento seleccionado de la Universidad de Helsinki',
-    photoAlt:
-      'Roberto Villafuerte junto a un retrato de Linus Torvalds, afuera del Auditorio Linus Torvalds de la Universidad de Helsinki',
-    university: 'Universidad de Helsinki',
-    auditorium: 'Auditorio Linus Torvalds',
-    directionEyebrow: 'Dirección a largo plazo',
-    directionTitle: 'El objetivo es construir empresas.',
-    directionDetail:
-      'Eso significa seguir profundizando mi criterio de ingeniería mientras trabajo de cerca con fundadores y equipos de ingeniería, convirtiendo requisitos de producto difíciles en sistemas que se puedan construir, probar y operar.',
-    educationEyebrow: 'Formación',
-    educationTitle: 'Ciencias de la computación en distintos contextos.',
-    workWithMe: 'Trabajemos juntos',
-    explore: 'Explora mi trabajo',
+    education: 'Formación',
+    educationTitle: 'Una base para seguir construyendo.',
     resume: 'Ver el currículum',
+    projects: 'Explorar los proyectos',
   },
 }[locale];
 ---
 
 <BaseLayout title={copy.title} description={copy.description} locale={locale}>
-  <header class="page-hero">
-    <div class="shell page-hero__grid">
-      <div>
-        <p class="eyebrow">{copy.heroEyebrow}</p>
-        <h1>{copy.heroTitle}</h1>
+  <section class="about-opening shell">
+    <div class="about-opening__grid">
+      <div class="about-opening__copy">
+        <p class="eyebrow">{copy.eyebrow}</p><h1>{copy.heading}</h1><p>
+          {copy.intro}
+        </p>
       </div>
-      <p class="page-hero__deck">{copy.heroDeck}</p>
+      <figure>
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/images/roberto-linus-torvalds-auditorium-384.avif 384w, /images/roberto-linus-torvalds-auditorium-768.avif 768w"
+            sizes="(max-width: 760px) min(calc(100vw - 48px), 360px), 330px"
+          />
+          <source
+            type="image/webp"
+            srcset="/images/roberto-linus-torvalds-auditorium-384.webp 384w, /images/roberto-linus-torvalds-auditorium-768.webp 768w"
+            sizes="(max-width: 760px) min(calc(100vw - 48px), 360px), 330px"
+          />
+          <img
+            src="/images/roberto-linus-torvalds-auditorium.jpeg"
+            width="768"
+            height="1024"
+            alt={copy.photo}
+            decoding="async"
+          />
+        </picture>
+        <figcaption>{copy.caption}</figcaption>
+      </figure>
     </div>
-  </header>
-
-  <section class="narrative-section">
-    <div class="shell narrative-grid">
-      <aside class="narrative-index" aria-label={copy.indexLabel}>
-        {copy.index.map((item) => <span>{item}</span>)}
+  </section>
+  <section class="life-story">
+    <div class="shell life-story__grid">
+      <aside aria-label={copy.timeline}>
+        <p class="eyebrow">{copy.timeline}</p>
+        <ol class="life-story__index">
+          {
+            profile.story.milestones
+              .filter((_, i) => [0, 1, 4].includes(i))
+              .map((item) => (
+                <li>
+                  <>
+                    <strong>{item.place}</strong>
+                    <small>{item.detail}</small>
+                  </>
+                </li>
+              ))
+          }
+        </ol>
       </aside>
-
-      <div class="narrative-copy">
-        <section>
-          <p class="eyebrow">{copy.originEyebrow}</p>
-          <h2>{copy.originTitle}</h2>
-          <p>{profile.story.paragraphs[0]}</p>
-        </section>
-
-        <section>
-          <p class="eyebrow">{copy.scholarshipEyebrow}</p>
-          <h2>{copy.scholarshipTitle}</h2>
-          <p>{profile.story.paragraphs[1]}</p>
-        </section>
-
-        <section>
-          <p class="eyebrow">{copy.aiEyebrow}</p>
-          <h2>{copy.aiTitle}</h2>
-          <p>{profile.story.paragraphs[2]}</p>
-          <p>{copy.aiDetail}</p>
-        </section>
-
-        <section>
-          <p class="eyebrow">{copy.experienceEyebrow}</p>
-          <h2>{copy.experienceTitle}</h2>
-          <p>{profile.story.paragraphs[3]}</p>
-          <p>{copy.helsinkiDetail}</p>
-
-          <div
-            class="about-photo-spread about-photo-spread--single"
-            role="group"
-            aria-label={copy.photoGroup}
-          >
-            <figure class="about-photo">
-              <div class="about-photo__frame">
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcset="/images/roberto-linus-torvalds-auditorium-384.avif 384w, /images/roberto-linus-torvalds-auditorium-768.avif 768w"
-                    sizes="(max-width: 470px) 74vw, 380px"
-                  />
-                  <source
-                    type="image/webp"
-                    srcset="/images/roberto-linus-torvalds-auditorium-384.webp 384w, /images/roberto-linus-torvalds-auditorium-768.webp 768w"
-                    sizes="(max-width: 470px) 74vw, 380px"
-                  />
-                  <img
-                    src="/images/roberto-linus-torvalds-auditorium.jpeg"
-                    width="768"
-                    height="1024"
-                    alt={copy.photoAlt}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </picture>
-              </div>
-              <figcaption>
-                <span>{copy.university}</span>
-                <span>{copy.auditorium}</span>
-              </figcaption>
-            </figure>
-          </div>
-        </section>
-
-        <section>
-          <p class="eyebrow">{copy.directionEyebrow}</p>
-          <h2>{copy.directionTitle}</h2>
-          <p>{profile.story.paragraphs[4]}</p>
-          <p>{copy.directionDetail}</p>
-        </section>
-
-        <section>
-          <p class="eyebrow">{copy.educationEyebrow}</p>
-          <h2>{copy.educationTitle}</h2>
-          <div class="education-ledger">
-            {
-              profile.education.map((item) => (
-                <article>
+      <div class="life-story__copy">
+        {
+          profile.story.paragraphs.map((paragraph, i) => (
+            <section>
+              <>
+                <h2>{copy.headings[i]}</h2>
+                <p>{paragraph}</p>
+              </>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  <section class="education-block">
+    <div class="shell education-block__layout">
+      <div>
+        <p class="eyebrow">{copy.education}</p><h2>{copy.educationTitle}</h2>
+      </div>
+      <div>
+        <div class="education-ledger">
+          {
+            profile.education.map((item) => (
+              <article>
+                <>
                   <span>{item.period}</span>
                   <h3>{item.institution}</h3>
                   <p class="education-ledger__program">{item.program}</p>
                   <p>{item.detail}</p>
-                </article>
-              ))
-            }
-          </div>
-        </section>
-
-        <div class="narrative-actions">
-          <Button href={routes.contact}>{copy.workWithMe}</Button>
-          <Button href={routes.projects} variant="secondary"
-            >{copy.explore}</Button
-          >
-          <Button href={routes.resume} variant="secondary">{copy.resume}</Button
+                </>
+              </article>
+            ))
+          }
+        </div><div class="narrative-actions">
+          <Button href={routes.resume}>{copy.resume}</Button><a
+            class="plain-link"
+            href={routes.projects}
+            >{copy.projects}<span aria-hidden="true">→</span></a
           >
         </div>
       </div>

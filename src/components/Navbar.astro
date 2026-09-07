@@ -34,8 +34,18 @@ function isActive(href: string): boolean {
 <nav class="site-nav" aria-label={copy.navLabel}>
   <div class="shell site-nav__inner">
     <a href={routes.home} class="site-mark" aria-label={copy.homeLabel}>
-      <span class="site-mark__signal" aria-hidden="true"></span>
-      <span>Roberto Villafuerte</span>
+      <picture>
+        <source
+          media="(min-width: 721px)"
+          srcset="/brand/signature-horizontal.svg"
+        />
+        <img
+          src="/brand/signature.svg"
+          width="850"
+          height="320"
+          alt="Roberto Villafuerte"
+        />
+      </picture>
     </a>
 
     <div class="site-nav__desktop">

@@ -1,5 +1,2 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#f2efe8"/>
-  <rect x="6" y="6" width="20" height="20" fill="#0c1830"/>
-  <rect x="11" y="11" width="10" height="10" fill="#d75b38"/>
-</svg>
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><title>Favicon 32</title><defs /><rect x="0" y="0" width="32" height="32" rx="0" fill="#F3EEE3" stroke="none" stroke-width="1" /><g transform="translate(6.08 2.88) scale(0.08199999999999999)"><g transform="translate(6.0 10.0) scale(0.95)"><path d="M 127 58 C 127 28 124 7 99 1 C 82 -3 70 7 62 17 C 42 18 26 28 24 50 C 18 75 28 88 54 102 C 24 102 6 116 2 139 C -4 158 4 171 17 180 C 19 198 31 207 48 210 C 64 213 77 204 89 194 C 80 228 73 267 77 289 C 77 298 84 302 96 300 C 104 299 105 295 103 284 C 97 260 98 230 107 197 C 117 225 132 235 150 232 C 165 230 170 224 181 213 C 201 211 216 201 219 183 C 225 152 204 137 179 128 C 208 129 225 114 226 96 C 228 79 218 64 205 59 C 203 40 193 31 178 29 C 161 29 149 40 127 58 Z" fill="#162F2B" stroke="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" /></g></g></svg>
