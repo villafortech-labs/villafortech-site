@@ -1603,6 +1603,42 @@ main {
   font-size: 0.875rem;
 }
 
+.resume-projects {
+  margin-top: 36px;
+}
+.resume-projects > h3 {
+  margin: 0 0 18px;
+  color: var(--forest);
+  font: 400 2rem/1.2 var(--font-display);
+}
+.resume-projects__list {
+  display: grid;
+}
+.resume-project {
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+}
+.resume-project h4 {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.4;
+}
+.resume-project__context {
+  margin-top: 4px;
+  color: var(--leaf);
+  font-size: 0.8125rem;
+}
+.resume-project__description {
+  margin: 12px 0 8px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.resume-project > a {
+  color: var(--leaf);
+  font-size: 0.875rem;
+  text-underline-offset: 0.2em;
+}
+
 .site-footer {
   padding-block: 42px;
   color: var(--paper);

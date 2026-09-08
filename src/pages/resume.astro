@@ -26,6 +26,48 @@ const copy = {
     languages: 'Languages',
     skills: 'Selected skills',
     skillsLabel: 'Selected technical skills',
+    portfolio: 'Portfolio',
+    projects: 'Selected projects',
+    projectCase: 'Case study and code',
+    projectSource: 'Code on GitHub',
+    experienceDetails: [
+      [
+        'Translate product and business requirements into architecture, data flows, backend services, and implementation plans.',
+        'Develop AI and data product capabilities with reliability, security, maintainability, and scalability in view.',
+      ],
+      [
+        'Designed PostgreSQL structures and migrations for a multi-tenant health platform, including access controls, consent, auditability, and reporting.',
+        'Added database health checks, initial tests, and source-aware deduplication across devices; documented technical decisions.',
+      ],
+      [
+        'Built a support-automation system with FastAPI, Chatwoot, Qdrant, PostgreSQL/pgvector, Redis, and Docker Compose.',
+        'Implemented retrieval, intent routing, human escalation, logging, and internal adapters, with a human-only fallback.',
+      ],
+      [
+        'Developed Python and Mage pipelines for data preparation, feature engineering, model evaluation, prediction, alerts, and export.',
+        'Integrated PostgreSQL ingestion and export, kept predictions separate from evaluation metrics, and corrected schemas, write policies, and documentation.',
+      ],
+    ],
+    educationDetails: [
+      'Scholarship recipient. Final semester with capstone project in progress.',
+      'Average: 4.83/5.0. MSc-level courses: Engineering of ML Systems, Big Data Platforms, Trustworthy ML, and Software Architectures.',
+    ],
+    selectedProjects: [
+      {
+        title: 'Auditable ML policy lab',
+        context: 'Academic project · University of Helsinki',
+        description:
+          'Classification lab with separate training, validation, and test stages; fairness reports, traceable artifacts, and an API with explicit contracts.',
+        href: 'https://www.villafortech.com/projects/fairness-aware-candidate-pre-screening/',
+      },
+      {
+        title: 'Bio-inspired optimization benchmark',
+        context: 'Open-source project · Python',
+        description:
+          'Reproducible comparison of GA, PSO, ACO, and GWO on test functions, routes, and schedules, with configurable seeds, saved metrics, and convergence curves.',
+        href: 'https://github.com/VillaforTech/Bio-Inspired-Optimization-Benchmark',
+      },
+    ],
   },
   es: {
     title: 'Currículum',
@@ -42,6 +84,48 @@ const copy = {
     languages: 'Idiomas',
     skills: 'Habilidades seleccionadas',
     skillsLabel: 'Habilidades técnicas seleccionadas',
+    portfolio: 'Portafolio',
+    projects: 'Proyectos seleccionados',
+    projectCase: 'Caso de estudio y código',
+    projectSource: 'Código en GitHub',
+    experienceDetails: [
+      [
+        'Traduzco requisitos de producto y negocio en arquitectura, flujos de datos, servicios backend y planes de implementación.',
+        'Desarrollo capacidades de IA y datos considerando confiabilidad, seguridad, mantenibilidad y escalabilidad.',
+      ],
+      [
+        'Diseñé estructuras y migraciones en PostgreSQL para una plataforma multitenant de salud, con controles de acceso, consentimiento, auditabilidad y reportes.',
+        'Incorporé verificaciones de base de datos, pruebas iniciales y deduplicación de datos de múltiples dispositivos; documenté las decisiones técnicas.',
+      ],
+      [
+        'Construí un sistema de automatización de soporte con FastAPI, Chatwoot, Qdrant, PostgreSQL/pgvector, Redis y Docker Compose.',
+        'Implementé recuperación de información, enrutamiento, escalamiento humano, registro de eventos y adaptadores internos, con una vía de contingencia de atención humana.',
+      ],
+      [
+        'Desarrollé pipelines en Python y Mage para preparar datos, generar características, evaluar modelos, predecir, emitir alertas y exportar resultados.',
+        'Integré ingesta y exportación con PostgreSQL, separé predicciones de métricas de evaluación y corregí esquemas, políticas de escritura y documentación.',
+      ],
+    ],
+    educationDetails: [
+      'Beca de estudios. Último semestre y proyecto integrador en curso.',
+      'Promedio: 4,83/5,0. Cursos de maestría: Engineering of ML Systems, Big Data Platforms, Trustworthy ML y Software Architectures.',
+    ],
+    selectedProjects: [
+      {
+        title: 'Laboratorio auditable de políticas de ML',
+        context: 'Proyecto académico · University of Helsinki',
+        description:
+          'Laboratorio de clasificación con separación entre entrenamiento, validación y prueba; informes de equidad, trazabilidad de artefactos y una API con contratos explícitos.',
+        href: 'https://www.villafortech.com/es/projects/fairness-aware-candidate-pre-screening/',
+      },
+      {
+        title: 'Benchmark de optimización bioinspirada',
+        context: 'Proyecto de código abierto · Python',
+        description:
+          'Comparación reproducible de GA, PSO, ACO y GWO en funciones de prueba, rutas y horarios, con semillas configurables, métricas y curvas de convergencia.',
+        href: 'https://github.com/VillaforTech/Bio-Inspired-Optimization-Benchmark',
+      },
+    ],
   },
 }[locale];
 ---
@@ -78,6 +162,11 @@ const copy = {
       <aside class="resume-summary">
         <p>{profile.introduction}</p>
         <div class="resume-contact">
+          <a href="https://www.villafortech.com"
+            ><span>{copy.portfolio}</span><span class="resume-contact__url"
+              >villafortech.com</span
+            ></a
+          >
           <a
             href={profile.links.linkedin}
             target="_blank"
@@ -98,7 +187,7 @@ const copy = {
       </aside>
 
       <div class="resume-main">
-        <section class="resume-section">
+        <section class="resume-section resume-experience">
           <h2>{copy.experience}</h2>
           <div class="resume-ledger">
             {
@@ -116,7 +205,7 @@ const copy = {
                       <time>{item.period}</time>
                     </div>
                     <ul>
-                      {item.details.map((detail) => (
+                      {copy.experienceDetails[index].map((detail) => (
                         <li>{detail}</li>
                       ))}
                     </ul>
@@ -125,9 +214,35 @@ const copy = {
               ))
             }
           </div>
+          <section
+            class="resume-projects"
+            aria-labelledby="resume-projects-title"
+          >
+            <h3 id="resume-projects-title">{copy.projects}</h3>
+            <div class="resume-projects__list">
+              {
+                copy.selectedProjects.map((project, index) => (
+                  <article class="resume-project">
+                    <h4>{project.title}</h4>
+                    <p class="resume-project__context">{project.context}</p>
+                    <p class="resume-project__description">
+                      {project.description}
+                    </p>
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {index === 0 ? copy.projectCase : copy.projectSource}
+                    </a>
+                  </article>
+                ))
+              }
+            </div>
+          </section>
         </section>
 
-        <section class="resume-section">
+        <section class="resume-section resume-education">
           <h2>{copy.education}</h2>
           <div class="resume-ledger">
             {
@@ -144,7 +259,9 @@ const copy = {
                       </div>
                       <time>{item.period}</time>
                     </div>
-                    <p class="resume-entry__detail">{item.detail}</p>
+                    <p class="resume-entry__detail">
+                      {copy.educationDetails[index]}
+                    </p>
                   </div>
                 </article>
               ))
@@ -158,9 +275,9 @@ const copy = {
             <div class="compact-ledger">
               {
                 profile.leadership.map((item) => (
-                  <div>
-                    <span>{item.period}</span>
+                  <div class="resume-compact-entry">
                     <strong>{item.title}</strong>
+                    <span>{item.period}</span>
                     <small>{item.organization}</small>
                   </div>
                 ))
@@ -173,30 +290,26 @@ const copy = {
             <div class="compact-ledger">
               {
                 profile.certifications.map((item) => (
-                  <div>
-                    <>
-                      <span>{item.date}</span>
-                      <strong>{item.name}</strong>
-                      <small>{item.issuer}</small>
-                    </>
+                  <div class="resume-compact-entry">
+                    <strong>{item.name}</strong>
+                    <span>{item.date}</span>
+                    <small>{item.issuer}</small>
                   </div>
                 ))
               }
               {
                 profile.honors.map((item) => (
-                  <div>
-                    <>
-                      <span>{item.date}</span>
-                      <strong>{item.name}</strong>
-                      <small>{item.issuer}</small>
-                    </>
+                  <div class="resume-compact-entry">
+                    <strong>{item.name}</strong>
+                    <span>{item.date}</span>
+                    <small>{item.issuer}</small>
                   </div>
                 ))
               }
             </div>
           </section>
 
-          <section class="resume-section">
+          <section class="resume-section resume-languages">
             <h2>{copy.languages}</h2>
             <div class="compact-ledger">
               {
