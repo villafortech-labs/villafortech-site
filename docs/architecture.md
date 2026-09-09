@@ -41,7 +41,7 @@ The approved outlined signatures, clover, and micro mark live in `public/brand/`
 
 Project diagrams remain semantic Astro components representing the documented data and control flows. Their visual presentation follows the same brand colors and readable text hierarchy.
 
-The site-wide social asset is `public/og.jpg`. Its essential text is kept inside a LinkedIn-safe crop. The homepage uses the approved YED07995 portrait, shared with the social profiles, as an unchanged 440 × 440 PNG in a square frame. The Helsinki photograph uses responsive AVIF and WebP sources with the original JPEG as a fallback.
+The site-wide social asset is `public/og.jpg`. Its essential text is kept inside a LinkedIn-safe crop. The homepage uses the complete YED07995 photograph as an unchanged 755 × 1133 JPEG from the approved PDF selection. It keeps its native proportions and shows the entire frame at every screen size; the square headshot is reserved for social profiles. The Helsinki photograph uses responsive AVIF and WebP sources with the original JPEG as a fallback.
 
 ## JavaScript policy
 
