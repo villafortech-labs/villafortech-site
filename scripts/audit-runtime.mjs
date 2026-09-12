@@ -13,7 +13,7 @@ import {
 } from './lib/chrome-cdp.mjs';
 
 const ROUTES = [
-  ['EN home', '/'],
+  ['EN home', '/en/'],
   ['EN projects', '/projects/'],
   ['EN fairness case', '/projects/fairness-aware-candidate-pre-screening/'],
   ['EN SaliHub case', '/projects/salihub-data-architecture/'],
@@ -21,7 +21,7 @@ const ROUTES = [
   ['EN about', '/about/'],
   ['EN contact', '/contact/'],
   ['EN resume', '/resume/'],
-  ['ES home', '/es/'],
+  ['ES home', '/'],
   ['ES projects', '/es/projects/'],
   ['ES fairness case', '/es/projects/fairness-aware-candidate-pre-screening/'],
   ['ES SaliHub case', '/es/projects/salihub-data-architecture/'],

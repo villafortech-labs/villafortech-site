@@ -1,12 +1,20 @@
 # Content and evidence policy
 
-The website and LinkedIn should describe the same professional identity:
+The public brand leads with the mission:
 
-> AI Engineer
+> Construyo tecnología y comparto el proceso desde Latinoamérica.
 
-The site may add technical depth, but it must not upgrade the certainty of a LinkedIn claim or turn implementation artifacts into deployment or business-impact claims.
+Roberto wants to contribute to the world-class technology and companies built from Latin America. This is an aspiration and a direction for his work, not a claim that he has founded those companies or that the region lacks existing capability. Villa for Tech is the editorial/lab label; Criterio vivo remains the visual identity.
 
-The Criterio vivo brand manual and the approved September 2026 channel identity guide the public voice. The homepage introduces the work with "Construyo, pruebo y explico sistemas de IA y datos." Contact invites a conversation; it does not advertise consulting services. Historical employment titles remain unchanged.
+Spanish is the primary publishing language, with selected English summaries, adaptations, and technical artifacts for international access. The site enters in Spanish at `/` and provides English at `/en/`. Existing project, résumé, and case-study evidence remains available in both languages.
+
+The intended audience is technically serious Latin American engineers, students, researchers, and founders, with international access for collaborators. Technical depth, useful real work, inspectable evidence, integrity, and sustainable production are the foundation. The audience direction remains a hypothesis to validate through real relationships and feedback.
+
+No technical specialty, new flagship, program enrollment, or 12-month technical focus is selected. Chronos is on hold; Materia is an unadopted proposal. Inference, technical AI safety, and document understanding are exploratory topics, not commitments. Existing demonstrated AI/data experience and historical employment titles remain factual professional evidence. The résumé may describe that experience without defining the entire brand by it.
+
+Contact invites a conversation; it does not advertise consulting services. Brand growth remains active and selling is disabled. Prepared content is not a publication. The September 12 user request authorizes this profile/site update; it does not authorize publishing separate posts or research findings. Thesis status and clinical/private data boundaries require their canonical source and separate publication authorization.
+
+This dated strategy update supersedes the previous English-default and AI-Engineer-only public positioning. The site must not upgrade the certainty of existing professional claims or turn implementation artifacts into deployment or business-impact claims.
 
 ## Evidence labels
 
@@ -41,9 +49,9 @@ The intended public path is:
 
 Use this case-study URL once the redesigned site is live:
 
-`https://www.villafortech.com/projects/fairness-aware-candidate-pre-screening/`
+`https://www.villafortech.com/es/projects/fairness-aware-candidate-pre-screening/`
 
 Recommended Featured copy:
 
-- **Title:** Engineering an Auditable Fairness Workflow
-- **Description:** A case study on separating model fitting, policy selection, held-out measurement, and service behavior, with an inspectable evidence trail and source code.
+- **Title:** Un flujo auditable para evaluar equidad
+- **Description:** Un caso de estudio que separa ajuste del modelo, selección de políticas, medición reservada y comportamiento del servicio, con evidencia y código que se pueden revisar.

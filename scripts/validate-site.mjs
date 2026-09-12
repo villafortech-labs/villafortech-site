@@ -152,19 +152,14 @@ function validateAbsolutePageUrl(page, value, label) {
 }
 
 function expectedAlternates(pathname) {
-  const englishPath = pathname.startsWith('/es/')
-    ? pathname.slice('/es'.length) || '/'
-    : pathname;
-  const spanishPath = pathname.startsWith('/es/')
-    ? pathname
-    : pathname === '/'
-      ? '/es/'
-      : `/es${pathname}`;
+  const isHome = pathname === '/' || pathname === '/en/';
+  const englishPath = isHome ? '/en/' : pathname.replace(/^\/es\//, '/');
+  const spanishPath = isHome ? '/' : `/es${englishPath}`;
 
   return {
     en: canonicalHref(englishPath),
     es: canonicalHref(spanishPath),
-    'x-default': canonicalHref(englishPath),
+    'x-default': canonicalHref(spanishPath),
   };
 }
 

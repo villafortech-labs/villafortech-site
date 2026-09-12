@@ -1,10 +1,10 @@
 export type Locale = 'en' | 'es';
 
-export const defaultLocale: Locale = 'en';
+export const defaultLocale: Locale = 'es';
 
 export const localeRoutes = {
   en: {
-    home: '/',
+    home: '/en',
     projects: '/projects',
     about: '/about',
     contact: '/contact',
@@ -12,7 +12,7 @@ export const localeRoutes = {
     writing: '/writing',
   },
   es: {
-    home: '/es',
+    home: '/',
     projects: '/es/projects',
     about: '/es/about',
     contact: '/es/contact',
@@ -71,7 +71,9 @@ export const sharedCopy = {
 } as const;
 
 export function localeFromPath(pathname: string): Locale {
-  return pathname === '/es' || pathname.startsWith('/es/') ? 'es' : 'en';
+  return pathname === '/' || pathname === '/es' || pathname.startsWith('/es/')
+    ? 'es'
+    : 'en';
 }
 
 function cleanPath(pathname: string): string {
@@ -90,6 +92,7 @@ type RouteMatch = {
 
 function matchRoute(pathname: string): RouteMatch | undefined {
   const path = cleanPath(pathname);
+  if (path === '/es') return { key: 'home' };
 
   for (const locale of ['en', 'es'] as const) {
     const routes = localeRoutes[locale];

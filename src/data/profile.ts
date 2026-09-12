@@ -2,6 +2,7 @@ export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'Roberto Villafuerte',
   headline: 'AI Engineer',
+  brandLabel: 'Technology from Latin America',
   location: 'Quito, Ecuador',
   currentRole: {
     title: 'Applied AI Engineer',
@@ -17,11 +18,11 @@ export const profile = {
   introduction:
     'I design and build AI and data systems, with an emphasis on the architecture that makes them reliable, secure, and maintainable.',
   positioning: {
-    statement: 'I build, test, and explain AI and data systems.',
+    statement: 'I build technology and share the process from Latin America.',
     detail:
-      'I document projects, architecture decisions, and what I learn when models, data, and software have to work together.',
+      'I want to help expand the world-class technology and companies built from Latin America. I share the real work: projects, experiments, decisions, and lessons.',
     opportunities:
-      'Projects, failures, and lessons learned. From Quito, Ecuador.',
+      'Technical depth, useful work, and evidence people can inspect. From Quito, Ecuador.',
   },
   services: [
     {
@@ -47,7 +48,7 @@ export const profile = {
       'A scholarship made it possible for me to study Computer Science Engineering at Universidad San Francisco de Quito. There, curiosity became a discipline I could use to understand problems and build.',
       'When ChatGPT appeared, I wanted to understand how systems like it were possible. I began with machine learning and soon became more interested in the engineering around the model: data, services, evaluation, reliability, and the product decisions connecting them.',
       "Along the way, I worked in the United States through Work and Travel, worked remotely in data analysis and machine learning, helped design SaliHub's data architecture, and spent an exchange semester at the University of Helsinki. Together, those experiences broadened my technical perspective and my sense of what I could build.",
-      'That path changed what I am building toward. My long-term goal is to become a technical founder and build companies that turn difficult technology into something genuinely useful.',
+      'That path shapes my mission: to help Latin America keep creating world-class technology and companies. I want to contribute by building, developing technical depth, and sharing useful evidence with other engineers, students, and founders. My specialization and next main project remain open.',
     ],
     milestones: [
       { place: 'Puyo', detail: 'Turing and the first questions' },
@@ -59,16 +60,15 @@ export const profile = {
     ],
   },
   pointOfView: {
-    statement:
-      'The model is one component. The product lives in the interfaces.',
+    statement: 'Build first. Share what you learn.',
     detail:
-      'Useful AI products are built where models, data, services, people, and business constraints meet. That is where I focus my work.',
+      'Technical depth and useful work are the foundation. I share decisions, results, and limitations that other people can inspect.',
   },
   about: [
-    'I design and build AI and data systems, with an emphasis on the architecture that makes them reliable, secure, and maintainable.',
-    'The problems that interest me most sit between models, data, and production software: how information is modeled and moved, how machine-learning components connect to services and workflows, how systems are tested and operated, and how architectural decisions affect correctness, cost, and scalability.',
-    'My technical direction includes data platforms, machine-learning systems, backend infrastructure, and system architecture. I want to understand the durable engineering principles underneath AI-enabled products rather than define myself around one temporary technology.',
-    'Over time, I want to combine engineering depth with product and operating judgment to build and scale technology businesses.',
+    'I build technology and share the process from Latin America.',
+    'My experience includes AI and data systems. The mission is broader: to help create world-class technology and companies from the region.',
+    'I share projects, experiments, and lessons to connect with technically serious engineers, students, researchers, and founders.',
+    'Spanish is my primary publishing language, with selected English summaries and technical materials for international access. My specialization and next main project remain undecided.',
   ],
   experience: [
     {

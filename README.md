@@ -2,6 +2,8 @@
 
 Roberto Villafuerte's personal engineering site at [www.villafortech.com](https://www.villafortech.com).
 
+Spanish is the default entry language; English remains available at `/en/`. The public mission is “Construyo tecnología y comparto el proceso desde Latinoamérica.” The technical specialization and next main project remain undecided.
+
 The site is an evidence-led portfolio: public work links to source, private work is clearly marked as sanitized, and case studies separate implemented behavior from unsupported outcome claims.
 
 ## Stack
@@ -41,14 +43,19 @@ Read [docs/content-policy.md](docs/content-policy.md) before changing profession
 
 ## Main routes
 
-| Route                                              | Purpose                                          |
-| -------------------------------------------------- | ------------------------------------------------ |
-| `/`                                                | Positioning, current work, and selected evidence |
-| `/projects`                                        | Evidence ledger for public and sanitized work    |
-| `/projects/fairness-aware-candidate-pre-screening` | Flagship public engineering case study           |
-| `/about`                                           | Demonstrated work and technical direction        |
-| `/resume`                                          | Canonical web résumé with print/PDF support      |
-| `/contact`                                         | Email, LinkedIn, and GitHub                      |
-| `/writing`                                         | Evidence-gated independent notes                 |
+| Route                                              | Purpose                                              |
+| -------------------------------------------------- | ---------------------------------------------------- |
+| `/`                                                | Spanish mission, current work, and selected evidence |
+| `/en/`                                             | English homepage for international access            |
+| `/projects`                                        | Evidence ledger for public and sanitized work        |
+| `/projects/fairness-aware-candidate-pre-screening` | Featured public engineering case study               |
+| `/about`                                           | Demonstrated work and technical direction            |
+| `/resume`                                          | Canonical web résumé with print/PDF support          |
+| `/contact`                                         | Email, LinkedIn, and GitHub                          |
+| `/writing`                                         | Evidence-gated independent notes                     |
 
 The canonical host is `https://www.villafortech.com`.
+
+## Language routes
+
+Spanish navigation uses `/`, `/es/projects/`, `/es/about/`, `/es/contact/`, and `/es/resume/`. English uses `/en/` and the existing unprefixed project, about, contact, résumé, and writing paths. The old `/es/` homepage redirects to `/`, with a static fallback. Existing case-study and résumé URLs stay usable; reciprocal language links and `x-default` point to Spanish as the default.

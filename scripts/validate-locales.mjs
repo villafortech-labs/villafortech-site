@@ -12,7 +12,8 @@ function assert(condition, message) {
 
 function routeFile(locale, route) {
   const parts = [distRoot];
-  if (locale === 'es') parts.push('es');
+  if (!route && locale === 'en') parts.push('en');
+  if (route && locale === 'es') parts.push('es');
   if (route) parts.push(route);
   parts.push('index.html');
   return join(...parts);
@@ -33,7 +34,11 @@ function projectSlugs(locale) {
 const sharedRoutes = ['', 'about', 'contact', 'projects', 'resume', 'writing'];
 
 function publicURL(locale, route = '') {
-  const path = [locale === 'es' ? 'es' : '', route].filter(Boolean).join('/');
+  const path = route
+    ? [locale === 'es' ? 'es' : '', route].filter(Boolean).join('/')
+    : locale === 'en'
+      ? 'en'
+      : '';
   return `${siteOrigin}/${path ? `${path}/` : ''}`;
 }
 

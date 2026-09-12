@@ -4,6 +4,7 @@ import '../styles/print.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import profile from '../data/profile';
+import profileEs from '../data/profile.es';
 import {
   alternateLocalePath,
   localeFromPath,
@@ -19,16 +20,18 @@ interface Props {
   type?: 'website' | 'article';
   locale?: Locale;
   alternatePath?: string;
+  redirectTo?: string;
 }
 
 const {
   title,
   description,
-  image = '/og.jpg',
+  image = '/og-mission.png',
   noIndex = false,
   type = 'website',
   locale = localeFromPath(Astro.url.pathname),
   alternatePath,
+  redirectTo,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -39,7 +42,8 @@ const translatedURL = new URL(translatedPath, Astro.site);
 const englishURL = locale === 'en' ? canonicalURL : translatedURL;
 const spanishURL = locale === 'es' ? canonicalURL : translatedURL;
 const localeCopy = sharedCopy[locale];
-const localizedHeadline = profile.headline;
+const localizedProfile = locale === 'es' ? profileEs : profile;
+const localizedHeadline = localizedProfile.brandLabel;
 const pageTitle = title === profile.name ? title : `${title} | ${profile.name}`;
 const imageURL = new URL(image, Astro.site);
 ---
@@ -70,10 +74,15 @@ const imageURL = new URL(image, Astro.site);
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="en" href={englishURL} />
     <link rel="alternate" hreflang="es" href={spanishURL} />
-    <link rel="alternate" hreflang="x-default" href={englishURL} />
+    <link rel="alternate" hreflang="x-default" href={spanishURL} />
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {
+      redirectTo && (
+        <meta http-equiv="refresh" content={`0;url=${redirectTo}`} />
+      )
+    }
 
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
@@ -118,12 +127,12 @@ const imageURL = new URL(image, Astro.site);
             '@type': 'WebSite',
             name: profile.siteName,
             url: Astro.site,
-            inLanguage: ['en', 'es'],
+            inLanguage: ['es', 'en'],
           },
           {
             '@type': 'Person',
             name: profile.name,
-            jobTitle: localizedHeadline,
+            jobTitle: localizedProfile.currentRole.title,
             url: Astro.site,
             sameAs: [profile.links.linkedin, profile.links.github],
             homeLocation: profile.location,

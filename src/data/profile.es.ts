@@ -2,6 +2,7 @@ export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'Roberto Villafuerte',
   headline: 'AI Engineer',
+  brandLabel: 'Tecnología desde Latinoamérica',
   location: 'Quito, Ecuador',
   currentRole: {
     title: 'Ingeniero de IA Aplicada',
@@ -17,10 +18,12 @@ export const profile = {
   introduction:
     'Diseño y construyo sistemas de IA y datos, con énfasis en la arquitectura que los hace confiables, seguros y mantenibles.',
   positioning: {
-    statement: 'Construyo, pruebo y explico sistemas de IA y datos.',
+    statement:
+      'Construyo tecnología y comparto el proceso desde Latinoamérica.',
     detail:
-      'Documento proyectos, decisiones de arquitectura y lo que aprendo cuando modelos, datos y software tienen que funcionar juntos.',
-    opportunities: 'Proyectos, fallos y aprendizajes. Desde Quito, Ecuador.',
+      'Quiero contribuir a que desde Latinoamérica se creen más tecnologías y empresas de talla mundial. Comparto el trabajo real: proyectos, experimentos, decisiones y aprendizajes.',
+    opportunities:
+      'Profundidad técnica, trabajo útil y evidencia que se puede revisar. Desde Quito, Ecuador.',
   },
   services: [
     {
@@ -46,7 +49,7 @@ export const profile = {
       'Una beca hizo posible que estudiara Ingeniería en Ciencias de la Computación en la Universidad San Francisco de Quito. Ahí, la curiosidad se convirtió en una disciplina para entender problemas y construir sistemas.',
       'Cuando apareció ChatGPT, quise entender cómo era posible construir sistemas así. Empecé por el aprendizaje automático y pronto me interesé más por todo lo que hace falta alrededor del modelo: datos, servicios, evaluación, confiabilidad y las decisiones de producto que articulan esas piezas.',
       'A lo largo del camino, trabajé en Estados Unidos mediante Work and Travel, trabajé de forma remota en análisis de datos y aprendizaje automático, ayudé a diseñar la arquitectura de datos de SaliHub y cursé un semestre de intercambio en University of Helsinki. En conjunto, esas experiencias ampliaron mi perspectiva técnica y mi idea de lo que podía construir.',
-      'Ese recorrido cambió mi dirección. A largo plazo quiero convertirme en fundador técnico y crear empresas que conviertan tecnología difícil en algo verdaderamente útil.',
+      'Ese recorrido da forma a mi misión: contribuir a que Latinoamérica siga creando tecnología y empresas de talla mundial. Quiero hacerlo construyendo, desarrollando profundidad técnica y compartiendo evidencia útil con otros ingenieros, estudiantes y fundadores. Mi especialización y mi próximo proyecto principal siguen abiertos.',
     ],
     milestones: [
       { place: 'Puyo', detail: 'Turing y las primeras preguntas' },
@@ -67,15 +70,15 @@ export const profile = {
     ],
   },
   pointOfView: {
-    statement: 'El modelo es una parte. El producto vive en las interfaces.',
+    statement: 'Construir primero. Compartir lo aprendido.',
     detail:
-      'Los productos de IA útiles se construyen donde se cruzan modelos, datos, servicios, personas y restricciones del negocio. Ahí concentro mi trabajo.',
+      'La profundidad técnica y el trabajo útil son la base. Comparto decisiones, resultados y límites que otras personas puedan revisar.',
   },
   about: [
-    'Diseño y construyo sistemas de IA y datos, con énfasis en la arquitectura que los hace confiables, seguros y mantenibles.',
-    'Los problemas que más me interesan están entre los modelos, los datos y el software en producción: cómo se modela y se mueve la información; cómo se conectan los componentes de aprendizaje automático con servicios y flujos de trabajo; cómo se prueban y operan los sistemas; y cómo las decisiones de arquitectura afectan la corrección, el costo y la escalabilidad.',
-    'Mi dirección técnica abarca plataformas de datos, sistemas de aprendizaje automático, infraestructura backend y arquitectura de sistemas. Quiero comprender los principios de ingeniería que perduran debajo de los productos habilitados por IA, en lugar de definirme por una tecnología pasajera.',
-    'Con el tiempo, quiero combinar profundidad técnica con criterio de producto y operación para crear y escalar empresas de tecnología.',
+    'Construyo tecnología y comparto el proceso desde Latinoamérica.',
+    'Mi experiencia incluye sistemas de IA y datos. La misión es más amplia: contribuir a crear tecnología y empresas de talla mundial desde la región.',
+    'Comparto proyectos, experimentos y aprendizajes para conectar con ingenieros, estudiantes, investigadores y fundadores que construyen con seriedad técnica.',
+    'Escribo principalmente en español, con resúmenes y materiales técnicos en inglés para facilitar el acceso internacional. La especialización y el próximo proyecto principal siguen por decidir.',
   ],
   experience: [
     {

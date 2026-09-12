@@ -8,26 +8,41 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'always',
   },
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'es'],
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
   integrations: [
     mdx(),
     sitemap({
       filter(page) {
         const pathname = new URL(page).pathname;
-        return pathname !== '/writing/' && pathname !== '/es/writing/';
+        return ![
+          '/es/',
+          '/404/',
+          '/es/404/',
+          '/writing/',
+          '/es/writing/',
+        ].includes(pathname);
       },
-      i18n: {
-        defaultLocale: 'en',
-        locales: {
-          en: 'en',
-          es: 'es',
-        },
+      serialize(item) {
+        const pathname = new URL(item.url).pathname;
+        const isHome = pathname === '/' || pathname === '/en/';
+        const englishPath = isHome ? '/en/' : pathname.replace(/^\/es\//, '/');
+        const spanishPath = isHome ? '/' : `/es${englishPath}`;
+        return {
+          ...item,
+          links: [
+            {
+              lang: 'es',
+              url: new URL(spanishPath, 'https://www.villafortech.com').href,
+            },
+            {
+              lang: 'en',
+              url: new URL(englishPath, 'https://www.villafortech.com').href,
+            },
+            {
+              lang: 'x-default',
+              url: new URL(spanishPath, 'https://www.villafortech.com').href,
+            },
+          ],
+        };
       },
     }),
   ],

@@ -1,5 +1,16 @@
 ---
-import HomePage from '../index.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<HomePage locale="es" />
+<BaseLayout
+  title="Inicio en español"
+  description="Construyo tecnología y comparto el proceso desde Latinoamérica."
+  locale="es"
+  noIndex
+  redirectTo="/"
+>
+  <section class="shell section-space">
+    <h1>El inicio en español está en una nueva dirección.</h1>
+    <p><a href="/">Ir al inicio</a></p>
+  </section>
+</BaseLayout>

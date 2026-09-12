@@ -9,13 +9,13 @@ import { localeRoutes, type Locale } from '../i18n';
 interface Props {
   locale?: Locale;
 }
-const { locale = 'en' } = Astro.props;
+const { locale = 'es' } = Astro.props;
 const profile = locale === 'es' ? profileEs : profileEn;
 const routes = localeRoutes[locale];
 const copy = {
   en: {
-    verbs: ['I build, test', 'and explain.'],
-    subject: 'AI and data systems.',
+    verbs: ['I build technology', 'and share the process.'],
+    subject: 'From Latin America.',
     projects: 'Explore the projects',
     about: 'A little about me',
     chapter: '01 / Selected work',
@@ -34,9 +34,9 @@ const copy = {
       'Read the evaluation limits alongside the results.',
     ],
     practice: '02 / Engineering practice',
-    practiceTitle: 'Look past the model.',
+    practiceTitle: 'Build with technical depth.',
     practiceDeck:
-      'I work where data, software, and models meet. Understanding their connections shapes what I build and how I test it.',
+      'My experience includes data, software, and AI systems. These projects show the work I can support with evidence while I explore what to build next.',
     story: '03 / The person behind the work',
     storyTitle: 'From Puyo, with curiosity.',
     storyLink: 'Read my story',
@@ -48,8 +48,8 @@ const copy = {
     contact: 'Get in touch',
   },
   es: {
-    verbs: ['Construyo, pruebo', 'y explico.'],
-    subject: 'Sistemas de IA y datos.',
+    verbs: ['Construyo tecnología', 'y comparto el proceso.'],
+    subject: 'Desde Latinoamérica.',
     projects: 'Explorar los proyectos',
     about: 'Un poco sobre mí',
     chapter: '01 / Proyectos seleccionados',
@@ -68,9 +68,9 @@ const copy = {
       'Leer los límites de la evaluación junto con los resultados.',
     ],
     practice: '02 / Práctica de ingeniería',
-    practiceTitle: 'Mirar más allá del modelo.',
+    practiceTitle: 'Construir con profundidad técnica.',
     practiceDeck:
-      'Trabajo donde se encuentran datos, software y modelos. Entender sus conexiones guía lo que construyo y cómo lo pongo a prueba.',
+      'Mi experiencia incluye datos, software y sistemas de IA. Estos proyectos muestran el trabajo que puedo respaldar con evidencia mientras exploro qué construir después.',
     story: '03 / La persona detrás del trabajo',
     storyTitle: 'Desde Puyo, con curiosidad.',
     storyLink: 'Conocer mi historia',
@@ -91,7 +91,7 @@ const projects = (
 )
   .sort((a, b) => (a.data.featuredOrder ?? 99) - (b.data.featuredOrder ?? 99))
   .slice(0, 3);
-const flagship = projects.at(0);
+const featuredProject = projects.at(0);
 const projectPath = (project: (typeof projects)[number]) =>
   `${routes.projects}/${project.data.translationKey ?? project.data.slug}/`;
 const evidenceLabel = (evidence?: string) =>
@@ -110,7 +110,7 @@ const evidenceLabel = (evidence?: string) =>
   <section class="intro shell" aria-labelledby="intro-title">
     <div class="intro__copy">
       <p class="intro__byline">
-        <span>{profile.headline}</span><span>{profile.location}</span>
+        <span>{profile.brandLabel}</span><span>{profile.location}</span>
       </p>
       <h1 id="intro-title">
         {copy.verbs.map((line) => <span>{line} </span>)}
@@ -138,7 +138,7 @@ const evidenceLabel = (evidence?: string) =>
         />
       </picture>
       <figcaption>
-        <span>Roberto Villafuerte</span><span>{profile.headline}</span>
+        <span>Roberto Villafuerte</span><span>{profile.brandLabel}</span>
       </figcaption>
     </figure>
   </section>
@@ -157,22 +157,23 @@ const evidenceLabel = (evidence?: string) =>
         <p>{copy.workDeck}</p>
       </header>
       {
-        flagship && (
+        featuredProject && (
           <article class="project-feature" data-reveal>
             <div class="project-feature__main">
               <div class="project-feature__meta">
                 <>
                   <span>01</span>
-                  <span>{evidenceLabel(flagship.data.evidence)}</span>
+                  <span>{evidenceLabel(featuredProject.data.evidence)}</span>
                 </>
               </div>
               <h3>
-                <a href={projectPath(flagship)}>
-                  {flagship.data.shortTitle || flagship.data.title}
+                <a href={projectPath(featuredProject)}>
+                  {featuredProject.data.shortTitle ||
+                    featuredProject.data.title}
                 </a>
               </h3>
-              <p>{flagship.data.summary}</p>
-              <a class="plain-link" href={projectPath(flagship)}>
+              <p>{featuredProject.data.summary}</p>
+              <a class="plain-link" href={projectPath(featuredProject)}>
                 {copy.read}
                 <span aria-hidden="true">↗</span>
               </a>
