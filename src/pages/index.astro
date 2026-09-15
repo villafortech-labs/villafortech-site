@@ -1,4 +1,5 @@
 ---
+import ArrowIcon from '../components/ArrowIcon.astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
@@ -119,10 +120,12 @@ const evidenceLabel = (evidence?: string) =>
       <p class="intro__description">{profile.positioning.detail}</p>
       <div class="intro__actions">
         <Button href={routes.projects} size="lg"
-          >{copy.projects}<span aria-hidden="true">↗</span></Button
+          >{copy.projects}<span aria-hidden="true"><ArrowIcon /></span></Button
         >
         <a class="plain-link" href={routes.about}
-          >{copy.about}<span aria-hidden="true">→</span></a
+          >{copy.about}<span aria-hidden="true"
+            ><ArrowIcon direction="right" /></span
+          ></a
         >
       </div>
     </div>
@@ -175,7 +178,9 @@ const evidenceLabel = (evidence?: string) =>
               <p>{featuredProject.data.summary}</p>
               <a class="plain-link" href={projectPath(featuredProject)}>
                 {copy.read}
-                <span aria-hidden="true">↗</span>
+                <span aria-hidden="true">
+                  <ArrowIcon />
+                </span>
               </a>
             </div>
             <div class="project-feature__notes">
@@ -213,7 +218,9 @@ const evidenceLabel = (evidence?: string) =>
               </p>
               <a class="plain-link" href={projectPath(project)}>
                 {copy.read}
-                <span aria-hidden="true">↗</span>
+                <span aria-hidden="true">
+                  <ArrowIcon />
+                </span>
               </a>
             </article>
           ))
@@ -221,7 +228,9 @@ const evidenceLabel = (evidence?: string) =>
       </div>
       <div class="section-end">
         <a class="plain-link" href={routes.projects}
-          >{copy.all}<span aria-hidden="true">→</span></a
+          >{copy.all}<span aria-hidden="true"
+            ><ArrowIcon direction="right" /></span
+          ></a
         >
       </div>
     </div>
@@ -267,7 +276,9 @@ const evidenceLabel = (evidence?: string) =>
             .slice(0, 2)
             .map((paragraph) => <p>{paragraph}</p>)
         }<a class="plain-link" href={routes.about}
-          >{copy.storyLink}<span aria-hidden="true">→</span></a
+          >{copy.storyLink}<span aria-hidden="true"
+            ><ArrowIcon direction="right" /></span
+          ></a
         >
       </div>
     </div>
@@ -283,7 +294,7 @@ const evidenceLabel = (evidence?: string) =>
         <p>{copy.contactDeck}</p><Button
           href={routes.contact}
           variant="secondary"
-          >{copy.contact}<span aria-hidden="true">↗</span></Button
+          >{copy.contact}<span aria-hidden="true"><ArrowIcon /></span></Button
         >
       </div>
     </div>

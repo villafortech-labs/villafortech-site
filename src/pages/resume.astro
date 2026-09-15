@@ -18,7 +18,8 @@ const copy = {
     eyebrow: 'Resume / Updated September 2026',
     printTitle: 'Resume | Roberto Villafuerte',
     printDate: 'September 8, 2026',
-    print: 'Print / save PDF',
+    print: 'Print',
+    download: 'Download PDF · 1 page',
     experience: 'Experience',
     education: 'Education',
     leadership: 'Leadership & Teaching',
@@ -76,7 +77,8 @@ const copy = {
     eyebrow: 'Currículum / Actualizado en septiembre de 2026',
     printTitle: 'Currículum | Roberto Villafuerte',
     printDate: '8 de septiembre de 2026',
-    print: 'Imprimir / guardar PDF',
+    print: 'Imprimir',
+    download: 'Descargar PDF · 1 página',
     experience: 'Experiencia',
     education: 'Formación',
     leadership: 'Liderazgo y docencia',
@@ -145,6 +147,11 @@ const copy = {
         <p>{profile.headline} | {profile.location}</p>
       </div>
       <div class="resume-header__actions">
+        <a
+          class="button button--primary button--md"
+          href={`/downloads/resume-${locale}.pdf`}
+          download={`Roberto-Villafuerte-CV-${locale}.pdf`}>{copy.download}</a
+        >
         <button
           class="button button--secondary button--md"
           type="button"

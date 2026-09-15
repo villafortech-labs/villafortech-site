@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'node:child_process';
-import { mkdir, rename, rm, stat, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import {
   evaluate,
@@ -69,9 +69,10 @@ const RESUMES = [
 ];
 
 function usage() {
-  console.log(`Usage: node scripts/verify-resume-print.mjs --output DIRECTORY [--base-url URL]
+  console.log(`Usage: node scripts/verify-resume-print.mjs --output DIRECTORY [--base-url URL] [--publish]
 
-Prints and verifies English and Spanish Letter-size, one-page resume PDFs.
+Prints and verifies English and Spanish one-page Letter PDFs at desktop, phone, and tablet sizes.
+Use --publish after resume changes to refresh public/downloads before building the site.
 The default base URL is http://127.0.0.1:4321/.`);
 }
 
@@ -220,7 +221,7 @@ async function main() {
     return;
   }
   const unknown = Object.keys(args).filter(
-    (key) => !['base-url', 'help', 'output'].includes(key),
+    (key) => !['base-url', 'help', 'output', 'publish'].includes(key),
   );
   if (unknown.length > 0) {
     throw new Error(`Unknown argument(s): ${unknown.join(', ')}`);
@@ -245,7 +246,28 @@ async function main() {
     await Promise.all([page.send('Page.enable'), page.send('Runtime.enable')]);
     await page.send('Emulation.setEmulatedMedia', { media: 'print' });
 
-    for (const resume of RESUMES) {
+    const devices = [
+      { name: 'desktop', width: 1440, height: 1000, mobile: false },
+      { name: 'phone', width: 390, height: 844, mobile: true },
+      { name: 'tablet', width: 820, height: 1180, mobile: true },
+    ];
+    for (const variant of devices.flatMap((device) =>
+      RESUMES.map((resume) => ({ device, resume })),
+    )) {
+      const { device } = variant;
+      const resume = {
+        ...variant.resume,
+        file: variant.resume.file.replace(
+          '.pdf',
+          device.name === 'desktop' ? '.pdf' : `-${device.name}.pdf`,
+        ),
+      };
+      await page.send('Emulation.setDeviceMetricsOverride', {
+        width: device.width,
+        height: device.height,
+        deviceScaleFactor: 1,
+        mobile: device.mobile,
+      });
       const url = new URL(resume.route.replace(/^\//, ''), baseURL).href;
       await navigate(page, url, { settleMs: 100 });
       await evaluate(
@@ -301,8 +323,21 @@ async function main() {
     console.log(`Verified ${resume.label}: ${finalPath}`);
   }
   console.log(
-    'Resume print gate passed: both files are portable untagged Letter PDFs with localized text and embedded Unicode-mapped fonts.',
+    'Resume print gate passed: all six desktop, phone, and tablet PDFs fit one Letter page with localized text and embedded fonts.',
   );
+  if (args.publish) {
+    const downloads = resolve('public/downloads');
+    await mkdir(downloads, { recursive: true });
+    for (const resume of RESUMES) {
+      await copyFile(
+        resolve(outputDirectory, resume.file),
+        resolve(downloads, resume.file),
+      );
+    }
+    console.log(
+      'Updated the two downloadable PDFs in public/downloads. Rebuild the site to include them.',
+    );
+  }
 }
 
 main().catch((error) => {

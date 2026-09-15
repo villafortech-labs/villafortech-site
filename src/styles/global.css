@@ -290,6 +290,13 @@ main {
   height: 18px;
   flex-shrink: 0;
 }
+.arrow-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  vertical-align: middle;
+}
 .plain-link,
 .text-link,
 .back-link,
@@ -1700,7 +1707,7 @@ main {
   margin-block: 24px;
 }
 
-@media (max-width: 1100px) {
+@media screen and (max-width: 1100px) {
   .intro {
     grid-template-columns: minmax(0, 1fr) 300px;
     gap: 40px;
@@ -1755,7 +1762,7 @@ main {
     gap: 40px;
   }
 }
-@media (max-width: 900px) {
+@media screen and (max-width: 900px) {
   .site-nav__desktop {
     gap: 16px;
   }
@@ -1827,7 +1834,7 @@ main {
     gap: 28px;
   }
 }
-@media (max-width: 760px) {
+@media screen and (max-width: 760px) {
   .shell {
     width: calc(100% - 48px);
   }
@@ -2019,7 +2026,7 @@ main {
     gap: 24px;
   }
 }
-@media (max-width: 720px) {
+@media screen and (max-width: 720px) {
   .site-nav__inner {
     min-height: 92px;
     gap: 8px;
@@ -2079,7 +2086,7 @@ main {
     margin-top: 8px;
   }
 }
-@media (max-width: 480px) {
+@media screen and (max-width: 480px) {
   .shell {
     width: calc(100% - 32px);
   }
