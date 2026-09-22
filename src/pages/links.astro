@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArrowIcon from '../components/ArrowIcon.astro';
+import { links, socialProfiles } from '../data/links';
+import profileEn from '../data/profile';
+import profileEs from '../data/profile.es';
+import { localeRoutes, sharedCopy, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = 'es' } = Astro.props;
+const profile = locale === 'es' ? profileEs : profileEn;
+const routes = localeRoutes[locale];
+const copy = {
+  es: {
+    title: 'Mis redes',
+    description:
+      'Conecta con Roberto Villafuerte en LinkedIn y encuentra sus proyectos, código, videos y redes de Villa for Tech.',
+    connect: 'Conectar en LinkedIn',
+    connectDetail: 'Sigamos la conversación',
+    projects: 'Explorar mis proyectos',
+    projectsDetail: 'Decisiones, resultados y evidencia',
+    contact: 'Contacto',
+    contactDetail: 'Ideas, preguntas y colaboraciones',
+    navigation: 'Proyectos y perfiles de Roberto Villafuerte',
+  },
+  en: {
+    title: 'My links',
+    description:
+      'Connect with Roberto Villafuerte on LinkedIn and explore his projects, code, videos, and Villa for Tech profiles.',
+    connect: 'Connect on LinkedIn',
+    connectDetail: 'Keep the conversation going',
+    projects: 'Explore my projects',
+    projectsDetail: 'Decisions, results, and evidence',
+    contact: 'Get in touch',
+    contactDetail: 'Ideas, questions, and collaborations',
+    navigation: 'Roberto Villafuerte’s projects and profiles',
+  },
+}[locale];
+const destinations = [
+  {
+    label: copy.connect,
+    detail: copy.connectDetail,
+    href: links.linkedin,
+    external: true,
+  },
+  {
+    label: copy.projects,
+    detail: copy.projectsDetail,
+    href: routes.projects,
+    external: false,
+  },
+  ...socialProfiles
+    .filter((social) => social.name !== 'LinkedIn')
+    .map((social) => ({
+      label: social.name,
+      detail: social.description[locale],
+      href: social.url,
+      external: true,
+    })),
+  {
+    label: copy.contact,
+    detail: copy.contactDetail,
+    href: routes.contact,
+    external: false,
+  },
+];
+---
+
+<BaseLayout title={copy.title} description={copy.description} locale={locale}>
+  <section class="links-page" aria-labelledby="links-title">
+    <header class="links-heading">
+      <img
+        class="links-portrait"
+        src="/images/roberto-villafuerte-yed07995.png"
+        width="96"
+        height="96"
+        alt="Roberto Villafuerte"
+        fetchpriority="high"
+      />
+      <p class="eyebrow">Villa for Tech</p>
+      <h1 id="links-title">{profile.name}</h1>
+      <p class="links-mission">{profile.positioning.statement}</p>
+    </header>
+    <nav aria-label={copy.navigation}>
+      <ol class="links-list">
+        {
+          destinations.map((destination, index) => (
+            <li>
+              <a
+                class:list={[
+                  'profile-link',
+                  {
+                    'profile-link--primary': index === 0,
+                    'profile-link--priority': index < 3,
+                  },
+                ]}
+                href={destination.href}
+                target={destination.external ? '_blank' : undefined}
+                rel={destination.external ? 'noopener noreferrer' : undefined}
+              >
+                <span>
+                  <>
+                    <strong>{destination.label}</strong>
+                    <span class="profile-link__detail">
+                      {destination.detail}
+                    </span>
+                  </>
+                </span>
+                <ArrowIcon
+                  direction={destination.external ? 'diagonal' : 'right'}
+                />
+                {destination.external && (
+                  <span class="sr-only">{sharedCopy[locale].newTab}</span>
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <p class="links-motto">{sharedCopy[locale].footerNote}</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .links-page {
+    width: min(calc(100% - 32px), 520px);
+    margin-inline: auto;
+    padding-block: 32px 64px;
+  }
+  .links-heading {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .links-portrait {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    margin: 0 auto 18px;
+  }
+  .links-heading .eyebrow {
+    margin-bottom: 8px;
+  }
+  .links-heading h1 {
+    font: 400 clamp(2.4rem, 7vw, 3.1rem)/1.1 var(--font-display);
+    letter-spacing: -0.025em;
+  }
+  .links-mission {
+    max-width: 380px;
+    margin: 14px auto 0;
+    color: var(--leaf);
+    line-height: 1.6;
+  }
+  .links-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .profile-link {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+  .profile-link strong {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .profile-link__detail {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.8125rem;
+    color: var(--leaf);
+  }
+  .profile-link--priority {
+    border: 1px solid var(--forest);
+  }
+  .profile-link--primary {
+    background: var(--forest);
+    color: var(--paper);
+  }
+  .profile-link--primary .profile-link__detail {
+    color: var(--sage);
+  }
+  .profile-link:hover {
+    background: var(--sage);
+  }
+  .profile-link--primary:hover {
+    background: var(--leaf);
+  }
+  .profile-link .arrow-icon {
+    flex: 0 0 20px;
+  }
+  .links-motto {
+    margin-top: 32px;
+    text-align: center;
+    color: var(--leaf);
+    font: italic 400 1.5rem/1.4 var(--font-display);
+  }
+  @media (max-width: 380px) {
+    .profile-link {
+      padding-inline: 16px;
+    }
+    .links-page {
+      padding-top: 24px;
+    }
+    .links-portrait {
+      width: 80px;
+      height: 80px;
+    }
+  }
+</style>

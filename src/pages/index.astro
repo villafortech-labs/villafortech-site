@@ -5,7 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import profileEn from '../data/profile';
 import profileEs from '../data/profile.es';
-import { localeRoutes, type Locale } from '../i18n';
+import { localeRoutes, sharedCopy, type Locale } from '../i18n';
 
 interface Props {
   locale?: Locale;
@@ -19,6 +19,7 @@ const copy = {
     subject: 'From Latin America.',
     projects: 'Explore the projects',
     about: 'A little about me',
+    linkedin: 'Connect on LinkedIn',
     chapter: '01 / Selected work',
     workTitle: 'Ideas, put to the test.',
     workDeck:
@@ -53,6 +54,7 @@ const copy = {
     subject: 'Desde Latinoamérica.',
     projects: 'Explorar los proyectos',
     about: 'Un poco sobre mí',
+    linkedin: 'Conectar en LinkedIn',
     chapter: '01 / Proyectos seleccionados',
     workTitle: 'Ideas que pasan por la prueba.',
     workDeck:
@@ -122,9 +124,13 @@ const evidenceLabel = (evidence?: string) =>
         <Button href={routes.projects} size="lg"
           >{copy.projects}<span aria-hidden="true"><ArrowIcon /></span></Button
         >
-        <a class="plain-link" href={routes.about}
-          >{copy.about}<span aria-hidden="true"
-            ><ArrowIcon direction="right" /></span
+        <a
+          class="plain-link"
+          href={profile.links.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          >{copy.linkedin}<span aria-hidden="true"><ArrowIcon /></span><span
+            class="sr-only">{sharedCopy[locale].newTab}</span
           ></a
         >
       </div>

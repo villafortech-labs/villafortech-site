@@ -1,3 +1,5 @@
+import { links } from './links';
+
 export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'Roberto Villafuerte',
@@ -191,14 +193,7 @@ export const profile = {
     { name: 'Español', level: 'Dominio nativo o bilingüe' },
     { name: 'Chino mandarín', level: 'Nivel HSK 2' },
   ],
-  links: {
-    email: 'mailto:contact@villafortech.com',
-    emailAddress: 'contact@villafortech.com',
-    github: 'https://github.com/VillaforTech',
-    githubDisplay: 'github.com/VillaforTech',
-    linkedin: 'https://www.linkedin.com/in/robertovillafuerte/',
-    linkedinDisplay: 'linkedin.com/in/robertovillafuerte',
-  },
+  links,
   proof: [
     {
       label: 'Actual',

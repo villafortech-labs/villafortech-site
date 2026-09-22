@@ -24,8 +24,17 @@ export default defineConfig({
       serialize(item) {
         const pathname = new URL(item.url).pathname;
         const isHome = pathname === '/' || pathname === '/en/';
-        const englishPath = isHome ? '/en/' : pathname.replace(/^\/es\//, '/');
-        const spanishPath = isHome ? '/' : `/es${englishPath}`;
+        const isLinks = pathname === '/links/' || pathname === '/en/links/';
+        const englishPath = isHome
+          ? '/en/'
+          : isLinks
+            ? '/en/links/'
+            : pathname.replace(/^\/es\//, '/');
+        const spanishPath = isHome
+          ? '/'
+          : isLinks
+            ? '/links/'
+            : `/es${englishPath}`;
         return {
           ...item,
           links: [

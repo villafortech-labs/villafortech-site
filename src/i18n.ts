@@ -10,6 +10,7 @@ export const localeRoutes = {
     contact: '/contact',
     resume: '/resume',
     writing: '/writing',
+    links: '/en/links',
   },
   es: {
     home: '/',
@@ -18,6 +19,7 @@ export const localeRoutes = {
     contact: '/es/contact',
     resume: '/es/resume',
     writing: '/es/writing',
+    links: '/links',
   },
 } as const;
 
@@ -34,6 +36,7 @@ export const sharedCopy = {
       projects: 'Work',
       about: 'About',
       contact: 'Contact',
+      links: 'My links',
     },
     footerLabel: 'Site and contact links',
     footerNote: 'Think rigorously. Live curiously.',
@@ -57,6 +60,7 @@ export const sharedCopy = {
       projects: 'Proyectos',
       about: 'Sobre mí',
       contact: 'Contacto',
+      links: 'Mis redes',
     },
     footerLabel: 'Enlaces del sitio y de contacto',
     footerNote: 'Pensar con rigor. Vivir con curiosidad.',
@@ -71,7 +75,11 @@ export const sharedCopy = {
 } as const;
 
 export function localeFromPath(pathname: string): Locale {
-  return pathname === '/' || pathname === '/es' || pathname.startsWith('/es/')
+  return pathname === '/' ||
+    pathname === '/links' ||
+    pathname === '/links/' ||
+    pathname === '/es' ||
+    pathname.startsWith('/es/')
     ? 'es'
     : 'en';
 }
@@ -104,6 +112,7 @@ function matchRoute(pathname: string): RouteMatch | undefined {
       'contact',
       'resume',
       'writing',
+      'links',
     ] as const) {
       if (path === routes[key]) return { key };
     }

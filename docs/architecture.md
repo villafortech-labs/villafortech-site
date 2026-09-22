@@ -24,6 +24,8 @@
 
 `BaseLayout` owns canonical URLs, Open Graph and Twitter metadata, the shared social image, Person/WebSite structured data, navigation, and footer. `ContentLayout` adds case-study metadata, evidence disclosure, source actions, and the article rail.
 
+The public profile directory is Spanish at `/links/` and English at `/en/links/`, using `pages/links.astro` with an English wrapper and the existing `BaseLayout`. Its LinkedIn-first ordering and all seven social destinations come from `src/data/links.ts`, which also supplies profile/contact data and Person `sameAs` references. No client JavaScript or new service is required. The homepage links directly to LinkedIn; navigation and the footer expose the localized directory.
+
 ## Project model
 
 The schema in `src/content.config.ts` validates required identity and narrative fields plus optional evidence metadata:

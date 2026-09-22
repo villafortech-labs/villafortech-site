@@ -35,6 +35,7 @@ This runs Astro diagnostics, formatting checks, the production build, and genera
 ## Content
 
 - `src/data/profile.ts` is the canonical source for profile, experience, education, credentials, skills, languages, and contact links.
+- `src/data/links.ts` owns the public social and contact destinations shared by both languages, the link directory, and Person structured data.
 - `src/content/projects/*.mdx` is the only source for project indexes and case-study routes.
 - `src/content/writing/*.mdx` contains independent notes. Drafts do not generate routes.
 - `src/content.config.ts` validates both collections.
@@ -43,19 +44,23 @@ Read [docs/content-policy.md](docs/content-policy.md) before changing profession
 
 ## Main routes
 
-| Route                                              | Purpose                                              |
-| -------------------------------------------------- | ---------------------------------------------------- |
-| `/`                                                | Spanish mission, current work, and selected evidence |
-| `/en/`                                             | English homepage for international access            |
-| `/projects`                                        | Evidence ledger for public and sanitized work        |
-| `/projects/fairness-aware-candidate-pre-screening` | Featured public engineering case study               |
-| `/about`                                           | Demonstrated work and technical direction            |
-| `/resume`                                          | Canonical web résumé with print/PDF support          |
-| `/contact`                                         | Email, LinkedIn, and GitHub                          |
-| `/writing`                                         | Evidence-gated independent notes                     |
+| Route                                              | Purpose                                                       |
+| -------------------------------------------------- | ------------------------------------------------------------- |
+| `/`                                                | Spanish mission, current work, and selected evidence          |
+| `/en/`                                             | English homepage for international access                     |
+| `/projects`                                        | Evidence ledger for public and sanitized work                 |
+| `/projects/fairness-aware-candidate-pre-screening` | Featured public engineering case study                        |
+| `/about`                                           | Demonstrated work and technical direction                     |
+| `/resume`                                          | Canonical web résumé with print/PDF support                   |
+| `/contact`                                         | Email, LinkedIn, and GitHub                                   |
+| `/links`                                           | Spanish directory with LinkedIn first and all public profiles |
+| `/en/links`                                        | English version of the link directory                         |
+| `/writing`                                         | Evidence-gated independent notes                              |
 
 The canonical host is `https://www.villafortech.com`.
 
 ## Language routes
 
 Spanish navigation uses `/`, `/es/projects/`, `/es/about/`, `/es/contact/`, and `/es/resume/`. English uses `/en/` and the existing unprefixed project, about, contact, résumé, and writing paths. The old `/es/` homepage redirects to `/`, with a static fallback. Existing case-study and résumé URLs stay usable; reciprocal language links and `x-default` point to Spanish as the default.
+
+The shared social-bio destination is `/links/` in Spanish, with an English alternative at `/en/links/`. Both are static, indexable pages with reciprocal language links.

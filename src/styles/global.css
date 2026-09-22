@@ -2026,7 +2026,7 @@ main {
     gap: 24px;
   }
 }
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 900px) {
   .site-nav__inner {
     min-height: 92px;
     gap: 8px;
@@ -2035,7 +2035,7 @@ main {
     width: 220px;
   }
   .site-mark img {
-    aspect-ratio: 850 / 320;
+    aspect-ratio: auto;
   }
   .site-nav__desktop {
     display: none;

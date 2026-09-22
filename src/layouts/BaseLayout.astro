@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import profile from '../data/profile';
 import profileEs from '../data/profile.es';
+import { socialProfiles } from '../data/links';
 import {
   alternateLocalePath,
   localeFromPath,
@@ -134,7 +135,7 @@ const imageURL = new URL(image, Astro.site);
             name: profile.name,
             jobTitle: localizedProfile.currentRole.title,
             url: Astro.site,
-            sameAs: [profile.links.linkedin, profile.links.github],
+            sameAs: socialProfiles.map((social) => social.url),
             homeLocation: profile.location,
           },
         ],
