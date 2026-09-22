@@ -19,6 +19,11 @@ export const socialProfiles = [
     description: { es: 'Perfil profesional', en: 'Professional profile' },
   },
   {
+    name: 'Instagram',
+    url: links.instagram,
+    description: { es: 'Proceso y publicaciones', en: 'Process and posts' },
+  },
+  {
     name: 'GitHub',
     url: links.github,
     description: { es: 'Código y proyectos', en: 'Code and projects' },
@@ -27,11 +32,6 @@ export const socialProfiles = [
     name: 'YouTube',
     url: links.youtube,
     description: { es: 'Videos', en: 'Videos' },
-  },
-  {
-    name: 'Instagram',
-    url: links.instagram,
-    description: { es: 'Proceso y publicaciones', en: 'Process and posts' },
   },
   {
     name: 'TikTok',
