@@ -11,6 +11,7 @@ export const localeRoutes = {
     resume: '/resume',
     writing: '/writing',
     links: '/en/links',
+    references: '/references',
   },
   es: {
     home: '/',
@@ -20,6 +21,7 @@ export const localeRoutes = {
     resume: '/es/resume',
     writing: '/es/writing',
     links: '/links',
+    references: '/es/references',
   },
 } as const;
 
@@ -45,6 +47,7 @@ export const sharedCopy = {
       about: 'About',
       resume: 'Résumé',
       email: 'Email',
+      references: 'Notes and interviews',
     },
     newTab: ' (opens in new tab)',
   },
@@ -69,6 +72,7 @@ export const sharedCopy = {
       about: 'Sobre mí',
       resume: 'CV',
       email: 'Correo',
+      references: 'Notas y entrevistas',
     },
     newTab: ' (se abre en una pestaña nueva)',
   },
@@ -113,11 +117,12 @@ function matchRoute(pathname: string): RouteMatch | undefined {
       'resume',
       'writing',
       'links',
+      'references',
     ] as const) {
       if (path === routes[key]) return { key };
     }
 
-    for (const key of ['projects', 'writing'] as const) {
+    for (const key of ['projects', 'writing', 'references'] as const) {
       const prefix = `${routes[key]}/`;
       if (path.startsWith(prefix)) {
         return { key, slug: path.slice(prefix.length) };

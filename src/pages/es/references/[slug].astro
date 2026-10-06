@@ -1,0 +1,15 @@
+---
+import ReferencePage from '../../../components/ReferencePage.astro';
+import { references } from '../../../data/references';
+
+export function getStaticPaths() {
+  return references.map((reference) => ({
+    params: { slug: reference.slug },
+    props: { reference },
+  }));
+}
+
+const { reference } = Astro.props;
+---
+
+<ReferencePage reference={reference} locale="es" />

@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArrowIcon from '../../components/ArrowIcon.astro';
+import { references } from '../../data/references';
+import { localeRoutes, type Locale } from '../../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'en' } = Astro.props;
+const routes = localeRoutes[locale];
+const copy = {
+  es: {
+    title: 'Notas y entrevistas',
+    description:
+      'Notas de Roberto Villafuerte sobre su trabajo con datos, IA y privacidad, acompañadas de publicaciones y entrevistas.',
+    eyebrow: 'Roberto Villafuerte / Notas del trabajo',
+    deck: 'Experiencias de ingeniería y conversaciones sobre los productos en los que he trabajado.',
+    read: 'Leer nota',
+  },
+  en: {
+    title: 'Notes and interviews',
+    description:
+      'Notes by Roberto Villafuerte on data, AI and privacy, alongside published features and interviews.',
+    eyebrow: 'Roberto Villafuerte / Notes from the work',
+    deck: 'Engineering experiences and conversations about products I have worked on.',
+    read: 'Read note',
+  },
+}[locale];
+---
+
+<BaseLayout title={copy.title} description={copy.description} locale={locale}>
+  <header class="page-hero">
+    <div class="shell page-hero__grid">
+      <div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
+      </div>
+      <p class="page-hero__deck">{copy.deck}</p>
+    </div>
+  </header>
+  <section class="reference-index" aria-label={copy.title}>
+    <div class="shell">
+      <ol class="reference-list">
+        {
+          references.map((reference, index) => {
+            const entry = reference.copy[locale];
+            return (
+              <li class="reference-record">
+                <span class="reference-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <p class="eyebrow">{entry.kind}</p>
+                  <h2>
+                    <a href={`${routes.references}/${reference.slug}/`}>
+                      {entry.title}
+                    </a>
+                  </h2>
+                  <p class="reference-publisher">{entry.publisher}</p>
+                </div>
+                <div class="reference-action">
+                  <time datetime={reference.sourceDateTime}>
+                    {entry.sourceDate}
+                  </time>
+                  <a
+                    class="text-link"
+                    href={`${routes.references}/${reference.slug}/`}
+                  >
+                    {copy.read}
+                    <span aria-hidden="true">
+                      <ArrowIcon />
+                    </span>
+                  </a>
+                </div>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .reference-index {
+    padding-bottom: 100px;
+  }
+  .reference-list {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--forest);
+  }
+  .reference-record {
+    display: grid;
+    grid-template-columns: 50px minmax(0, 1fr) 230px;
+    gap: 32px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .reference-number,
+  .reference-action,
+  .reference-publisher {
+    color: var(--leaf);
+    font-size: 0.875rem;
+  }
+  h2 {
+    max-width: 740px;
+    margin-bottom: 20px;
+    font: 400 clamp(2rem, 3.3vw, 3rem) / 1.15 var(--font-display);
+  }
+  .reference-action {
+    display: grid;
+    align-content: start;
+    gap: 24px;
+  }
+  @media (max-width: 760px) {
+    .reference-record {
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 16px;
+    }
+    .reference-action {
+      grid-column: 2;
+      gap: 14px;
+    }
+  }
+</style>

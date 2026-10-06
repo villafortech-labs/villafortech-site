@@ -26,6 +26,10 @@
 
 The public profile directory is Spanish at `/links/` and English at `/en/links/`, using `pages/links.astro` with an English wrapper and the existing `BaseLayout`. Its LinkedIn-first ordering and all seven social destinations come from `src/data/links.ts`, which also supplies profile/contact data and Person `sameAs` references. No client JavaScript or new service is required. The homepage links directly to LinkedIn; navigation and the footer expose the localized directory.
 
+## Public reference archive
+
+`src/data/references.ts` holds first-person notes based on Roberto's documented work, mentions and interviews, with original links, source dates, and Spanish/English copy. `/es/references/` and `/references/` list these notes; their detail routes share `ReferencePage.astro`. The footer links to “Notas y entrevistas”. The pages identify Roberto as the author and distinguish each source date from the new note's publication date. Sources appear at the end. The site does not republish the full magazine article or video, describe affiliated material as independent reporting, or use NewsArticle structured data.
+
 ## Project model
 
 The schema in `src/content.config.ts` validates required identity and narrative fields plus optional evidence metadata:

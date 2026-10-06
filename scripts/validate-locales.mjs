@@ -45,6 +45,7 @@ const sharedRoutes = [
   'resume',
   'writing',
   'links',
+  'references',
 ];
 
 function publicURL(locale, route = '') {
