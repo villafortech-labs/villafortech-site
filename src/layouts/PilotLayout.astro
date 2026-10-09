@@ -1,0 +1,88 @@
+---
+import '../styles/global.css';
+const title =
+  'Tu segundo cerebro profesional · 5 cupos gratuitos | Villa for Tech';
+const description =
+  'Construye conmigo una primera versión de tu segundo cerebro profesional: información organizada y contexto útil para trabajar con IA. Aplica al piloto gratuito.';
+const canonical = new URL('/segundo-cerebro/', Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3eee3" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="es_EC" />
+    <meta
+      property="og:image"
+      content={new URL('/og-mission.png', Astro.site)}
+    />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
+    <header class="pilot-header">
+      <a href="/" aria-label="Villa for Tech, inicio"
+        ><img
+          src="/brand/signature-horizontal.svg"
+          alt="Villa for Tech"
+          width="220"
+          height="60"
+        /></a
+      >
+      <span>Una semana. Un proyecto. Un primer sistema.</span>
+    </header>
+    <main id="main-content" tabindex="-1"><slot /></main>
+    <footer class="pilot-footer">
+      <span>Roberto Villafuerte · Villa for Tech</span><a
+        href="mailto:villafortech@gmail.com">villafortech@gmail.com</a
+      >
+    </footer>
+  </body>
+</html>
+<style>
+  .pilot-header,
+  .pilot-footer {
+    width: min(calc(100% - 48px), 1120px);
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 24px;
+  }
+  .pilot-header {
+    border-bottom: 1px solid var(--line);
+  }
+  .pilot-header span,
+  .pilot-footer {
+    font-size: 0.8rem;
+  }
+  .pilot-header img {
+    width: 200px;
+    height: auto;
+  }
+  .pilot-footer {
+    border-top: 1px solid var(--line);
+    padding-block: 36px;
+  }
+  @media (max-width: 620px) {
+    .pilot-header span {
+      display: none;
+    }
+    .pilot-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
+</style>

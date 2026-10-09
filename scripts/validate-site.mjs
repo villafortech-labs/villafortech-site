@@ -7,6 +7,7 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const distRoot = join(projectRoot, 'dist');
 const siteOrigin = 'https://www.villafortech.com';
 const expectedAlternateLanguages = ['en', 'es', 'x-default'];
+const monolingualCampaigns = new Set(['/segundo-cerebro/']);
 const errors = [];
 
 function report(file, check, message) {
@@ -186,6 +187,16 @@ function parseAlternates(page) {
   }
 
   const actualLanguages = Object.keys(alternates).sort();
+  if (monolingualCampaigns.has(page.route)) {
+    if (!page.noIndex || actualLanguages.length !== 0) {
+      report(
+        page.file,
+        'campaign SEO',
+        'Spanish-only campaign must be noindex and omit untranslated alternates',
+      );
+    }
+    return alternates;
+  }
   if (
     JSON.stringify(actualLanguages) !==
     JSON.stringify([...expectedAlternateLanguages].sort())
@@ -359,6 +370,12 @@ function validateReference(page, attribute, rawValue) {
   }
 
   const { url } = parsed;
+  if (
+    attribute === 'action' &&
+    url.pathname === '/api/segundo-cerebro' &&
+    existsSync(join(projectRoot, 'api/segundo-cerebro.ts'))
+  )
+    return;
   if (!localTargetExists(url.pathname)) {
     report(page.file, label, `missing generated target ${url.pathname}`);
   }

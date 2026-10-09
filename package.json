@@ -17,13 +17,15 @@
     "validate:site": "node scripts/validate-site.mjs",
     "audit:runtime": "node scripts/audit-runtime.mjs",
     "verify:resume": "node scripts/verify-resume-print.mjs",
-    "verify": "npm run check && npm run format:check && npm run build && npm run validate:html && npm run validate:locales && npm run validate:site",
+    "verify": "npm run check && npm run format:check && npm run build && npm run validate:html && npm run validate:locales && npm run validate:site && npm run test:pilot",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:pilot": "node --experimental-strip-types --test tests/pilot.test.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.8",
     "@astrojs/sitemap": "^3.7.3",
+    "@vercel/blob": "^2.8.1",
     "astro": "^7.2.9",
     "zod": "^4.5.1"
   },
