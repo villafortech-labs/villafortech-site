@@ -6,16 +6,16 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
 <PilotLayout>
   <section class="hero pilot-shell" aria-labelledby="pilot-title">
     <div class="hero-copy">
-      <p class="eyebrow">5 sesiones individuales gratuitas</p>
+      <p class="eyebrow">Para estudiantes y profesionales</p>
       <h1 id="pilot-title">Tu segundo cerebro.<br /><em>Hecho contigo.</em></h1>
       <p class="pilot-intro">
-        Convierte tus notas, documentos e ideas en un espacio que puedas{' '}
+        Convierte tus apuntes, documentos e ideas en un espacio que puedas{' '}
         <strong>organizar, consultar y usar con IA.</strong>
       </p>
       <p class="hero-note">
         El{' '}<strong>15 y 16 de octubre</strong>{' '}ayudaré a cinco personas
-        a construir una primera versión con un proyecto real de su trabajo. Una
-        sesión de 75 minutos, tú y yo.
+        a construir una primera versión con una materia, una tesis o un proyecto
+        de trabajo. Una sesión gratis de 75 minutos, tú y yo.
       </p>
       <a class="pilot-button" href="#aplicar"
         >Quiero mi sesión gratis <span aria-hidden="true">↗</span></a
@@ -35,7 +35,7 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
     <aside class="session-card" aria-label="Tu sesión, en pocas palabras">
       <p class="eyebrow">De información dispersa a contexto útil</p>
       <p class="card-title">
-        Tu trabajo.<br />Tus herramientas.<br /><em>Tu propio sistema.</em>
+        Tus proyectos.<br />Tus herramientas.<br /><em>Tu propio sistema.</em>
       </p>
       <ul>
         <li>
@@ -70,8 +70,8 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
       <p class="eyebrow">Inscripción rápida</p>
       <h2 id="apply-title">Vamos a trabajar<br /><em>con lo tuyo.</em></h2>
       <p>
-        Cuéntame a qué te dedicas, qué usas hoy y cuándo puedes. Eso es todo
-        para apuntarte.
+        Cuéntame qué estudias o a qué te dedicas, qué usas hoy y cuándo puedes.
+        Eso es todo para apuntarte.
       </p>
       <dl class="dates">
         <div><dt>Sesiones</dt><dd>Jueves 15 o viernes 16 de octubre</dd></div>
@@ -148,15 +148,14 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
           </p>
         </div>
         <div class="field">
-          <label for="role">¿A qué te dedicas?</label>
+          <label for="role">¿Qué estudias o a qué te dedicas?</label>
           <input
             type="text"
             id="role"
             name="role"
-            autocomplete="organization-title"
             minlength="2"
             maxlength="180"
-            placeholder="Ej.: diseño, ventas, docencia, mi negocio…"
+            placeholder="Ej.: estudio medicina, diseño, ventas…"
             required
           />
         </div>
@@ -309,8 +308,9 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
       </div>
     </div>
     <p class="small">
-      Trabajaremos con un proyecto o responsabilidad. Esta primera sesión no
-      incluye migraciones completas ni desarrollos de software a medida.
+      Trabajaremos con una materia, una tesis o un proyecto de trabajo. Esta
+      primera sesión no incluye migraciones completas ni desarrollos de software
+      a medida.
     </p>
   </section>
   <section

@@ -1,4 +1,4 @@
-# Segundo cerebro profesional — October 2026
+# Segundo cerebro para estudiar y trabajar — October 2026
 
 The Spanish application page is `/segundo-cerebro/`. Contact for this pilot:
 `villafortech@gmail.com`. The existing portfolio contact address is unchanged.
@@ -9,12 +9,16 @@ October 14. Registration closes October 13 at **23:59 Ecuador mainland**
 (`2026-10-14T04:59:00Z`). That cutoff time is an operating proposal for review.
 One session per selected participant, not a two-day group workshop.
 
+Students and professionals are both eligible. Each session can focus on a subject,
+thesis or work project. The existing role field asks what the applicant studies or
+does for work; no additional question or employment requirement was added.
+
 **Review only. Do not publish without Roberto's explicit approval.** The public
 site was rolled back and production auto-assignment remains disabled. Keep all
 changes on `codex/segundo-cerebro-inscripcion`; push only that branch for a
 protected Vercel preview. Master's rollback commit is `71294e3`.
 
-The form has six required answers: name, email, occupation, current tools/information,
+The form has six required answers: name, email, studies/occupation, current tools/information,
 monthly AI tool budget and date-specific availability. WhatsApp is optional,
 accepts a country prefix and is stored privately with the application when provided.
 Missing or empty WhatsApp never blocks submission. Budgets include $0, under $20, $20–99,
