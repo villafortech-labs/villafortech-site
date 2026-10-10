@@ -3,10 +3,29 @@
 The Spanish application page is `/segundo-cerebro/`. Contact for this pilot:
 `villafortech@gmail.com`. The existing portfolio contact address is unchanged.
 
-Five free places; applications close **2026-10-11 at 18:00 Ecuador mainland**
-(`2026-10-11T23:00:00Z`). Contact selected applicants October 12; coordinate
-75-minute sessions October 13–15. Selection is manual, based on a concrete need,
-available materials, a feasible single-project scope, and availability to try it.
+Five free **individual** places, 75 minutes each, on **October 15 or 16**.
+Promotion through Tuesday October 13; preparation and confirmation Wednesday
+October 14. Registration closes October 13 at **23:59 Ecuador mainland**
+(`2026-10-14T04:59:00Z`). That cutoff time is an operating proposal for review.
+One session per selected participant, not a two-day group workshop.
+
+**Review only. Do not publish without Roberto's explicit approval.** The public
+site was rolled back and production auto-assignment remains disabled. Keep all
+changes on `codex/segundo-cerebro-inscripcion`; push only that branch for a
+protected Vercel preview. Master's rollback commit is `71294e3`.
+
+The form has name, email, occupation, current tools/information, monthly AI tool
+budget and date-specific availability. Budgets include $0, under $20, $20–99,
+$100–199 and $200+. Budget does not determine eligibility; no purchase required.
+The previous project/outcome/materials essays, optional WhatsApp, and separate
+commitment checkbox were removed. One unselected data-use checkbox remains.
+
+Schema version 2 keeps multiple availability values (six day/time windows), a
+monthly budget enum and an optional allowlisted campaign source (`utm_source`).
+Old records remain unchanged in the same private folder. Source defaults to
+`direct` without JavaScript. No account, file upload or third-party form is used.
+Submission confirms durable receipt, not a reserved appointment. Selection and
+exact times are confirmed manually by email on October 14.
 
 ## Response storage
 
@@ -34,11 +53,11 @@ Do not commit downloaded responses. Keep any exports under ignored `output/`,
 restrict access locally, and fulfill correction/deletion requests received at the
 contact email. Synthetic QA entries identify themselves as tests and use
 `example.invalid`; exclude them from selection. Retry submissions can produce
-duplicates; review email addresses before ranking applicants.
+duplicates; review email addresses before assigning places.
 
 ## Verification and operation
 
-`npm run verify` checks the static site and the seven API behavior tests. The
+`npm run verify` checks the static site and the API behavior tests. The
 campaign is intentionally Spanish-only, noindex, and excluded from the sitemap;
 the existing bilingual route checks remain enforced.
 

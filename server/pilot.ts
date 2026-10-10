@@ -1,19 +1,24 @@
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { pilot } from '../src/data/pilot.ts';
+import {
+  pilot,
+  budgets,
+  availabilitySlots,
+  sources,
+} from '../src/data/pilot.ts';
 
 const schema = z.object({
   name: z.string().trim().min(2).max(100),
-  email: z.email().trim().max(254),
-  whatsapp: z.string().trim().max(40).default(''),
-  role: z.string().trim().min(3).max(180),
-  project: z.string().trim().min(30).max(700),
-  outcome: z.string().trim().min(15).max(350),
-  tools: z.string().trim().min(10).max(500),
-  materials: z.enum(['ready', 'can-prepare', 'not-yet']),
-  availability: z.string().trim().min(10).max(350),
-  commitment: z.literal('yes'),
+  email: z.string().trim().max(254).pipe(z.email()),
+  role: z.string().trim().min(2).max(180),
+  tools: z.string().trim().min(2).max(350),
+  budget: z.enum(budgets.map((budget) => budget.value)),
+  availability: z
+    .array(z.enum(availabilitySlots.map((slot) => slot.value)))
+    .min(1)
+    .max(6),
   consent: z.literal('yes'),
+  source: z.enum(sources).default('direct'),
   website: z.string().max(0).default(''),
 });
 
@@ -22,6 +27,7 @@ export type Application = Omit<z.infer<typeof schema>, 'website'> & {
   pilotId: string;
   submittedAt: string;
   consentVersion: string;
+  schemaVersion: number;
 };
 
 type Options = {
@@ -45,7 +51,7 @@ function reply(request: Request, status: number, message: string, id?: string) {
   }
   // Messages are fixed server text; never interpolate submitted values into HTML.
   return new Response(
-    `<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aplicación · Villa for Tech</title><body><main><h1>${status === 201 ? 'Aplicación recibida' : 'No se pudo enviar'}</h1><p>${message}</p><p><a href="/segundo-cerebro/">Volver al formulario</a></p></main></body></html>`,
+    `<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Inscripción · Villa for Tech</title><body><main><h1>${status === 201 ? 'Inscripción recibida' : 'No se pudo enviar'}</h1><p>${message}</p><p><a href="/segundo-cerebro/">Volver al formulario</a></p></main></body></html>`,
     {
       status,
       headers: { ...headers, 'Content-Type': 'text/html; charset=utf-8' },
@@ -81,7 +87,7 @@ export function createPilotHandler({
       return reply(
         request,
         410,
-        'La convocatoria cerró el 11 de octubre a las 18:00, hora de Ecuador. Gracias por tu interés.',
+        'Las inscripciones cerraron el martes 13 de octubre a las 23:59, hora de Ecuador. Gracias por tu interés.',
       );
     }
     const contentType = request.headers.get('content-type')?.split(';')[0];
@@ -129,14 +135,16 @@ export function createPilotHandler({
         'No se pudo leer el envío. Inténtalo de nuevo.',
       );
     }
-    const result = schema.safeParse(
-      Object.fromEntries(new URLSearchParams(body)),
-    );
+    const params = new URLSearchParams(body);
+    const result = schema.safeParse({
+      ...Object.fromEntries(params),
+      availability: [...new Set(params.getAll('availability[]'))],
+    });
     if (!result.success) {
       return reply(
         request,
         400,
-        'Revisa los campos obligatorios, el correo y las dos casillas de confirmación.',
+        'Revisa tus datos, elige un presupuesto y al menos un horario, y acepta el uso de tus respuestas.',
       );
     }
     const { website: _honeypot, ...data } = result.data;
@@ -147,6 +155,7 @@ export function createPilotHandler({
       pilotId: pilot.id,
       submittedAt: now().toISOString(),
       consentVersion: pilot.consentVersion,
+      schemaVersion: pilot.schemaVersion,
     };
     try {
       await save(application);
@@ -155,13 +164,13 @@ export function createPilotHandler({
       return reply(
         request,
         503,
-        'No pudimos guardar tu aplicación. Tus respuestas siguen aquí: espera un momento y vuelve a enviar. Si persiste, escribe a villafortech@gmail.com.',
+        'No pudimos guardar tu inscripción. Tus respuestas siguen aquí: espera un momento y vuelve a enviar. Si persiste, escribe a villafortech@gmail.com.',
       );
     }
     return reply(
       request,
       201,
-      'Tu aplicación quedó guardada. Si tu caso es seleccionado, te escribiré el lunes 12 de octubre al correo que indicaste. Revisa también spam. Aplicar no garantiza un cupo.',
+      'Tu inscripción quedó guardada. El miércoles 14 de octubre te escribiré si tu caso está entre los cinco seleccionados para coordinar tu sesión del 15 o 16. Revisa también spam. El horario y el cupo quedan confirmados cuando los acordemos por correo.',
       application.id,
     );
   };

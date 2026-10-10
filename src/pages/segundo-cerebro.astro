@@ -1,85 +1,64 @@
 ---
 import PilotLayout from '../layouts/PilotLayout.astro';
-import { pilot } from '../data/pilot';
+import { pilot, budgets, availabilitySlots } from '../data/pilot';
 ---
 
 <PilotLayout>
   <section class="hero pilot-shell" aria-labelledby="pilot-title">
-    <div>
-      <p class="eyebrow">Piloto gratuito · 5 personas · 12–18 octubre 2026</p>
-      <h1 id="pilot-title">
-        Tu conocimiento,<br />listo para <em>trabajar contigo.</em>
-      </h1>
+    <div class="hero-copy">
+      <p class="eyebrow">5 sesiones individuales gratuitas</p>
+      <h1 id="pilot-title">Tu segundo cerebro.<br /><em>Hecho contigo.</em></h1>
       <p class="pilot-intro">
-        Construyamos tu <strong>segundo cerebro profesional</strong>: un lugar
-        para organizar el contexto, las notas y las decisiones de tu trabajo, y
-        usarlos con IA.
+        Convierte tus notas, documentos e ideas en un espacio que puedas{' '}
+        <strong>organizar, consultar y usar con IA.</strong>
       </p>
       <p class="hero-note">
-        Soy Roberto. Voy a acompañar a cinco personas a crear una primera
-        versión para un proyecto real, durante una semana.
+        El{' '}<strong>15 y 16 de octubre</strong>{' '}ayudaré a cinco personas
+        a construir una primera versión con un proyecto real de su trabajo. Una
+        sesión de 75 minutos, tú y yo.
       </p>
       <a class="pilot-button" href="#aplicar"
-        >Aplicar a uno de los 5 cupos <span aria-hidden="true">↗</span></a
+        >Quiero mi sesión gratis <span aria-hidden="true">↗</span></a
       >
-      <p class="small">Completar la aplicación toma unos 5 minutos.</p>
+      <p class="small">
+        Inscríbete hasta el martes 13 de octubre.<br />Sin crear una cuenta. Sin
+        pagos.
+      </p>
+      <div class="host">
+        <img src="/brand/clover.svg" width="28" height="28" alt="" />
+        <p>
+          <strong>Roberto Villafuerte</strong><br />Villa for Tech · Tecnología
+          que puedes usar.
+        </p>
+      </div>
     </div>
-    <aside class="scope" aria-label="Alcance del piloto">
-      <img src="/brand/clover.svg" width="52" height="52" alt="" />
-      <p class="scope-title">Empezamos con<br /><em>un proyecto tuyo.</em></p>
-      <ol>
+    <aside class="session-card" aria-label="Tu sesión, en pocas palabras">
+      <p class="eyebrow">De información dispersa a contexto útil</p>
+      <p class="card-title">
+        Tu trabajo.<br />Tus herramientas.<br /><em>Tu propio sistema.</em>
+      </p>
+      <ul>
         <li>
-          <span>01</span><div>
-            <strong>Ordenamos el contexto</strong><p>
-              Qué haces, dónde estás y qué necesitas resolver.
-            </p>
-          </div>
+          <span aria-hidden="true">01</span><p>
+            <strong>Ordenamos un proyecto.</strong><br />Notas, documentos,
+            decisiones y próximos pasos.
+          </p>
         </li>
         <li>
-          <span>02</span><div>
-            <strong>Lo usamos con IA</strong><p>
-              Una tarea concreta, con fuentes que puedas revisar.
-            </p>
-          </div>
+          <span aria-hidden="true">02</span><p>
+            <strong>Lo ponemos a trabajar con IA.</strong><br />Probamos una
+            tarea real con tus fuentes.
+          </p>
         </li>
         <li>
-          <span>03</span><div>
-            <strong>Lo mantenemos útil</strong><p>
-              Una rutina simple para actualizarlo y seguir usándolo.
-            </p>
-          </div>
+          <span aria-hidden="true">03</span><p>
+            <strong>Te llevas cómo seguir.</strong><br />Una guía sencilla y una
+            revisión breve después.
+          </p>
         </li>
-      </ol>
+      </ul>
+      <p class="card-foot">15–16 OCT <span>75 MIN · 1 A 1 · GRATIS</span></p>
     </aside>
-  </section>
-
-  <section class="details pilot-shell" aria-labelledby="details-title">
-    <h2 id="details-title">Qué haremos juntos</h2>
-    <div class="detail-grid">
-      <div>
-        <p class="eyebrow">El resultado</p><p>
-          Una base inicial con el contexto de tu proyecto, notas, decisiones y
-          próximos pasos. La probaremos con una tarea de tu trabajo.
-        </p>
-      </div>
-      <div>
-        <p class="eyebrow">El acompañamiento</p><p>
-          Una sesión individual de 75 minutos, una guía para seguir usándolo y
-          un seguimiento breve durante la semana.
-        </p>
-      </div>
-      <div>
-        <p class="eyebrow">Tu participación</p><p>
-          Preparar 2–5 notas o documentos breves que tengas permiso de usar,
-          asistir a la sesión y probar el sistema después.
-        </p>
-      </div>
-    </div>
-    <p class="scope-note">
-      El acompañamiento es gratuito y trabajaremos con herramientas disponibles
-      para tu caso. No necesitas saber programar ni comprar una suscripción para
-      aplicar.
-    </p>
   </section>
 
   <section
@@ -87,202 +66,171 @@ import { pilot } from '../data/pilot';
     id="aplicar"
     aria-labelledby="apply-title"
   >
-    <aside class="application-intro" aria-label="Selección y fechas">
-      <p class="eyebrow">Cuéntame tu caso</p>
-      <h2 id="apply-title">
-        Un sistema útil empieza con una necesidad concreta.
-      </h2>
+    <aside class="application-intro" aria-label="Fechas y confirmación">
+      <p class="eyebrow">Inscripción rápida</p>
+      <h2 id="apply-title">Vamos a trabajar<br /><em>con lo tuyo.</em></h2>
       <p>
-        Busco personas con un proyecto activo, información que puedan organizar
-        y tiempo para probar lo que construyamos.
+        Cuéntame a qué te dedicas, qué usas hoy y cuándo puedes. Eso es todo
+        para apuntarte.
       </p>
       <dl class="dates">
+        <div><dt>Sesiones</dt><dd>Jueves 15 o viernes 16 de octubre</dd></div>
+        <div><dt>Inscripciones hasta</dt><dd>{pilot.closesLabel}</dd></div>
         <div>
-          <dt>Cierre de aplicaciones</dt><dd>
-            Domingo 11 de octubre · 18:00<br />Ecuador continental (UTC−5)
+          <dt>Confirmación de los cinco cupos</dt><dd>
+            Miércoles 14, por correo
           </dd>
-        </div>
-        <div>
-          <dt>Contacto con seleccionados</dt><dd>Lunes 12 de octubre</dd>
-        </div>
-        <div>
-          <dt>Sesiones individuales</dt><dd>13–15 de octubre, por coordinar</dd>
         </div>
       </dl>
       <p class="small">
-        Son cinco cupos, elegidos por la claridad de la necesidad, el alcance y
-        la disponibilidad. Aplicar no garantiza ser seleccionado.
+        Elegiré cinco casos que podamos trabajar en una sesión. Inscribirte no
+        reserva automáticamente un cupo.
       </p>
     </aside>
-    <div>
+    <div class="form-panel">
       <div id="closed-message" class="notice" hidden>
-        <h3>Esta convocatoria cerró.</h3><p>
+        <h3>Las inscripciones cerraron.</h3>
+        <p>
           Gracias por tu interés. Puedes escribirme a <a
-            href="mailto:villafortech@gmail.com">villafortech@gmail.com</a
+            href={`mailto:${pilot.contact}`}>{pilot.contact}</a
           >.
         </p>
       </div>
+      <p class="form-guide">15 o 16 de octubre · Sesión individual gratis</p>
       <form
         id="pilot-form"
         action="/api/segundo-cerebro"
         method="post"
         data-closes-at={pilot.closesAt}
       >
-        <p class="form-guide">
-          Todos los campos son obligatorios salvo WhatsApp.
-        </p>
-        <fieldset>
-          <legend><span>01</span> Sobre ti</legend>
+        <div class="field-grid">
           <div class="field">
-            <label for="name">¿Cómo te llamas?</label><input
+            <label for="name">¿Cómo te llamas?</label>
+            <input
               type="text"
               id="name"
               name="name"
               autocomplete="name"
               minlength="2"
               maxlength="100"
+              placeholder="Tu nombre"
               required
             />
           </div>
           <div class="field">
-            <label for="email">Correo electrónico</label><input
+            <label for="email">Tu correo</label>
+            <input
               type="email"
               id="email"
               name="email"
               autocomplete="email"
+              inputmode="email"
               maxlength="254"
+              placeholder="nombre@correo.com"
               required
-            /><p class="hint">Te escribiré aquí si tu caso es seleccionado.</p>
-          </div>
-          <div class="field">
-            <label for="whatsapp"
-              >WhatsApp <span class="optional">(opcional)</span></label
-            ><input
-              type="tel"
-              id="whatsapp"
-              name="whatsapp"
-              autocomplete="tel"
-              maxlength="40"
-              placeholder="Incluye el código de tu país"
             />
           </div>
-          <div class="field">
-            <label for="role"
-              >¿A qué te dedicas y en qué contexto trabajas?</label
-            ><input
-              type="text"
-              id="role"
-              name="role"
-              minlength="3"
-              maxlength="180"
-              required
-              placeholder="Tu rol y tipo de trabajo o proyecto"
-            />
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend><span>02</span> Tu proyecto</legend>
-          <div class="field">
-            <label for="project"
-              >¿Qué proyecto quieres organizar y qué se te está dificultando?</label
-            ><p class="hint" id="project-hint">
-              Cuenta un caso reciente: información que no encontrabas, contexto
-              que repites o decisiones que quedan dispersas. 30–700 caracteres.
-            </p><textarea
-              id="project"
-              name="project"
-              rows="4"
-              minlength="30"
-              maxlength="700"
-              aria-describedby="project-hint"
-              required></textarea>
-          </div>
-          <div class="field">
-            <label for="outcome"
-              >¿Qué tarea concreta te gustaría poder hacer con tu segundo
-              cerebro?</label
-            ><p class="hint" id="outcome-hint">
-              Por ejemplo, retomar un proyecto o preparar una propuesta usando
-              tus notas. 15–350 caracteres.
-            </p><textarea
-              id="outcome"
-              name="outcome"
-              rows="3"
-              minlength="15"
-              maxlength="350"
-              aria-describedby="outcome-hint"
-              required></textarea>
-          </div>
-          <div class="field">
-            <label for="tools"
-              >¿Dónde está hoy tu información y qué herramientas usas?</label
-            ><p class="hint" id="tools-hint">
-              Documentos, notas, Drive, Notion, correo… Incluye las herramientas
-              de IA que ya uses, si tienes alguna. 10–500 caracteres.
-            </p><textarea
-              id="tools"
-              name="tools"
-              rows="3"
-              minlength="10"
-              maxlength="500"
-              aria-describedby="tools-hint"
-              required></textarea>
-          </div>
-          <div class="field">
-            <label for="materials"
-              >¿Tienes 2–5 notas o documentos breves para empezar?</label
-            ><select id="materials" name="materials" required
-              ><option value="">Selecciona una opción</option><option
-                value="ready">Sí, y tengo permiso de usarlos</option
-              ><option value="can-prepare"
-                >Puedo preparar ejemplos sin información confidencial</option
-              ><option value="not-yet"
-                >Todavía no tengo material para empezar</option
-              ></select
-            ><p class="hint">
-              Solo describe tu caso aquí. No adjuntes documentos ni compartas
-              datos de clientes, contraseñas o información confidencial.
-            </p>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend><span>03</span> Para trabajar juntos</legend>
-          <div class="field">
-            <label for="availability"
-              >¿Qué horarios tienes disponibles del 13 al 15 de octubre?</label
-            ><p class="hint" id="availability-hint">
-              Indica días, franjas horarias y tu país o zona horaria.
-              Coordinaremos una sesión de 75 minutos.
-            </p><textarea
-              id="availability"
-              name="availability"
-              rows="3"
-              minlength="10"
-              maxlength="350"
-              aria-describedby="availability-hint"
-              required></textarea>
-          </div>
-          <label class="check"
-            ><input
-              type="checkbox"
-              name="commitment"
-              value="yes"
-              required
-            /><span
-              >Puedo preparar el material, asistir a la sesión y dedicar al
-              menos 30 minutos a probar el sistema y compartir feedback esa
-              semana.</span
-            ></label
+        </div>
+        <div class="field">
+          <label for="role">¿A qué te dedicas?</label>
+          <input
+            type="text"
+            id="role"
+            name="role"
+            autocomplete="organization-title"
+            minlength="2"
+            maxlength="180"
+            placeholder="Ej.: diseño, ventas, docencia, mi negocio…"
+            required
+          />
+        </div>
+        <div class="field">
+          <label for="tools"
+            >¿Dónde está tu información y qué herramientas usas?</label
           >
-          <label class="check"
-            ><input type="checkbox" name="consent" value="yes" required /><span
-              >Autorizo a Roberto Villafuerte a usar estas respuestas para
-              evaluar mi aplicación y contactarme sobre este piloto. He leído el <a
-                href="#privacidad">uso de mis datos</a
-              >.</span
-            ></label
+          <input
+            type="text"
+            id="tools"
+            name="tools"
+            minlength="2"
+            maxlength="350"
+            placeholder="Ej.: Drive, notas del celular, WhatsApp, ChatGPT…"
+            required
+          />
+          <p class="hint">
+            Una frase basta. No envíes archivos ni información confidencial.
+          </p>
+        </div>
+        <fieldset class="choice-field" aria-describedby="budget-hint">
+          <legend
+            >¿Qué presupuesto mensual tienes para herramientas de IA?</legend
           >
+          <div class="budget-options">
+            {
+              budgets.map((budget) => (
+                <label class="choice">
+                  <>
+                    <input
+                      type="radio"
+                      name="budget"
+                      value={budget.value}
+                      required
+                    />
+                    <span>{budget.label}</span>
+                  </>
+                </label>
+              ))
+            }
+          </div>
+          <p class="hint" id="budget-hint">
+            En dólares (USD). $0 también está bien: la sesión es gratis y no
+            necesitas comprar herramientas para participar.
+          </p>
         </fieldset>
+        <fieldset class="choice-field" aria-describedby="availability-hint">
+          <legend>¿Cuándo podrías asistir?</legend>
+          <p class="hint" id="availability-hint">
+            Marca todas las franjas que te sirven. Hora de Ecuador continental
+            (UTC−5). Cada sesión dura 75 minutos.
+          </p>
+          <div class="slot-days">
+            {
+              ['Jueves 15', 'Viernes 16'].map((day) => (
+                <div class="slot-day">
+                  <>
+                    <p>{day} de octubre</p>
+                    <div class="slot-options">
+                      {availabilitySlots
+                        .filter((slot) => slot.day === day)
+                        .map((slot) => (
+                          <label class="choice">
+                            <input
+                              type="checkbox"
+                              name="availability[]"
+                              value={slot.value}
+                              aria-label={`${slot.day}: ${slot.label}`}
+                            />
+                            <span>{slot.label}</span>
+                          </label>
+                        ))}
+                    </div>
+                  </>
+                </div>
+              ))
+            }
+          </div>
+          <p class="hint">
+            Son preferencias de horario; el miércoles confirmaremos la hora
+            exacta por correo.
+          </p>
+        </fieldset>
+        <label class="consent"
+          ><input type="checkbox" name="consent" value="yes" required /><span
+            >Autorizo usar mis respuestas para esta inscripción y contactarme
+            sobre la sesión. <a href="#privacidad">Uso de datos</a>.</span
+          ></label
+        >
+        <input type="hidden" name="source" id="source" value="direct" />
         <div class="honeypot" aria-hidden="true">
           <label for="website">Deja este campo vacío</label><input
             type="text"
@@ -294,10 +242,10 @@ import { pilot } from '../data/pilot';
         </div>
         <p id="form-status" role="status" tabindex="-1"></p>
         <button class="pilot-button" id="submit-button" type="submit"
-          >Enviar mi aplicación <span aria-hidden="true">↗</span></button
+          >Quiero mi sesión gratis <span aria-hidden="true">↗</span></button
         >
         <p class="small">
-          No recibirás publicidad por completar este formulario.
+          Solo te escribiré sobre esta convocatoria. Nada de publicidad.
         </p>
       </form>
       <section
@@ -307,58 +255,109 @@ import { pilot } from '../data/pilot';
         hidden
         aria-labelledby="success-title"
       >
-        <p class="eyebrow">Aplicación recibida</p><h2 id="success-title">
-          Gracias por contarme tu caso.
-        </h2><p id="success-detail"></p><p class="small">
-          Si necesitas corregir algo, escribe a <a
-            href="mailto:villafortech@gmail.com">villafortech@gmail.com</a
-          > desde el correo con el que aplicaste.
+        <p class="eyebrow">Inscripción recibida</p>
+        <h2 id="success-title">Ya estás en la lista.</h2>
+        <p id="success-detail"></p>
+        <p class="small">
+          Para corregir tus datos, escribe a <a href={`mailto:${pilot.contact}`}
+            >{pilot.contact}</a
+          > desde el correo que usaste.
         </p>
       </section>
     </div>
   </section>
 
+  <section class="details pilot-shell" aria-labelledby="details-title">
+    <p class="eyebrow">Lo que necesitas para empezar</p>
+    <h2 id="details-title">
+      Un proyecto real.<br /><em>Un primer sistema que puedas usar.</em>
+    </h2>
+    <div class="detail-grid">
+      <div>
+        <h3>Trae lo que ya tienes.</h3><p>
+          Si confirmamos tu cupo, prepararemos 2–5 notas o documentos breves que
+          tengas permiso de usar. No necesitas programar.
+        </p>
+      </div>
+      <div>
+        <h3>Lo construimos juntos.</h3><p>
+          Organizamos tu contexto, probamos una consulta con IA y te llevas
+          instrucciones para actualizar tu espacio.
+        </p>
+      </div>
+      <div>
+        <h3>Empieza sin comprar nada.</h3><p>
+          Usaremos las herramientas disponibles para tu caso. El presupuesto nos
+          ayuda a adaptar las opciones; no decide quién obtiene un cupo.
+        </p>
+      </div>
+    </div>
+    <p class="small">
+      Trabajaremos con un proyecto o responsabilidad. Esta primera sesión no
+      incluye migraciones completas ni desarrollos de software a medida.
+    </p>
+  </section>
   <section
     class="privacy pilot-shell"
     id="privacidad"
     aria-labelledby="privacy-title"
   >
-    <h2 id="privacy-title">Cómo usaré tus respuestas</h2>
+    <h2 id="privacy-title">Tus respuestas son privadas.</h2>
     <p>
-      Roberto Villafuerte revisará la información para seleccionar y coordinar
-      este piloto. Las respuestas se guardan de forma privada en la
-      infraestructura de esta web, alojada en Vercel. No se publicarán como
-      testimonios ni se usarán para enviarte publicidad.
+      Roberto Villafuerte usará tus datos, preferencias y el origen del enlace
+      para organizar esta convocatoria y coordinar las cinco sesiones. Se
+      guardan de forma privada en la infraestructura de esta web, alojada en
+      Vercel. No se usarán como testimonios ni para enviarte publicidad.
     </p>
     <p>
-      Puedes pedir corregir o eliminar tu aplicación escribiendo a <a
-        href="mailto:villafortech@gmail.com">villafortech@gmail.com</a
-      >. Cualquier uso público de tu caso se conversará y autorizará por
-      separado.
+      Puedes pedir corregir o eliminar tu inscripción en <a
+        href={`mailto:${pilot.contact}`}>{pilot.contact}</a
+      >. Cualquier uso público de tu caso se autorizará por separado.
     </p>
   </section>
 </PilotLayout>
 
 <script>
+  import { sources } from '../data/pilot';
   const form = document.querySelector<HTMLFormElement>('#pilot-form');
   const submit = document.querySelector<HTMLButtonElement>('#submit-button');
   const status = document.querySelector<HTMLParagraphElement>('#form-status');
   const success = document.querySelector<HTMLElement>('#success-message');
   if (form && submit && status && success) {
-    if (Date.now() >= Date.parse(form.dataset.closesAt ?? '')) {
+    const source = new URLSearchParams(location.search).get('utm_source');
+    const sourceField = form.querySelector<HTMLInputElement>('#source');
+    if (sourceField && sources.some((known) => known === source))
+      sourceField.value = source!;
+    const slots = Array.from(
+      form.querySelectorAll<HTMLInputElement>('[name="availability[]"]'),
+    );
+    const validateSlots = () =>
+      slots[0]?.setCustomValidity(
+        slots.some((slot) => slot.checked)
+          ? ''
+          : 'Marca al menos una franja para el 15 o 16 de octubre.',
+      );
+    slots.forEach((slot) => slot.addEventListener('change', validateSlots));
+    validateSlots();
+    const closeIfNeeded = () => {
+      if (Date.now() < Date.parse(form.dataset.closesAt ?? '')) return false;
       form.hidden = true;
       document.querySelector<HTMLElement>('#closed-message')!.hidden = false;
-    }
+      return true;
+    };
+    closeIfNeeded();
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (submit.disabled) return;
+      if (submit.disabled || closeIfNeeded()) return;
+      validateSlots();
+      if (!form.reportValidity()) return;
       submit.disabled = true;
-      submit.textContent = 'Guardando tu aplicación…';
+      submit.textContent = 'Guardando tu inscripción…';
       status.textContent = '';
       try {
         const body = new URLSearchParams();
         for (const [key, value] of new FormData(form))
-          body.set(key, String(value));
+          body.append(key, String(value));
         const response = await fetch(form.action, {
           method: 'POST',
           headers: { Accept: 'application/json' },
@@ -368,7 +367,7 @@ import { pilot } from '../data/pilot';
         if (!response.ok || result.ok !== true)
           throw new Error(
             result.message ||
-              'No pudimos guardar tu aplicación. Inténtalo de nuevo.',
+              'No pudimos guardar tu inscripción. Inténtalo de nuevo.',
           );
         document.querySelector('#success-detail')!.textContent = result.message;
         form.hidden = true;
@@ -381,54 +380,65 @@ import { pilot } from '../data/pilot';
             : 'No pudimos confirmar el envío. Tus respuestas siguen aquí; comprueba tu conexión e inténtalo de nuevo.';
         status.focus();
         submit.disabled = false;
-        submit.textContent = 'Volver a enviar mi aplicación';
+        submit.textContent = 'Volver a enviar mi inscripción';
       }
     });
   }
 </script>
 
 <style>
+  :global(html) {
+    scroll-padding-top: 24px;
+    scroll-behavior: auto;
+  }
   .pilot-shell {
     width: min(calc(100% - 48px), 1120px);
     margin-inline: auto;
   }
   .hero {
     display: grid;
-    grid-template-columns: 1.45fr 1fr;
-    gap: 72px;
-    padding-block: 80px;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 70px;
     align-items: center;
+    padding-block: 64px;
   }
   h1 {
-    font-family: var(--font-display);
-    font-size: clamp(3.2rem, 5.4vw, 5rem);
-    font-weight: 400;
+    font: 400 clamp(3.5rem, 5.5vw, 5.15rem)/1.02 var(--font-display);
     letter-spacing: -0.035em;
+    margin-top: 20px;
   }
   h1 em,
-  .scope-title em {
+  h2 em {
     color: var(--leaf);
   }
+  h2 {
+    font: 400 clamp(2.4rem, 3.5vw, 3.3rem)/1.08 var(--font-display);
+    letter-spacing: -0.02em;
+  }
   .pilot-intro {
-    font-size: 1.13rem;
-    margin-top: 28px;
+    font-size: 1.12rem;
+    margin-top: 24px;
+    max-width: 48ch;
   }
   .hero-note {
-    margin: 18px 0 28px;
-    max-width: 53ch;
+    margin: 18px 0 26px;
+    max-width: 51ch;
+    font-size: 0.95rem;
   }
   .pilot-button {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-    padding: 17px 24px;
+    padding: 16px 22px;
     background: var(--forest);
     color: var(--paper);
-    text-decoration: none;
     border: 1px solid var(--forest);
-    font-weight: 600;
+    font-weight: 650;
+    text-decoration: none;
+    font-size: 1rem;
     line-height: 1.4;
+    cursor: pointer;
   }
   .pilot-button:hover {
     background: var(--leaf);
@@ -438,226 +448,341 @@ import { pilot } from '../data/pilot';
     cursor: wait;
   }
   .small {
-    font-size: 0.8rem;
-    line-height: 1.7;
-    margin-top: 14px;
+    font-size: 0.78rem;
     color: var(--leaf);
+    line-height: 1.65;
+    margin-top: 14px;
   }
-  .scope {
-    border: 1px solid var(--line);
+  .host {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 0.75rem;
+  }
+  .host img {
+    flex: 0 0 auto;
+  }
+  .session-card {
     padding: 32px;
-    background: var(--sage);
+    background: var(--forest);
+    color: var(--paper);
   }
-  .scope-title {
-    font: 400 2.3rem/1.12 var(--font-display);
-    margin-top: 22px;
+  .session-card .eyebrow {
+    color: var(--sage);
+    font-size: 0.64rem;
   }
-  .scope ol {
+  .card-title {
+    font: 400 clamp(2rem, 3.3vw, 3rem)/1.07 var(--font-display);
+    margin-top: 20px;
+  }
+  .card-title em {
+    color: var(--sage);
+  }
+  .session-card ul {
     list-style: none;
     padding: 0;
-    margin-top: 28px;
-  }
-  .scope li {
-    display: flex;
-    gap: 18px;
-    padding-block: 17px;
-    border-top: 1px solid var(--line);
-  }
-  .scope li > span {
-    flex: 0 0 20px;
-    font: 0.8rem var(--font-mono);
-    padding-top: 4px;
-    color: var(--leaf);
-  }
-  .scope li p {
-    font-size: 0.85rem;
-    margin-top: 5px;
-  }
-  h2 {
-    font: 400 clamp(2rem, 3.2vw, 3rem)/1.15 var(--font-display);
-  }
-  .details {
-    border-block: 1px solid var(--line);
-    padding-block: 45px;
-  }
-  .detail-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 38px;
     margin-top: 30px;
   }
-  .detail-grid .eyebrow {
-    margin-bottom: 10px;
+  .session-card li {
+    display: flex;
+    gap: 15px;
+    border-top: 1px solid var(--line-inverse);
+    padding-block: 17px;
+    font-size: 0.8rem;
   }
-  .scope-note {
-    margin-top: 28px;
-    font-size: 0.87rem;
-    max-width: 90ch;
+  .session-card li > span {
+    font-size: 0.65rem;
+    color: var(--sage);
+    padding-top: 3px;
+  }
+  .card-foot {
+    border-top: 1px solid var(--line-inverse);
+    padding-top: 17px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.69rem;
+    font-weight: 700;
   }
   .application {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
+    grid-template-columns: 0.72fr 1.28fr;
+    gap: 60px;
     align-items: start;
-    gap: 90px;
-    padding-block: 80px;
-    scroll-margin-top: 28px;
+    padding-block: 54px 64px;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  .application-intro h2 {
+    margin-top: 14px;
   }
   .application-intro > p:not(.eyebrow) {
-    margin-top: 22px;
+    margin-top: 20px;
   }
   .dates {
-    margin-top: 32px;
+    margin-top: 28px;
   }
   .dates > div {
-    padding-block: 17px;
     border-top: 1px solid var(--line);
+    padding-block: 14px;
   }
   dt {
-    font-size: 0.78rem;
     color: var(--leaf);
+    font-size: 0.74rem;
   }
   dd {
-    margin-top: 3px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 650;
+    font-size: 0.83rem;
+    margin-top: 4px;
+  }
+  .form-panel {
+    min-width: 0;
+    padding: 28px;
+    background: #fffdf7;
+    border: 1px solid var(--line);
   }
   .form-guide {
-    font-size: 0.8rem;
-    margin-bottom: 28px;
+    font-size: 0.76rem;
+    font-weight: 650;
+    margin-bottom: 20px;
+    color: var(--leaf);
+  }
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .field {
+    margin-bottom: 20px;
+  }
+  .field label,
+  legend {
+    display: block;
+    font-weight: 650;
+    font-size: 0.86rem;
+    margin-bottom: 8px;
+  }
+  input[type='text'],
+  input[type='email'] {
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: var(--white);
+    color: var(--forest);
+    font-size: 1rem;
+  }
+  input::placeholder {
+    color: #66706b;
+    font-size: 0.86rem;
   }
   fieldset {
     padding: 0;
-    margin: 0 0 32px;
+    margin: 0 0 22px;
     border: 0;
     min-width: 0;
   }
   legend {
-    width: 100%;
-    border-bottom: 1px solid var(--line);
-    padding: 0 0 14px;
-    margin-bottom: 22px;
-    font-size: 1.12rem;
-    font-weight: 700;
-  }
-  legend span {
-    margin-right: 15px;
-    color: var(--leaf);
-    font: 0.8rem var(--font-mono);
-  }
-  .field {
-    margin-bottom: 22px;
-  }
-  .field label {
-    display: block;
-    font-size: 0.92rem;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  .optional {
-    font-weight: 400;
-  }
-  input:not([type='checkbox']),
-  textarea,
-  select {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid var(--leaf);
-    border-radius: 0;
-    color: var(--forest);
-    background: #fffdf7;
-    font-size: 1rem;
-  }
-  textarea {
-    display: block;
-    resize: vertical;
+    padding: 0;
   }
   .hint {
-    font-size: 0.79rem;
     color: var(--leaf);
+    font-size: 0.74rem;
     line-height: 1.6;
-    margin: 7px 0;
+    margin-top: 8px;
   }
-  .check {
+  .budget-options,
+  .slot-options {
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-size: 0.86rem;
-    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .choice {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 46px;
+    padding: 10px 11px;
+    border: 1px solid var(--line);
+    font-size: 0.79rem;
     cursor: pointer;
   }
-  .check input {
+  .choice:has(input:checked) {
+    background: var(--sage);
+    border-color: var(--forest);
+  }
+  .choice:focus-within {
+    outline: 2px solid var(--clay);
+    outline-offset: 2px;
+  }
+  .choice input {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--forest);
+  }
+  .slot-day {
+    margin-top: 15px;
+  }
+  .slot-day > p {
+    font-size: 0.79rem;
+    font-weight: 650;
+    margin-bottom: 8px;
+  }
+  .slot-options .choice {
+    flex: 1 1 92px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+  .consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    font-size: 0.74rem;
+    line-height: 1.6;
+    cursor: pointer;
+  }
+  .consent input {
     width: 20px;
     height: 20px;
-    margin: 3px 0 0;
     flex-shrink: 0;
     accent-color: var(--forest);
+    margin: 2px 0 0;
+  }
+  .form-panel .pilot-button {
+    width: 100%;
   }
   .honeypot {
     position: absolute;
     left: -9999px;
   }
   #form-status:not(:empty) {
-    padding: 16px;
+    padding: 14px;
     border: 1px solid var(--clay);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
+    font-size: 0.88rem;
   }
   .notice {
-    border: 1px solid var(--line);
     background: var(--sage);
-    padding: 32px;
+    padding: 28px;
   }
-  .notice p {
-    margin-top: 20px;
+  .notice p + h2,
+  .notice h2 + p,
+  .notice h3 + p {
+    margin-top: 16px;
+  }
+  .details {
+    border-top: 1px solid var(--line);
+    padding-block: 48px;
+  }
+  .details h2 {
+    margin-top: 15px;
+    max-width: 26ch;
+  }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 34px;
+    margin-top: 32px;
+  }
+  .detail-grid h3 {
+    font: 400 1.5rem var(--font-display);
+    margin-bottom: 10px;
+  }
+  .detail-grid p {
+    font-size: 0.85rem;
   }
   .privacy {
-    padding-block: 0 60px;
-    max-width: 1120px;
+    padding-block: 25px 40px;
+    border-top: 1px solid var(--line);
   }
   .privacy h2 {
-    font-size: 1.7rem;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
+    margin-bottom: 14px;
   }
   .privacy p {
-    max-width: 100ch;
-    font-size: 0.85rem;
-    margin-top: 10px;
+    font-size: 0.75rem;
+    margin-top: 9px;
+    max-width: 110ch;
   }
   [hidden] {
     display: none !important;
   }
-  @media (max-width: 850px) {
+  @media (max-width: 900px) {
     .hero {
       gap: 32px;
     }
     .application {
-      gap: 40px;
-      grid-template-columns: 0.85fr 1.15fr;
+      gap: 28px;
+    }
+    .field-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
     }
   }
   @media (max-width: 680px) {
+    .pilot-shell {
+      width: min(calc(100% - 36px), 1120px);
+    }
     .hero,
     .application,
     .detail-grid {
       grid-template-columns: 1fr;
     }
     .hero {
-      padding-block: 45px;
-      gap: 38px;
+      padding-block: 35px;
+      gap: 28px;
     }
-    .application {
-      padding-block: 48px;
+    h1 {
+      font-size: clamp(3.25rem, 13vw, 4.2rem);
     }
-    .detail-grid {
-      gap: 24px;
-    }
-    .scope {
-      padding: 26px;
+    .hero-note {
+      font-size: 0.9rem;
     }
     .pilot-button {
       width: 100%;
     }
-    h1 {
-      font-size: 3.4rem;
+    .session-card {
+      padding: 23px;
+    }
+    .card-title {
+      font-size: 2.5rem;
+    }
+    .application {
+      padding-block: 36px;
+      gap: 24px;
+    }
+    .form-panel {
+      order: -1;
+    }
+    .application-intro h2 {
+      font-size: 2.7rem;
+    }
+    .dates {
+      margin-top: 18px;
+    }
+    .form-panel {
+      padding: 20px 16px;
+    }
+    .slot-options {
+      gap: 6px;
+    }
+    .slot-options .choice {
+      padding: 10px 6px;
+      font-size: 0.73rem;
+    }
+    .detail-grid {
+      gap: 24px;
+    }
+    .details h2 {
+      font-size: 2.4rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {

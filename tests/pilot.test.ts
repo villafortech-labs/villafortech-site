@@ -5,19 +5,20 @@ import { createPilotHandler, type Application } from '../server/pilot.ts';
 const valid = {
   name: 'Prueba técnica',
   email: 'qa@example.invalid',
-  whatsapp: '',
   role: 'Prueba del formulario',
-  project:
-    'Caso ficticio para comprobar que el formulario guarda una aplicación correctamente.',
-  outcome: 'Organizar las notas de un proyecto de prueba.',
-  tools: 'Documentos y notas de prueba.',
-  materials: 'ready',
-  availability: 'Martes 13, 10:00–12:00, Ecuador UTC-5.',
-  commitment: 'yes',
+  tools: 'Drive, notas y ChatGPT',
+  budget: '0',
+  availability: ['15-morning', '16-afternoon'],
   consent: 'yes',
+  source: 'instagram',
   website: '',
 };
 function request(data = valid, overrides: RequestInit = {}) {
+  const body = new URLSearchParams();
+  for (const [key, values] of Object.entries(data)) {
+    for (const value of Array.isArray(values) ? values : [values])
+      body.append(key === 'availability' ? 'availability[]' : key, value);
+  }
   return new Request('https://www.villafortech.com/api/segundo-cerebro', {
     method: 'POST',
     headers: {
@@ -25,7 +26,7 @@ function request(data = valid, overrides: RequestInit = {}) {
       accept: 'application/json',
       'content-type': 'application/x-www-form-urlencoded',
     },
-    body: new URLSearchParams(data),
+    body,
     ...overrides,
   });
 }
@@ -46,8 +47,12 @@ test('persists validated application before confirming, without disclosing answe
   const response = await handler(request());
   assert.equal(response.status, 201);
   assert.equal(records.length, 1);
-  assert.equal(records[0].consentVersion, '2026-10-08');
+  assert.equal(records[0].consentVersion, '2026-10-10');
   assert.equal(records[0].email, valid.email);
+  assert.equal(records[0].budget, '0');
+  assert.equal(records[0].schemaVersion, 2);
+  assert.deepEqual(records[0].availability, valid.availability);
+  assert.equal(records[0].source, 'instagram');
   assert.ok(!('website' in records[0]));
   const result = await response.json();
   assert.equal(result.id, records[0].id);
@@ -59,10 +64,12 @@ test('invalid email, missing consent, honeypot and oversized fields never persis
   for (const patch of [
     { email: 'not-an-email' },
     { consent: '' },
-    { commitment: '' },
+    { availability: [] },
+    { availability: ['13-morning'] },
+    { budget: 'invented' },
+    { source: 'https://untrusted.example/?personal=data' },
     { website: 'bot' },
-    { project: 'x'.repeat(701) },
-    { materials: 'invented' },
+    { tools: 'x'.repeat(351) },
   ]) {
     assert.equal((await handler(request({ ...valid, ...patch }))).status, 400);
   }
@@ -89,13 +96,13 @@ test('rejects cross-origin requests and never exposes applications through GET',
   assert.equal(records.length, 0);
 });
 test('deadline closes on the server, including exactly at cutoff', async () => {
-  const { handler, records } = fixture('2026-10-11T23:00:00Z');
+  const { handler, records } = fixture('2026-10-14T04:59:00Z');
   assert.equal((await handler(request())).status, 410);
   assert.equal(records.length, 0);
 });
 test('storage failure returns retryable failure, never false success', async () => {
   const handler = createPilotHandler({
-    now: () => new Date('2026-10-08'),
+    now: () => new Date('2026-10-10'),
     save: async () => {
       throw new Error('private storage detail');
     },
@@ -131,4 +138,25 @@ test('native form submission works without JavaScript and escapes applicant text
   assert.match(response.headers.get('content-type') ?? '', /text\/html/);
   assert.ok(!(await response.text()).includes('<script>'));
   assert.equal(records.length, 1);
+});
+
+test('new registration remains open on Tuesday and accepts every budget without purchase requirements', async () => {
+  const { handler, records } = fixture('2026-10-14T04:58:59Z');
+  for (const budget of ['0', 'under-20', '20-99', '100-199', '200-plus']) {
+    assert.equal((await handler(request({ ...valid, budget }))).status, 201);
+  }
+  assert.equal(records.length, 5);
+});
+test('trims contact data and deduplicates date-specific availability without losing another day', async () => {
+  const { handler, records } = fixture();
+  const response = await handler(
+    request({
+      ...valid,
+      email: ' QA@EXAMPLE.INVALID ',
+      availability: ['15-morning', '15-morning', '16-evening'],
+    }),
+  );
+  assert.equal(response.status, 201);
+  assert.equal(records[0].email, 'qa@example.invalid');
+  assert.deepEqual(records[0].availability, ['15-morning', '16-evening']);
 });
