@@ -19,7 +19,6 @@ export default defineConfig({
           '/es/404/',
           '/writing/',
           '/es/writing/',
-          '/segundo-cerebro/',
         ].includes(pathname);
       },
       serialize(item) {
