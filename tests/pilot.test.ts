@@ -13,7 +13,10 @@ const valid = {
   source: 'instagram',
   website: '',
 };
-function request(data = valid, overrides: RequestInit = {}) {
+function request(
+  data: typeof valid & { whatsapp?: string } = valid,
+  overrides: RequestInit = {},
+) {
   const body = new URLSearchParams();
   for (const [key, values] of Object.entries(data)) {
     for (const value of Array.isArray(values) ? values : [values])
@@ -49,6 +52,7 @@ test('persists validated application before confirming, without disclosing answe
   assert.equal(records.length, 1);
   assert.equal(records[0].consentVersion, '2026-10-10');
   assert.equal(records[0].email, valid.email);
+  assert.equal(records[0].whatsapp, '');
   assert.equal(records[0].budget, '0');
   assert.equal(records[0].schemaVersion, 2);
   assert.deepEqual(records[0].availability, valid.availability);
@@ -70,10 +74,21 @@ test('invalid email, missing consent, honeypot and oversized fields never persis
     { source: 'https://untrusted.example/?personal=data' },
     { website: 'bot' },
     { tools: 'x'.repeat(351) },
+    { whatsapp: 'x'.repeat(41) },
   ]) {
     assert.equal((await handler(request({ ...valid, ...patch }))).status, 400);
   }
   assert.equal(records.length, 0);
+});
+test('optional WhatsApp accepts an empty field and preserves a supplied phone number', async () => {
+  const { handler, records } = fixture();
+  for (const whatsapp of ['', ' +1 202 555 0147 ']) {
+    assert.equal((await handler(request({ ...valid, whatsapp }))).status, 201);
+  }
+  assert.deepEqual(
+    records.map((record) => record.whatsapp),
+    ['', '+1 202 555 0147'],
+  );
 });
 test('rejects cross-origin requests and never exposes applications through GET', async () => {
   const { handler, records } = fixture();

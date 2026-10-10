@@ -10,6 +10,7 @@ import {
 const schema = z.object({
   name: z.string().trim().min(2).max(100),
   email: z.string().trim().max(254).pipe(z.email()),
+  whatsapp: z.string().trim().max(40).default(''),
   role: z.string().trim().min(2).max(180),
   tools: z.string().trim().min(2).max(350),
   budget: z.enum(budgets.map((budget) => budget.value)),

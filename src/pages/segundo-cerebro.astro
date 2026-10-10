@@ -132,6 +132,22 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
           </div>
         </div>
         <div class="field">
+          <label for="whatsapp">WhatsApp (opcional)</label>
+          <input
+            type="tel"
+            id="whatsapp"
+            name="whatsapp"
+            autocomplete="tel"
+            maxlength="40"
+            placeholder="Incluye el código de país"
+            aria-describedby="whatsapp-hint"
+          />
+          <p class="hint" id="whatsapp-hint">
+            Si prefieres que también pueda contactarte por WhatsApp para
+            coordinar tu sesión.
+          </p>
+        </div>
+        <div class="field">
           <label for="role">¿A qué te dedicas?</label>
           <input
             type="text"
@@ -566,7 +582,8 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
     margin-bottom: 8px;
   }
   input[type='text'],
-  input[type='email'] {
+  input[type='email'],
+  input[type='tel'] {
     width: 100%;
     min-width: 0;
     min-height: 48px;

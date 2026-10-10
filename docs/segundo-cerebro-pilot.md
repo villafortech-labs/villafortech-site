@@ -14,10 +14,12 @@ site was rolled back and production auto-assignment remains disabled. Keep all
 changes on `codex/segundo-cerebro-inscripcion`; push only that branch for a
 protected Vercel preview. Master's rollback commit is `71294e3`.
 
-The form has name, email, occupation, current tools/information, monthly AI tool
-budget and date-specific availability. Budgets include $0, under $20, $20–99,
+The form has six required answers: name, email, occupation, current tools/information,
+monthly AI tool budget and date-specific availability. WhatsApp is optional,
+accepts a country prefix and is stored privately with the application when provided.
+Missing or empty WhatsApp never blocks submission. Budgets include $0, under $20, $20–99,
 $100–199 and $200+. Budget does not determine eligibility; no purchase required.
-The previous project/outcome/materials essays, optional WhatsApp, and separate
+The previous project/outcome/materials essays and separate
 commitment checkbox were removed. One unselected data-use checkbox remains.
 
 Schema version 2 keeps multiple availability values (six day/time windows), a
