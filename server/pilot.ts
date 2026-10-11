@@ -42,6 +42,7 @@ export type Application = Omit<z.infer<typeof schema>, 'website'> & {
 
 type Options = {
   save: (application: Application) => Promise<void>;
+  afterSave?: (application: Application) => void;
   now?: () => Date;
   allowedOrigins?: string[];
 };
@@ -71,6 +72,7 @@ function reply(request: Request, status: number, message: string, id?: string) {
 
 export function createPilotHandler({
   save,
+  afterSave,
   now = () => new Date(),
   allowedOrigins = [],
 }: Options) {
@@ -177,6 +179,12 @@ export function createPilotHandler({
         503,
         'No pudimos guardar tu inscripción. Tus respuestas siguen aquí: espera un momento y vuelve a enviar. Si persiste, escribe a villafortech@gmail.com.',
       );
+    }
+    // Email delivery is separate from durable application acceptance.
+    try {
+      afterSave?.(application);
+    } catch {
+      // The private review table can retry missing notifications.
     }
     return reply(
       request,

@@ -20,6 +20,7 @@ export default defineConfig({
           '/writing/',
           '/es/writing/',
           '/segundo-cerebro/',
+          '/segundo-cerebro/revision/',
         ].includes(pathname);
       },
       serialize(item) {

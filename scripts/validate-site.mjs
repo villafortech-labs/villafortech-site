@@ -7,7 +7,10 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const distRoot = join(projectRoot, 'dist');
 const siteOrigin = 'https://www.villafortech.com';
 const expectedAlternateLanguages = ['en', 'es', 'x-default'];
-const monolingualCampaigns = new Set(['/segundo-cerebro/']);
+const monolingualCampaigns = new Set([
+  '/segundo-cerebro/',
+  '/segundo-cerebro/revision/',
+]);
 const errors = [];
 
 function report(file, check, message) {
@@ -372,8 +375,8 @@ function validateReference(page, attribute, rawValue) {
   const { url } = parsed;
   if (
     attribute === 'action' &&
-    url.pathname === '/api/segundo-cerebro' &&
-    existsSync(join(projectRoot, 'api/segundo-cerebro.ts'))
+    ['/api/segundo-cerebro', '/api/pilot-admin'].includes(url.pathname) &&
+    existsSync(join(projectRoot, `${url.pathname.slice(1)}.ts`))
   )
     return;
   if (!localTargetExists(url.pathname)) {

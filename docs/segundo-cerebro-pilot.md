@@ -49,7 +49,7 @@ as an array, area/goal codes, and optional country/project strings.
 confirms persistence. On fetch/storage failure the browser keeps entered data
 and enables retry. Applications may still be duplicated after an ambiguous
 network failure; deduplicate by email before selection.
-No account, automatic emails, marketing list or third-party form is created.
+No applicant account, marketing list or third-party form is created. Owner notifications are separate from application acceptance.
 Selection and exact times are confirmed manually by email on October 14.
 
 ## Guidance used
@@ -78,9 +78,63 @@ requests leave the form contents in the browser for retry. The honeypot, body
 limit, validation, origin check and server-side deadline provide basic controls;
 this is not a CAPTCHA or a distributed rate limiter.
 
-`villafortech@gmail.com` is the visible contact address. **Automatic email
-notifications are not configured.** Check the owner dashboard for applications.
-No marketing list or automatic applicant emails are created.
+`villafortech@gmail.com` is the fixed recipient of owner notifications through
+Resend Free. The sender is `aplicaciones@avisos.villafortech.com`; sending requires
+verified DNS and `RESEND_API_KEY` plus `PILOT_REVIEW_URL` in the target environment.
+The integration is connected to **Preview only** during review. No production
+launch, applicant emails or marketing list is enabled by this change.
+
+The application is saved first. `waitUntil` then attempts the email independently,
+so a failed email cannot turn a stored application into a rejected submission.
+Private notification state supports bounded retries with the same idempotency key
+and a manual retry from the table. `sent` means accepted by Resend, not confirmed
+in the recipient inbox. An uncertain delivery older than 24 hours needs provider
+inspection before any resend. No scheduled sweeper is installed; recover pending
+or failed notifications from the table.
+
+## Private review table
+
+`/segundo-cerebro/revision/` is a noindex static shell with no embedded responses.
+`/api/pilot-admin` requires a separate private access key (`PILOT_ADMIN_SECRET`, at
+least 32 characters). Login issues a signed 12-hour HttpOnly/Secure/SameSite cookie.
+The API checks same-origin JSON mutations and never returns private data without a
+valid session. The key is not sent in a URL or stored in browser localStorage.
+
+Review states: pending, shortlist, selected, waitlist, not_selected. Notes and
+selection persist in private Blob with ETag conditional writes. Five is a global
+**selection** maximum, including simultaneous changes; duplicate emails and QA
+entries cannot occupy two places or test places respectively. Selecting does not
+email an applicant or book a time. Pages contain 20 records; searches and CSV use
+loaded records. Load more to include older pages. Test entries are hidden by default.
+Draft notes survive filters and pagination. Closing the session clears responses
+and invalidates in-flight UI requests. CSV escapes spreadsheet formula prefixes.
+
+## Capacity and operating limits
+
+There is **no five-application cap**. Deadline, payload validation and provider
+quotas are the limits. A local test submits 100 applications concurrently; this
+verifies logic, not a remote load benchmark. The app currently uses a honeypot and
+origin checks, without a distributed rate limiter or CAPTCHA.
+
+Verified plan: Vercel Hobby, private Blob active. The usage dashboard observed 33
+advanced and 11 simple Blob operations in the previous 30 days before this QA;
+usage reporting can lag. Hobby includes 2,000 advanced and 10,000 simple operations
+per month. A normal accepted application with notification uses three writes:
+one application, one notification claim and one final notification state. Review
+changes, list pages and retries consume additional operations. Do not equate the
+quota with 2,000 candidates. A few hundred applications are a reasonable campaign
+scale; an exact guaranteed count depends on remaining/shared consumption.
+
+Resend Free allows 100 messages per UTC day and 3,000 per month. Above the daily
+email quota, applications remain saved; retry their notifications after reset.
+UTC midnight is 19:00 in Ecuador mainland. No paid plan was purchased.
+
+Sources checked October 10, 2026:
+
+- https://vercel.com/docs/vercel-blob/usage-and-pricing
+- https://vercel.com/docs/plans/hobby
+- https://resend.com/docs/knowledge-base/account-quotas-and-limits
+- https://resend.com/docs/dashboard/emails/idempotency-keys
 
 Do not commit downloaded responses. Keep any exports under ignored `output/`,
 restrict access locally, and fulfill correction/deletion requests received at the

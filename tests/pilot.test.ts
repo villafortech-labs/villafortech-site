@@ -234,3 +234,46 @@ test('trims contact data and deduplicates date-specific availability without los
   assert.equal(records[0].email, 'qa@example.invalid');
   assert.deepEqual(records[0].availability, ['15-morning', '16-evening']);
 });
+
+test('accepts more than five applications, including 100 concurrent local submissions', async () => {
+  const { handler, records } = fixture();
+  const responses = await Promise.all(
+    Array.from({ length: 100 }, (_, index) =>
+      handler(request({ ...valid, email: `load-${index}@example.invalid` })),
+    ),
+  );
+  assert.ok(responses.every((response) => response.status === 201));
+  assert.equal(records.length, 100);
+  assert.equal(new Set(records.map((record) => record.id)).size, 100);
+});
+
+test('notification scheduling failure does not reject an already saved application', async () => {
+  const saved: Application[] = [];
+  const handler = createPilotHandler({
+    now: () => new Date('2026-10-10'),
+    save: async (application) => {
+      saved.push(application);
+    },
+    afterSave(application) {
+      assert.equal(saved[0].id, application.id);
+      throw new Error('Notification service unavailable');
+    },
+  });
+  assert.equal((await handler(request())).status, 201);
+  assert.equal(saved.length, 1);
+});
+
+test('unsaved applications never schedule a notification', async () => {
+  let called = false;
+  const handler = createPilotHandler({
+    now: () => new Date('2026-10-10'),
+    save: async () => {
+      throw new Error('storage failed');
+    },
+    afterSave() {
+      called = true;
+    },
+  });
+  assert.equal((await handler(request())).status, 503);
+  assert.equal(called, false);
+});

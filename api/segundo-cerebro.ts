@@ -1,4 +1,6 @@
 import { put } from '@vercel/blob';
+import { waitUntil } from '@vercel/functions';
+import { notifyApplication } from '../server/pilot-notifications.ts';
 import { createPilotHandler } from '../server/pilot.ts';
 
 const previewOrigin =
@@ -9,6 +11,9 @@ const previewOrigin =
 export default {
   fetch: createPilotHandler({
     allowedOrigins: previewOrigin,
+    afterSave(application) {
+      waitUntil(notifyApplication(application).catch(() => undefined));
+    },
     async save(application) {
       await put(
         `${application.pilotId}/${application.id}.json`,

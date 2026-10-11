@@ -7,3 +7,7 @@ tmp/
 output/
 context.md
 plan.md
+
+# Provider-authored reference skills installed by the marketplace CLI
+.agents/skills/
+skills-lock.json
