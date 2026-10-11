@@ -5,15 +5,15 @@ import {
   logNotificationError,
 } from '../server/pilot-notifications.ts';
 import { createPilotHandler } from '../server/pilot.ts';
-
-const previewOrigin =
-  process.env.VERCEL_ENV === 'preview' && process.env.VERCEL_URL
-    ? [`https://${process.env.VERCEL_URL}`]
-    : [];
+import { pilotPreviewOrigins } from '../server/pilot-origins.ts';
 
 export default {
   fetch: createPilotHandler({
-    allowedOrigins: previewOrigin,
+    allowedOrigins: pilotPreviewOrigins({
+      VERCEL_ENV: process.env.VERCEL_ENV,
+      VERCEL_URL: process.env.VERCEL_URL,
+      VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
+    }),
     afterSave(application) {
       waitUntil(
         notifyApplication(application).catch((error: unknown) =>
