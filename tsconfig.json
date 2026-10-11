@@ -1,5 +1,6 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "exclude": ["output", "tmp", "dist", "node_modules"],
   "compilerOptions": {
     "rewriteRelativeImportExtensions": true,
     "baseUrl": ".",

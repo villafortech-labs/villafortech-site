@@ -12,6 +12,7 @@ const environment = {
 test('accepts submissions from exact deployment and stable branch preview hosts', async () => {
   let saved = 0;
   const handler = createPilotHandler({
+    checkSecurity: async () => null,
     allowedOrigins: pilotPreviewOrigins(environment),
     now: () => new Date('2026-10-10T12:00:00Z'),
     save: async () => {

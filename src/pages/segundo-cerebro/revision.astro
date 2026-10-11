@@ -1,4 +1,5 @@
 ---
+import PilotSecurity from '../../components/PilotSecurity.astro';
 import '../../styles/global.css';
 const title = 'Revisión de aplicaciones · Villa for Tech';
 const description =
@@ -76,6 +77,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
             autocomplete="current-password"
             required
           />
+          <PilotSecurity action="pilot_admin" />
           <button type="submit">Entrar a la revisión</button>
         </form>
       </section>
@@ -171,6 +173,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
 </html>
 
 <script>
+  import { mountPilotSecurity } from '../../scripts/pilot-security';
   import {
     roles,
     goals,
@@ -226,6 +229,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
   const $ = <T extends HTMLElement>(id: string) =>
     document.getElementById(id) as T;
   const loginForm = $<HTMLFormElement>('login-form');
+  const loginSecurity = mountPilotSecurity(loginForm);
   const secret = $<HTMLInputElement>('review-secret');
   const access = $('access-panel');
   const workspace = $('workspace');
@@ -360,6 +364,11 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
     );
     const data = (await response.json().catch(() => ({}))) as Result;
     if (generation !== sessionGeneration) throw new StaleRequestError();
+    if (response.status === 429)
+      throw new ApiError(
+        'Hay demasiados intentos seguidos. Espera un minuto y vuelve a intentarlo.',
+        429,
+      );
     if (response.status === 401) lock();
     if (!response.ok)
       throw new ApiError(
@@ -626,7 +635,11 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
     submit.disabled = true;
     tell('Iniciando sesión…');
     try {
-      await api({ action: 'login', secret: secret.value });
+      await api({
+        action: 'login',
+        secret: secret.value,
+        turnstileToken: await loginSecurity.getToken(),
+      });
       secret.value = '';
       await load();
     } catch (error) {
@@ -636,6 +649,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
         true,
       );
     } finally {
+      loginSecurity.reset();
       submit.disabled = false;
     }
   });

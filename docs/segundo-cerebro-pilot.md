@@ -13,10 +13,11 @@ Professionals and students are eligible. Public copy leads with five free 1:1
 sessions, dates, a second brain built with the participant and a guide to maintain
 it. The session duration is internal planning; public copy does not announce it.
 
-**Review only. Do not publish without Roberto's explicit approval.** The public
-site was rolled back and production auto-assignment remains disabled. Keep all
-changes on `codex/segundo-cerebro-inscripcion`; push only that branch for a
-protected Vercel preview. Master's rollback commit is `71294e3`.
+The site was launched with explicit authorization on October 10. Security hardening
+was subsequently authorized with “Hazlo”. Keep changes on
+`codex/segundo-cerebro-inscripcion`. Production auto-assignment stays disabled;
+verify an exact production build before explicitly promoting it. Media publication
+has its own authorization and status in the social media project.
 
 ## Low-friction application (schema 3)
 
@@ -44,11 +45,14 @@ deduplicates tools/slots, bounds text length and excludes the honeypot.
 Old records remain unchanged in the private folder; schema 3 stores tool codes
 as an array, area/goal codes, and optional country/project strings.
 
-`utm_source` accepts only known channel names. Without JavaScript it defaults to
-`direct`; a native valid POST still works. Success appears only after storage
+`utm_source` accepts only known channel names. JavaScript is required for the
+antispam check; a noscript notice explains this. Success appears only after storage
 confirms persistence. On fetch/storage failure the browser keeps entered data
-and enables retry. Applications may still be duplicated after an ambiguous
-network failure; deduplicate by email before selection.
+and refreshes the single-use security token for retry. An immutable private email
+claim ensures retries keep the original application and UUID, including concurrent
+requests and a crash between claiming an email and persisting its application.
+The email is trimmed/lowercased; no provider-specific alias assumptions are made.
+Reapplying does not overwrite the original answers. Correction requests go to Roberto.
 No applicant account, marketing list or third-party form is created. Owner notifications are separate from application acceptance.
 Selection and exact times are confirmed manually by email on October 14.
 
@@ -76,13 +80,13 @@ responses while signed in. Objects are not exposed by a public read API. The API
 only accepts POST and returns a receipt after Blob confirms persistence. Failed
 requests leave the form contents in the browser for retry. The honeypot, body
 limit, validation, origin check and server-side deadline provide basic controls;
-this is not a CAPTCHA or a distributed rate limiter.
+these remain alongside the Turnstile and distributed rate controls described below.
 
 `villafortech@gmail.com` is the fixed recipient of owner notifications through
 Resend Free. The sender is `aplicaciones@avisos.villafortech.com`; sending requires
 verified DNS and `RESEND_API_KEY` plus `PILOT_REVIEW_URL` in the target environment.
-The integration is connected to **Preview only** during review. No production
-launch, applicant emails or marketing list is enabled by this change.
+The integration is connected to **Preview and Production**. No applicant
+automation or marketing list is enabled; the notification goes only to the owner.
 
 The application is saved first. `waitUntil` then attempts the email independently,
 so a failed email cannot turn a stored application into a rejected submission.
@@ -113,14 +117,15 @@ and invalidates in-flight UI requests. CSV escapes spreadsheet formula prefixes.
 
 There is **no five-application cap**. Deadline, payload validation and provider
 quotas are the limits. A local test submits 100 applications concurrently; this
-verifies logic, not a remote load benchmark. The app currently uses a honeypot and
-origin checks, without a distributed rate limiter or CAPTCHA.
+verifies isolated handler logic with a stubbed security check, not a remote load
+benchmark. Real verified application attempts are limited to 60 per minute globally.
 
 Verified plan: Vercel Hobby, private Blob active. The usage dashboard observed 33
 advanced and 11 simple Blob operations in the previous 30 days before this QA;
 usage reporting can lag. Hobby includes 2,000 advanced and 10,000 simple operations
-per month. A normal accepted application with notification uses three writes:
-one application, one notification claim and one final notification state. Review
+per month. A new accepted application with notification uses five writes:
+one shared rate counter, one email claim, one application, one notification claim
+and one final notification state. Successful login attempts also write a counter. Review
 changes, list pages and retries consume additional operations. Do not equate the
 quota with 2,000 candidates. A few hundred applications are a reasonable campaign
 scale; an exact guaranteed count depends on remaining/shared consumption.
@@ -160,3 +165,46 @@ The page does not modify the social media bio link or publish an announcement.
 
 Rollback baseline: `c642ad2848b955d85a09397728123e3ea8c52706`. Preserve the private
 store even if reverting the page so submitted applications are not lost.
+
+## Antispam and abuse protection — October 10, 2026
+
+- Cloudflare Turnstile Managed runs on both application and admin login. The
+  widget uses interaction-only appearance; most visitors see no extra task.
+- The server calls Siteverify before accepting a submission or testing the
+  admin key. It requires success plus the exact origin hostname and action
+  (`pilot_apply` or `pilot_admin`). Tokens are single-use and expire in five minutes.
+- Missing credentials, provider errors/timeouts and unavailable counter storage
+  reject the operation instead of silently disabling protection. Requests preserve
+  the visitor's answers so they can retry. Public responses never echo secrets.
+- A Cloudflare Free rate rule covers both API paths, with and without a trailing
+  slash: 20 requests / 10 seconds / IP, then a 10-second block. This protects
+  traffic routed through Cloudflare, not direct Vercel aliases.
+- Separate server budgets permit 60 verified application attempts/minute and
+  5 verified admin login attempts/minute, globally across instances. These are
+  deliberately global circuit breakers, not per-person limits. They use uncached
+  private Blob reads and conditional ETag writes; there are only two counter
+  records, reused after expiry. Blocked attempts receive HTTP 429 + Retry-After.
+  Logged-in review actions do not consume the login budget.
+- Client-supplied IP headers are not trusted. Cloudflare sees visitor IPs at its
+  edge; Vercel may see Cloudflare proxy IPs. The application counters do not
+  pretend those are individual visitor IPs.
+- Email claims use an independent HMAC secret and atomic no-overwrite writes.
+  Notification idempotency uses the winning application UUID, so retries cannot
+  create another owner email after a successful delivery. Historical applications
+  are retained. A server-only HMAC-to-UUID migration map preserves their original
+  IDs; their claims materialize atomically on the first retry.
+- Required environment: `PUBLIC_TURNSTILE_SITE_KEY` (public build value),
+  `TURNSTILE_SECRET_KEY`, and `PILOT_DEDUP_SECRET` (server-only). Preserve the
+  dedup secret; rotating it requires a claim migration. The optional
+  `PILOT_LEGACY_APPLICATION_IDS` map contains no raw emails. Never use test keys in
+  deployed environments. Preview hostnames must be explicitly allowed by the widget.
+- Vercel and Cloudflare automatic DDoS defenses remain active. No protection
+  guarantees immunity or unlimited capacity. Solved challenges and legitimate
+  traffic still consume hosting/storage/email quotas. No paid plan was added.
+
+References:
+
+- https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
+- https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/widget-configurations/
+- https://developers.cloudflare.com/waf/rate-limiting-rules/
+- https://vercel.com/docs/headers/request-headers

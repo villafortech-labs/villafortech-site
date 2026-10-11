@@ -1,4 +1,3 @@
-import { put } from '@vercel/blob';
 import { waitUntil } from '@vercel/functions';
 import {
   notifyApplication,
@@ -6,13 +5,26 @@ import {
 } from '../server/pilot-notifications.ts';
 import { createPilotHandler } from '../server/pilot.ts';
 import { pilotPreviewOrigins } from '../server/pilot-origins.ts';
+import { createSecurityCheck } from '../server/pilot-security.ts';
+import {
+  createDeduplicatingSave,
+  dedupStore,
+  rateStore,
+} from '../server/pilot-security-store.ts';
+
+const allowedOrigins = pilotPreviewOrigins({
+  VERCEL_ENV: process.env.VERCEL_ENV,
+  VERCEL_URL: process.env.VERCEL_URL,
+  VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
+});
 
 export default {
   fetch: createPilotHandler({
-    allowedOrigins: pilotPreviewOrigins({
-      VERCEL_ENV: process.env.VERCEL_ENV,
-      VERCEL_URL: process.env.VERCEL_URL,
-      VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL,
+    allowedOrigins,
+    checkSecurity: createSecurityCheck({
+      secret: process.env.TURNSTILE_SECRET_KEY,
+      allowedOrigins,
+      rateStore,
     }),
     afterSave(application) {
       waitUntil(
@@ -21,17 +33,13 @@ export default {
         ),
       );
     },
-    async save(application) {
-      await put(
-        `${application.pilotId}/${application.id}.json`,
-        JSON.stringify(application),
-        {
-          access: 'private',
-          addRandomSuffix: false,
-          allowOverwrite: false,
-          contentType: 'application/json',
-        },
-      );
-    },
+    save: createDeduplicatingSave(
+      dedupStore,
+      process.env.PILOT_DEDUP_SECRET,
+      JSON.parse(process.env.PILOT_LEGACY_APPLICATION_IDS ?? '{}') as Record<
+        string,
+        string
+      >,
+    ),
   }),
 };

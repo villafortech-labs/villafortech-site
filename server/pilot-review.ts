@@ -5,6 +5,7 @@ import {
   timingSafeEqual,
 } from 'node:crypto';
 import { z } from 'zod';
+import type { SecurityCheck } from './pilot-security.ts';
 
 export const reviewStatuses = [
   'pending',
@@ -54,7 +55,11 @@ const headers = {
 };
 const actionSchema = z.discriminatedUnion('action', [
   z
-    .object({ action: z.literal('login'), secret: z.string().max(512) })
+    .object({
+      action: z.literal('login'),
+      secret: z.string().max(512),
+      turnstileToken: z.string().max(2048).default(''),
+    })
     .strict(),
   z.object({ action: z.literal('logout') }).strict(),
   z
@@ -145,6 +150,7 @@ async function readBody(request: Request): Promise<unknown> {
 }
 
 type Options = ReviewStore & {
+  checkSecurity: SecurityCheck;
   secret?: string;
   now?: () => Date;
   notify?: (application: StoredApplication) => Promise<NotificationState>;
@@ -229,6 +235,24 @@ export function createPilotAdminHandler(options: Options) {
         return reply(400, 'Revisa los datos y vuelve a intentarlo.');
       const action = parsed.data;
       if (action.action === 'login') {
+        const failure = await options.checkSecurity(
+          request,
+          action.turnstileToken,
+          'pilot_admin',
+        );
+        if (failure)
+          return Response.json(
+            { ok: false, message: failure.message },
+            {
+              status: failure.status,
+              headers: {
+                ...headers,
+                ...(failure.retryAfter
+                  ? { 'Retry-After': String(failure.retryAfter) }
+                  : {}),
+              },
+            },
+          );
         if (!timingSafeEqual(hash(action.secret), hash(secret)))
           return reply(401, 'La clave de acceso no es válida.');
         const payload = `${Math.floor(current.getTime() / 1_000) + SESSION_SECONDS}.${randomUUID()}`;

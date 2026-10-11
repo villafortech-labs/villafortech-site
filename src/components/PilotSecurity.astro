@@ -1,0 +1,23 @@
+---
+interface Props {
+  action: 'pilot_apply' | 'pilot_admin';
+}
+const { action } = Astro.props;
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
+if (process.env.VERCEL && !siteKey)
+  throw new Error('PUBLIC_TURNSTILE_SITE_KEY is required');
+---
+
+<div class="pilot-security" data-sitekey={siteKey} data-action={action}></div>
+<noscript
+  ><p>
+    Activa JavaScript para completar la comprobación antispam y enviar el
+    formulario.
+  </p></noscript
+>
+<style>
+  .pilot-security {
+    margin-block: 14px;
+    min-width: 0;
+  }
+</style>

@@ -51,6 +51,7 @@ function fixture(applications: StoredApplication[] = [application()]) {
   let notifyCalls = 0;
   const notifications: Record<string, NotificationState> = {};
   const handler = createPilotAdminHandler({
+    checkSecurity: async () => null,
     secret,
     now: () => clock,
     readApplication: async (id) =>
@@ -374,6 +375,7 @@ test('storage failures cannot report saved changes or disclose error details', a
 test('weak or missing access configuration disables the API', async () => {
   for (const secretValue of [undefined, 'short']) {
     const handler = createPilotAdminHandler({
+      checkSecurity: async () => null,
       secret: secretValue,
       readApplication: async () => null,
       listApplications: async () => {

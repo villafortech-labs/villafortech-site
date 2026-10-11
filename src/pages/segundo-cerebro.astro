@@ -1,4 +1,5 @@
 ---
+import PilotSecurity from '../components/PilotSecurity.astro';
 import PilotLayout from '../layouts/PilotLayout.astro';
 import {
   pilot,
@@ -321,6 +322,7 @@ import {
             autocomplete="off"
           />
         </div>
+        <PilotSecurity action="pilot_apply" />
         <p id="form-status" role="status" tabindex="-1"></p>
         <button class="pilot-button" id="submit-button" type="submit"
           >Enviar mi aplicación <span aria-hidden="true">↗</span></button
@@ -395,6 +397,10 @@ import {
       Vercel. No se usarán como testimonios ni para enviarte publicidad.
     </p>
     <p>
+      Usamos Cloudflare Turnstile para detectar envíos automatizados y proteger
+      el formulario.
+    </p>
+    <p>
       Puedes pedir corregir o eliminar tu inscripción en <a
         href={`mailto:${pilot.contact}`}>{pilot.contact}</a
       >. Cualquier uso público de tu caso se autorizará por separado.
@@ -404,11 +410,13 @@ import {
 
 <script>
   import { sources } from '../data/pilot';
+  import { mountPilotSecurity } from '../scripts/pilot-security';
   const form = document.querySelector<HTMLFormElement>('#pilot-form');
   const submit = document.querySelector<HTMLButtonElement>('#submit-button');
   const status = document.querySelector<HTMLParagraphElement>('#form-status');
   const success = document.querySelector<HTMLElement>('#success-message');
   if (form && submit && status && success) {
+    const security = mountPilotSecurity(form);
     const source = new URLSearchParams(location.search).get('utm_source');
     const sourceField = form.querySelector<HTMLInputElement>('#source');
     if (sourceField && sources.some((known) => known === source))
@@ -449,17 +457,28 @@ import {
       validateTools();
       if (!form.reportValidity()) return;
       submit.disabled = true;
-      submit.textContent = 'Enviando tu aplicación…';
+      submit.textContent = 'Comprobando el envío…';
       status.textContent = '';
       try {
+        const token = await security.getToken();
+        submit.textContent = 'Enviando tu aplicación…';
         const body = new URLSearchParams();
         for (const [key, value] of new FormData(form))
           body.append(key, String(value));
+        body.set('cf-turnstile-response', token);
         const response = await fetch(form.action, {
           method: 'POST',
           headers: { Accept: 'application/json' },
           body,
         });
+        if (response.status === 429)
+          throw new Error(
+            'Hay demasiados intentos seguidos. Espera un minuto y vuelve a enviar; tus respuestas siguen aquí.',
+          );
+        if (!response.headers.get('content-type')?.includes('application/json'))
+          throw new Error(
+            'No pudimos confirmar el envío. Espera un momento y vuelve a intentarlo; tus respuestas siguen aquí.',
+          );
         const result = await response.json();
         if (!response.ok || result.ok !== true)
           throw new Error(
@@ -471,6 +490,7 @@ import {
         success.hidden = false;
         success.focus();
       } catch (error) {
+        security.reset();
         status.textContent =
           error instanceof Error && !error.message.startsWith('Unexpected')
             ? error.message

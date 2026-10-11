@@ -43,6 +43,7 @@ function fixture(date = '2026-10-08T12:00:00Z') {
   return {
     records,
     handler: createPilotHandler({
+      checkSecurity: async () => null,
       now: () => new Date(date),
       save: async (record) => {
         records.push(record);
@@ -176,6 +177,7 @@ test('deadline closes on the server, including exactly at cutoff', async () => {
 });
 test('storage failure returns retryable failure, never false success', async () => {
   const handler = createPilotHandler({
+    checkSecurity: async () => null,
     now: () => new Date('2026-10-10'),
     save: async () => {
       throw new Error('private storage detail');
@@ -195,7 +197,7 @@ test('limits actual body bytes even with no content-length', async () => {
   );
   assert.equal(records.length, 0);
 });
-test('native form submission works without JavaScript and escapes applicant text by omission', async () => {
+test('HTML responses after a stubbed security check omit applicant text', async () => {
   const { handler, records } = fixture();
   const response = await handler(
     request(
@@ -235,7 +237,7 @@ test('trims contact data and deduplicates date-specific availability without los
   assert.deepEqual(records[0].availability, ['15-morning', '16-evening']);
 });
 
-test('accepts more than five applications, including 100 concurrent local submissions', async () => {
+test('accepts more than five applications in an isolated handler with a stubbed security check', async () => {
   const { handler, records } = fixture();
   const responses = await Promise.all(
     Array.from({ length: 100 }, (_, index) =>
@@ -250,6 +252,7 @@ test('accepts more than five applications, including 100 concurrent local submis
 test('notification scheduling failure does not reject an already saved application', async () => {
   const saved: Application[] = [];
   const handler = createPilotHandler({
+    checkSecurity: async () => null,
     now: () => new Date('2026-10-10'),
     save: async (application) => {
       saved.push(application);
@@ -266,6 +269,7 @@ test('notification scheduling failure does not reject an already saved applicati
 test('unsaved applications never schedule a notification', async () => {
   let called = false;
   const handler = createPilotHandler({
+    checkSecurity: async () => null,
     now: () => new Date('2026-10-10'),
     save: async () => {
       throw new Error('storage failed');

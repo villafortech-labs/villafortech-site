@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
+import type { SecurityCheck } from './pilot-security.ts';
 import {
   pilot,
   budgets,
@@ -41,7 +42,8 @@ export type Application = Omit<z.infer<typeof schema>, 'website'> & {
 };
 
 type Options = {
-  save: (application: Application) => Promise<void>;
+  save: (application: Application) => Promise<Application | void>;
+  checkSecurity: SecurityCheck;
   afterSave?: (application: Application) => void;
   now?: () => Date;
   allowedOrigins?: string[];
@@ -53,11 +55,21 @@ const headers = {
   'X-Robots-Tag': 'noindex, nofollow',
 };
 
-function reply(request: Request, status: number, message: string, id?: string) {
+function reply(
+  request: Request,
+  status: number,
+  message: string,
+  id?: string,
+  retryAfter?: number,
+) {
+  const responseHeaders = {
+    ...headers,
+    ...(retryAfter ? { 'Retry-After': String(retryAfter) } : {}),
+  };
   if (request.headers.get('accept')?.includes('application/json')) {
     return Response.json(
       { ok: status === 201, message, ...(id ? { id } : {}) },
-      { status, headers },
+      { status, headers: responseHeaders },
     );
   }
   // Messages are fixed server text; never interpolate submitted values into HTML.
@@ -65,7 +77,10 @@ function reply(request: Request, status: number, message: string, id?: string) {
     `<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Inscripción · Villa for Tech</title><body><main><h1>${status === 201 ? 'Inscripción recibida' : 'No se pudo enviar'}</h1><p>${message}</p><p><a href="/segundo-cerebro/">Volver al formulario</a></p></main></body></html>`,
     {
       status,
-      headers: { ...headers, 'Content-Type': 'text/html; charset=utf-8' },
+      headers: {
+        ...responseHeaders,
+        'Content-Type': 'text/html; charset=utf-8',
+      },
     },
   );
 }
@@ -73,6 +88,7 @@ function reply(request: Request, status: number, message: string, id?: string) {
 export function createPilotHandler({
   save,
   afterSave,
+  checkSecurity,
   now = () => new Date(),
   allowedOrigins = [],
 }: Options) {
@@ -160,8 +176,29 @@ export function createPilotHandler({
         'Revisa tus datos y selecciona tu área, objetivo, herramientas, presupuesto y al menos un horario. Acepta el uso de tus respuestas para enviar.',
       );
     }
+    try {
+      const failure = await checkSecurity(
+        request,
+        params.get('cf-turnstile-response') ?? '',
+        'pilot_apply',
+      );
+      if (failure)
+        return reply(
+          request,
+          failure.status,
+          failure.message,
+          undefined,
+          failure.retryAfter,
+        );
+    } catch {
+      return reply(
+        request,
+        503,
+        'No pudimos comprobar la seguridad del envío. Espera un momento e inténtalo de nuevo.',
+      );
+    }
     const { website: _honeypot, ...data } = result.data;
-    const application = {
+    let application: Application = {
       ...data,
       email: data.email.toLowerCase(),
       id: randomUUID(),
@@ -171,7 +208,7 @@ export function createPilotHandler({
       schemaVersion: pilot.schemaVersion,
     };
     try {
-      await save(application);
+      application = (await save(application)) ?? application;
     } catch {
       // Never log applicant information or report success before durable storage.
       return reply(
