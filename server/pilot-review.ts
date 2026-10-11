@@ -25,6 +25,7 @@ export type ReviewEntry = {
   notes: string;
   updatedAt: string | null;
   emailHash: string;
+  newsletterUnsubscribedAt?: string | null;
 };
 export type ReviewState = {
   version: 1;
@@ -71,7 +72,26 @@ const actionSchema = z.discriminatedUnion('action', [
     })
     .strict(),
   z.object({ action: z.literal('notify'), id: z.uuid() }).strict(),
+  z
+    .object({ action: z.literal('newsletter-unsubscribe'), id: z.uuid() })
+    .strict(),
 ]);
+
+export function newsletterStatus(
+  application: StoredApplication,
+  review?: Pick<ReviewEntry, 'newsletterUnsubscribedAt'>,
+): 'subscribed' | 'unsubscribed' | 'not_subscribed' {
+  if (review?.newsletterUnsubscribedAt) return 'unsubscribed';
+  return application.newsletterConsent === true &&
+    typeof application.newsletterConsentAt === 'string' &&
+    Number.isFinite(Date.parse(application.newsletterConsentAt)) &&
+    typeof application.newsletterConsentVersion === 'string' &&
+    !!application.newsletterConsentVersion &&
+    typeof application.newsletterConsentText === 'string' &&
+    !!application.newsletterConsentText
+    ? 'subscribed'
+    : 'not_subscribed';
+}
 
 export function isTestApplication(application: StoredApplication): boolean {
   return /@(?:[^@.]+\.)*example\.invalid$/i.test(application.email.trim());
@@ -89,6 +109,9 @@ function publicReview(review?: ReviewEntry) {
     status: review.status,
     notes: review.notes,
     updatedAt: review.updatedAt,
+    ...(review.newsletterUnsubscribedAt
+      ? { newsletterUnsubscribedAt: review.newsletterUnsubscribedAt }
+      : {}),
   };
 }
 function hash(value: string) {
@@ -209,6 +232,10 @@ export function createPilotAdminHandler(options: Options) {
             applications: page.applications.map((application) => ({
               ...application,
               review: publicReview(snapshot.state.reviews[application.id]),
+              newsletterStatus: newsletterStatus(
+                application,
+                snapshot.state.reviews[application.id],
+              ),
               isTest: isTestApplication(application),
               notification: notifications[application.id] ?? {
                 status: configured ? 'pending' : 'unconfigured',
@@ -284,7 +311,11 @@ export function createPilotAdminHandler(options: Options) {
         const notification = await options.notify(application);
         return Response.json({ ok: true, notification }, { headers });
       }
-      if (action.status === 'selected' && isTestApplication(application))
+      if (
+        action.action === 'review' &&
+        action.status === 'selected' &&
+        isTestApplication(application)
+      )
         return reply(
           409,
           'Las aplicaciones de prueba no pueden ocupar un cupo.',
@@ -294,15 +325,21 @@ export function createPilotAdminHandler(options: Options) {
       );
       for (let attempt = 0; attempt < 8; attempt++) {
         const snapshot = await options.readReviewState();
+        const previous = snapshot.state.reviews[action.id];
         const others = Object.entries(snapshot.state.reviews).filter(
           ([id, review]) => id !== action.id && review.status === 'selected',
         );
-        if (action.status === 'selected' && others.length >= MAX_SELECTED)
+        if (
+          action.action === 'review' &&
+          action.status === 'selected' &&
+          others.length >= MAX_SELECTED
+        )
           return reply(
             409,
             'Ya hay cinco personas seleccionadas. Libera un cupo antes de elegir a otra.',
           );
         if (
+          action.action === 'review' &&
           action.status === 'selected' &&
           others.some(([, review]) => review.emailHash === emailHash)
         )
@@ -310,12 +347,21 @@ export function createPilotAdminHandler(options: Options) {
             409,
             'Este correo ya tiene una aplicación seleccionada.',
           );
-        const review: ReviewEntry = {
-          status: action.status,
-          notes: action.notes,
-          updatedAt: current.toISOString(),
-          emailHash,
-        };
+        const review: ReviewEntry =
+          action.action === 'newsletter-unsubscribe'
+            ? {
+                ...(previous ?? defaultReview()),
+                emailHash,
+                newsletterUnsubscribedAt:
+                  previous?.newsletterUnsubscribedAt ?? current.toISOString(),
+              }
+            : {
+                ...previous,
+                status: action.status,
+                notes: action.notes,
+                updatedAt: current.toISOString(),
+                emailHash,
+              };
         const state: ReviewState = {
           version: 1,
           reviews: { ...snapshot.state.reviews, [action.id]: review },
@@ -326,6 +372,7 @@ export function createPilotAdminHandler(options: Options) {
             {
               ok: true,
               review: publicReview(review),
+              newsletterStatus: newsletterStatus(application, review),
               selectedCount: selectedCount(state),
             },
             { headers },

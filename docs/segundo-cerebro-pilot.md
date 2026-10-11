@@ -19,14 +19,15 @@ was subsequently authorized with “Hazlo”. Keep changes on
 verify an exact production build before explicitly promoting it. Media publication
 has its own authorization and status in the social media project.
 
-## Low-friction application (schema 3)
+## Low-friction application (schema 4)
 
 Seven required answers: name, email, area, priority, current information/tools,
 monthly AI tool budget and availability. Only name and email require typing;
 area/priority use native selects, and tools/budget/time use native choices.
 WhatsApp, country and a short project note are optional. No essays or uploads.
 The note can clarify an “other” selection without adding a conditional blocker.
-One unselected data-use checkbox remains. The submit button says **Enviar mi
+The required data-use checkbox and optional email-newsletter checkbox are both
+unchecked by default. Newsletter consent never affects eligibility. The submit button says **Enviar mi
 aplicación**; clicking the link or choosing a time is not a completed application.
 
 Contact fields use stable labels, ids, names and standard autocomplete tokens:
@@ -53,7 +54,9 @@ claim ensures retries keep the original application and UUID, including concurre
 requests and a crash between claiming an email and persisting its application.
 The email is trimmed/lowercased; no provider-specific alias assumptions are made.
 Reapplying does not overwrite the original answers. Correction requests go to Roberto.
-No applicant account, marketing list or third-party form is created. Owner notifications are separate from application acceptance.
+No applicant account, external marketing list or third-party form is created.
+An optional newsletter permission is stored locally with the application; no
+newsletter is sent automatically. Owner notifications are separate from application acceptance.
 Selection and exact times are confirmed manually by email on October 14.
 
 ## Guidance used
@@ -86,7 +89,7 @@ these remain alongside the Turnstile and distributed rate controls described bel
 Resend Free. The sender is `aplicaciones@avisos.villafortech.com`; sending requires
 verified DNS and `RESEND_API_KEY` plus `PILOT_REVIEW_URL` in the target environment.
 The integration is connected to **Preview and Production**. No applicant
-automation or marketing list is enabled; the notification goes only to the owner.
+email automation or external marketing list is enabled; the notification goes only to the owner.
 
 The application is saved first. `waitUntil` then attempts the email independently,
 so a failed email cannot turn a stored application into a rejected submission.
@@ -112,6 +115,35 @@ email an applicant or book a time. Pages contain 20 records; searches and CSV us
 loaded records. Load more to include older pages. Test entries are hidden by default.
 Draft notes survive filters and pagination. Closing the session clears responses
 and invalidates in-flight UI requests. CSV escapes spreadsheet formula prefixes.
+
+## Optional newsletter permission — October 11, 2026
+
+`newsletterConsent=yes` is the only affirmative value. Omitted, empty or `no`
+means false; malformed values are rejected. Schema 4 stores a boolean,
+`newsletterConsentAt` (server UTC time, null when not accepted), and the exact
+`newsletterConsentText` and `newsletterConsentVersion` displayed on the form.
+The copy authorizes email resources about AI, news and upcoming Villa for Tech
+activities. It does not authorize WhatsApp marketing or third-party sharing.
+Legacy responses have no newsletter authorization and are never opted in by a
+migration. Email deduplication still preserves the original immutable answers,
+including their newsletter preference; reapplying does not resubscribe someone.
+
+The owner table shows newsletter status, evidence and a **Solo newsletter
+autorizada** filter. The view CSV includes status and consent evidence. It uses
+loaded responses only: load all pages and keep tests hidden before preparing
+a mailing list. Do not use the unfiltered application export as a marketing list.
+
+Visitors can withdraw by emailing `villafortech@gmail.com`, linked in the privacy
+notice. **Registrar baja de newsletter** in the private review panel records
+`newsletterUnsubscribedAt` with conditional writes, preserves consent evidence and
+selection/notes, and excludes that contact from the newsletter filter. Later
+review edits and repeated applications cannot undo the withdrawal. Previously
+exported files and external email services must also honor the withdrawal; take
+a fresh export before sending. Add unsubscribe links when configuring a future
+mailing service. This change does not send messages or verify email ownership.
+
+Consent guidance consulted:
+https://www.edpb.europa.eu/sme/be-compliant/process-personal-data-lawfully_en
 
 ## Capacity and operating limits
 

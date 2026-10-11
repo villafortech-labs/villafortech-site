@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createPilotHandler, type Application } from '../server/pilot.ts';
+import { newsletter, pilot } from '../src/data/pilot.ts';
 
 const valid = {
   name: 'Prueba técnica',
@@ -19,11 +20,13 @@ function request(
     whatsapp?: string;
     country?: string;
     project?: string;
+    newsletterConsent?: string;
   } = valid,
   overrides: RequestInit = {},
 ) {
   const body = new URLSearchParams();
   for (const [key, values] of Object.entries(data)) {
+    if (values === undefined) continue;
     for (const value of Array.isArray(values) ? values : [values])
       body.append(Array.isArray(values) ? `${key}[]` : key, value);
   }
@@ -56,11 +59,13 @@ test('persists validated application before confirming, without disclosing answe
   const response = await handler(request());
   assert.equal(response.status, 201);
   assert.equal(records.length, 1);
-  assert.equal(records[0].consentVersion, '2026-10-10');
+  assert.equal(records[0].consentVersion, pilot.consentVersion);
   assert.equal(records[0].email, valid.email);
   assert.equal(records[0].whatsapp, '');
   assert.equal(records[0].budget, '0');
-  assert.equal(records[0].schemaVersion, 3);
+  assert.equal(records[0].schemaVersion, 4);
+  assert.equal(records[0].newsletterConsent, false);
+  assert.equal(records[0].newsletterConsentAt, null);
   assert.deepEqual(records[0].tools, valid.tools);
   assert.equal(records[0].goal, valid.goal);
   assert.equal(records[0].country, '');
@@ -72,6 +77,34 @@ test('persists validated application before confirming, without disclosing answe
   assert.equal(result.id, records[0].id);
   assert.equal(result.email, undefined);
   assert.equal(response.headers.get('cache-control'), 'no-store');
+});
+test('newsletter is a separate optional opt-in with server-recorded evidence', async () => {
+  const { handler, records } = fixture();
+  for (const newsletterConsent of [undefined, '', 'no', 'yes']) {
+    const response = await handler(request({ ...valid, newsletterConsent }));
+    assert.equal(response.status, 201);
+  }
+  assert.deepEqual(
+    records.map((record) => record.newsletterConsent),
+    [false, false, false, true],
+  );
+  const optedIn = records[3];
+  assert.equal(optedIn.newsletterConsentAt, optedIn.submittedAt);
+  assert.equal(optedIn.newsletterConsentVersion, newsletter.consentVersion);
+  assert.equal(optedIn.newsletterConsentText, newsletter.consentText);
+  assert.equal(
+    (await handler(request({ ...valid, newsletterConsent: 'true' }))).status,
+    400,
+  );
+  assert.equal(
+    (
+      await handler(
+        request({ ...valid, consent: '', newsletterConsent: 'yes' }),
+      )
+    ).status,
+    400,
+  );
+  assert.equal(records.length, 4);
 });
 test('invalid email, missing consent, honeypot and oversized fields never persist', async () => {
   const { handler, records } = fixture();

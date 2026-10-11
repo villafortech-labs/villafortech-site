@@ -3,6 +3,7 @@ import PilotSecurity from '../components/PilotSecurity.astro';
 import PilotLayout from '../layouts/PilotLayout.astro';
 import {
   pilot,
+  newsletter,
   budgets,
   availabilitySlots,
   roles,
@@ -312,6 +313,20 @@ import {
             sobre la sesión. <a href="#privacidad">Uso de datos</a>.</span
           ></label
         >
+        <label class="consent newsletter-consent"
+          ><input
+            type="checkbox"
+            id="newsletter-consent"
+            name="newsletterConsent"
+            value="yes"
+          /><span>
+            <strong>Novedades por correo (opcional)</strong><br />
+            {newsletter.consentText}
+            <span class="consent-note"
+              >No influye en la selección de los cinco cupos.</span
+            >
+          </span></label
+        >
         <input type="hidden" name="source" id="source" value="direct" />
         <div class="honeypot" aria-hidden="true">
           <label for="website">Deja este campo vacío</label><input
@@ -329,7 +344,7 @@ import {
         >
         <p class="small">
           Tu aplicación estará enviada cuando veas la confirmación. Te escribiré
-          el miércoles 14 si tu caso es seleccionado. Sin publicidad.
+          el miércoles 14 si tu caso es seleccionado.
         </p>
       </form>
       <section
@@ -394,7 +409,18 @@ import {
       Roberto Villafuerte usará tus datos, preferencias y el origen del enlace
       para organizar esta convocatoria y coordinar las cinco sesiones. Se
       guardan de forma privada en la infraestructura de esta web, alojada en
-      Vercel. No se usarán como testimonios ni para enviarte publicidad.
+      Vercel. No se usarán como testimonios.
+    </p>
+    <p>
+      Solo si marcas la casilla opcional de novedades, conservaré tu nombre y
+      correo para enviarte recursos sobre IA, novedades y próximas actividades
+      de Villa for Tech, aunque no obtengas un cupo. Guardaré también la fecha y
+      el texto de tu autorización. Puedes retirar este permiso en cualquier
+      momento escribiendo a <a
+        href={`mailto:${pilot.contact}?subject=Baja%20de%20newsletter`}
+        >{pilot.contact}</a
+      >. No afecta tu inscripción. Si no la marcas, solo te contactaré sobre
+      esta convocatoria.
     </p>
     <p>
       Usamos Cloudflare Turnstile para detectar envíos automatizados y proteger
@@ -792,6 +818,15 @@ import {
     flex-shrink: 0;
     accent-color: var(--forest);
     margin: 2px 0 0;
+  }
+  .newsletter-consent {
+    padding: 14px;
+    border: 1px solid var(--forest);
+    border-radius: 8px;
+  }
+  .consent-note {
+    display: block;
+    margin-top: 6px;
   }
   .form-panel .pilot-button {
     width: 100%;

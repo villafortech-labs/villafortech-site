@@ -25,6 +25,7 @@ const stateSchema = z.object({
       notes: z.string().max(2_000),
       updatedAt: z.string().nullable(),
       emailHash: z.string().regex(/^[a-f0-9]{64}$/),
+      newsletterUnsubscribedAt: z.iso.datetime().nullable().optional(),
     }),
   ),
 });

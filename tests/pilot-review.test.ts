@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import {
   createPilotAdminHandler,
+  newsletterStatus,
   ReviewConflictError,
   type StoredApplication,
   type ReviewState,
@@ -116,6 +117,72 @@ async function login(handler: ReturnType<typeof createPilotAdminHandler>) {
 function review(id: string, status = 'selected', notes = '') {
   return { action: 'review', id, status, notes };
 }
+
+test('only explicit consent with recorded evidence qualifies for newsletter', () => {
+  const legacy = application();
+  const optedIn = {
+    ...legacy,
+    newsletterConsent: true,
+    newsletterConsentAt: '2026-10-11T12:00:00.000Z',
+    newsletterConsentVersion: '2026-10-11',
+    newsletterConsentText: 'Explicit email opt-in',
+  };
+  assert.equal(newsletterStatus(legacy), 'not_subscribed');
+  assert.equal(
+    newsletterStatus({ ...legacy, newsletterConsent: true }),
+    'not_subscribed',
+  );
+  assert.equal(
+    newsletterStatus({ ...optedIn, newsletterConsent: 'yes' }),
+    'not_subscribed',
+  );
+  assert.equal(
+    newsletterStatus({ ...optedIn, newsletterConsentAt: 'invalid' }),
+    'not_subscribed',
+  );
+  assert.equal(newsletterStatus(optedIn), 'subscribed');
+  assert.equal(
+    newsletterStatus(optedIn, {
+      newsletterUnsubscribedAt: '2026-10-12T00:00:00.000Z',
+    }),
+    'unsubscribed',
+  );
+});
+
+test('newsletter withdrawal persists independently of selection and survives concurrent reviews', async () => {
+  const optedIn = {
+    ...application(),
+    newsletterConsent: true,
+    newsletterConsentAt: '2026-10-10T10:00:00.000Z',
+    newsletterConsentVersion: '2026-10-11',
+    newsletterConsentText: 'Explicit email opt-in',
+  };
+  const f = fixture([optedIn]);
+  const action = { action: 'newsletter-unsubscribe', id: optedIn.id };
+  assert.equal((await f.handler(request(action))).status, 401);
+  const cookie = await login(f.handler);
+  const before = await (await f.handler(request(undefined, cookie))).json();
+  assert.equal(before.applications[0].newsletterStatus, 'subscribed');
+  const results = await Promise.all([
+    f.handler(request(action, cookie)),
+    f.handler(
+      request(review(optedIn.id, 'selected', 'Keep these notes'), cookie),
+    ),
+  ]);
+  assert.ok(results.every((response) => response.status === 200));
+  f.setClock('2026-10-10T13:00:00Z');
+  assert.equal((await f.handler(request(action, cookie))).status, 200);
+  const after = await (await f.handler(request(undefined, cookie))).json();
+  assert.equal(after.applications[0].newsletterStatus, 'unsubscribed');
+  assert.equal(
+    after.applications[0].review.newsletterUnsubscribedAt,
+    '2026-10-10T12:00:00.000Z',
+  );
+  assert.equal(after.applications[0].review.notes, 'Keep these notes');
+  assert.equal(after.selectedCount, 1);
+  assert.equal(f.notifyCalls(), 0);
+  assert.equal(f.applications[0].newsletterConsent, true);
+});
 
 test('private data requires a signed session and headers prohibit caching', async () => {
   const f = fixture();

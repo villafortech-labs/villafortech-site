@@ -123,6 +123,9 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
             >
           </div>
           <label class="check"
+            ><input id="newsletter-only" type="checkbox" /> Solo newsletter autorizada</label
+          >
+          <label class="check"
             ><input id="show-tests" type="checkbox" /> Ver aplicaciones de prueba</label
           >
         </div>
@@ -135,7 +138,10 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
         </div>
         <p class="small">
           Horarios en Ecuador (UTC−5). Las notas son privadas. El CSV contiene
-          datos de contacto; guárdalo en un lugar privado.
+          datos de contacto; guárdalo en un lugar privado. Para futuros correos,
+          filtra por newsletter autorizada. Una inscripción por sí sola no
+          autoriza publicidad. Las bajas deben registrarse antes de exportar una
+          lista nueva.
         </p>
         <div class="table-wrap">
           <table>
@@ -188,12 +194,19 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
     | 'selected'
     | 'waitlist'
     | 'not_selected';
-  type Review = { status: ReviewStatus; notes: string; updatedAt?: string };
+  type Review = {
+    status: ReviewStatus;
+    notes: string;
+    updatedAt?: string;
+    newsletterUnsubscribedAt?: string | null;
+  };
+  type NewsletterStatus = 'subscribed' | 'unsubscribed' | 'not_subscribed';
   type Application = Record<string, unknown> & {
     id: string;
     review?: Review;
     isTest?: boolean;
     notification?: { status: string };
+    newsletterStatus?: NewsletterStatus;
   };
   type Result = {
     applications?: Application[];
@@ -202,6 +215,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
     notificationsConfigured?: boolean;
     review?: Review;
     notification?: { status: string };
+    newsletterStatus?: NewsletterStatus;
     message?: string;
   };
   class ApiError extends Error {
@@ -238,6 +252,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
   const search = $<HTMLInputElement>('search');
   const filter = $<HTMLSelectElement>('status-filter');
   const showTests = $<HTMLInputElement>('show-tests');
+  const newsletterOnly = $<HTMLInputElement>('newsletter-only');
   const loadMore = $<HTMLButtonElement>('load-more');
   const refresh = $<HTMLButtonElement>('refresh');
   const exportButton = $<HTMLButtonElement>('export');
@@ -249,6 +264,13 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
   let sessionGeneration = 0;
   const drafts = new Map<string, Review>();
   const expanded = new Set<string>();
+  const newsletterLabels: Record<NewsletterStatus, string> = {
+    subscribed: 'Newsletter autorizada',
+    unsubscribed: 'Baja de newsletter',
+    not_subscribed: 'Sin autorización de newsletter',
+  };
+  const newsletterLabel = (application: Application) =>
+    newsletterLabels[application.newsletterStatus ?? 'not_subscribed'];
 
   const printable = (value: unknown): string => {
     if (Array.isArray(value)) return value.map(printable).join(', ');
@@ -307,6 +329,11 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
     applications.filter((application) => {
       if (!showTests.checked && isTest(application)) return false;
       if (
+        newsletterOnly.checked &&
+        application.newsletterStatus !== 'subscribed'
+      )
+        return false;
+      if (
         filter.value !== 'all' &&
         reviewOf(application).status !== filter.value
       )
@@ -336,6 +363,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
     search.value = '';
     filter.value = 'all';
     showTests.checked = false;
+    newsletterOnly.checked = false;
     tell('');
     nextCursor = null;
     selectedCount = 0;
@@ -396,6 +424,27 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
       ['Proyecto', printable(application.project) || 'No indicado'],
       ['Origen', printable(application.source) || 'No indicado'],
       ['Enviada', dateLabel(application.submittedAt)],
+      ['Newsletter', newsletterLabel(application)],
+      [
+        'Autorización de newsletter',
+        application.newsletterConsent === true
+          ? dateLabel(application.newsletterConsentAt)
+          : 'No autorizada',
+      ],
+      [
+        'Texto de autorización',
+        printable(application.newsletterConsentText) || 'No registrado',
+      ],
+      [
+        'Versión de autorización',
+        printable(application.newsletterConsentVersion) || 'No registrada',
+      ],
+      [
+        'Baja de newsletter',
+        reviewOf(application).newsletterUnsubscribedAt
+          ? dateLabel(reviewOf(application).newsletterUnsubscribedAt)
+          : 'No registrada',
+      ],
       ['ID', application.id],
     ];
     for (const [name, value] of fields) {
@@ -435,6 +484,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
         text('p', printable(application.email), 'small'),
       );
       if (isTest(application)) person.append(text('span', 'Prueba', 'badge'));
+      person.append(text('p', newsletterLabel(application), 'small'));
       const profile = cell('Área y objetivo');
       profile.append(
         text('p', label(application.role || application.occupation, roles)),
@@ -467,6 +517,41 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
       });
       details.append(text('summary', 'Ver y revisar'));
       details.append(detailList(application));
+      if (application.newsletterStatus === 'subscribed') {
+        const unsubscribe = text(
+          'button',
+          'Registrar baja de newsletter',
+          'secondary',
+        );
+        unsubscribe.type = 'button';
+        unsubscribe.addEventListener('click', async () => {
+          unsubscribe.disabled = true;
+          try {
+            const data = await api({
+              action: 'newsletter-unsubscribe',
+              id: application.id,
+            });
+            if (data.review) application.review = data.review;
+            application.newsletterStatus =
+              data.newsletterStatus ?? 'unsubscribed';
+            render();
+            tell(
+              'Baja guardada. Este contacto queda fuera del filtro de newsletter. Actualiza también cualquier lista exportada previamente.',
+            );
+          } catch (error) {
+            if (error instanceof StaleRequestError) return;
+            tell(
+              error instanceof Error
+                ? error.message
+                : 'No se pudo guardar la baja.',
+              true,
+            );
+          } finally {
+            unsubscribe.disabled = false;
+          }
+        });
+        details.append(unsubscribe);
+      }
       const form = document.createElement('form');
       form.method = 'post';
       form.action = '/api/pilot-admin';
@@ -523,6 +608,8 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
             notes: notes.value,
           };
           selectedCount = data.selectedCount ?? selectedCount;
+          if (data.newsletterStatus)
+            application.newsletterStatus = data.newsletterStatus;
           drafts.delete(application.id);
           render();
           tell(
@@ -676,6 +763,7 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
   search.addEventListener('input', render);
   filter.addEventListener('change', render);
   showTests.addEventListener('change', render);
+  newsletterOnly.addEventListener('change', render);
   refresh.addEventListener('click', () => load());
   loadMore.addEventListener('click', () => load(false));
   exportButton.addEventListener('click', () => {
@@ -698,6 +786,11 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
         'Estado',
         'Notas privadas',
         'Prueba',
+        'Newsletter',
+        'Autorización newsletter (UTC)',
+        'Versión consentimiento newsletter',
+        'Texto consentimiento newsletter',
+        'Baja newsletter (UTC)',
         'ID',
       ],
       ...visibleApplications().map((application) => [
@@ -716,6 +809,13 @@ const image = new URL('/og-segundo-cerebro.png', Astro.site);
         statuses[reviewOf(application).status],
         reviewOf(application).notes,
         isTest(application) ? 'Sí' : 'No',
+        newsletterLabel(application),
+        application.newsletterConsent === true
+          ? printable(application.newsletterConsentAt)
+          : '',
+        printable(application.newsletterConsentVersion),
+        printable(application.newsletterConsentText),
+        printable(reviewOf(application).newsletterUnsubscribedAt),
         application.id,
       ]),
     ];

@@ -3,8 +3,14 @@ export const pilot = {
   contact: 'villafortech@gmail.com',
   closesAt: '2026-10-14T04:59:00.000Z',
   closesLabel: 'Martes 13 de octubre · 23:59 (Ecuador, UTC−5)',
-  consentVersion: '2026-10-10',
-  schemaVersion: 3,
+  consentVersion: '2026-10-11',
+  schemaVersion: 4,
+};
+
+export const newsletter = {
+  consentVersion: '2026-10-11',
+  consentText:
+    'Quiero recibir por correo recursos sobre IA, novedades y próximas actividades de Villa for Tech. Puedo darme de baja cuando quiera.',
 };
 
 export const roles = [

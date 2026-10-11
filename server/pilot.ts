@@ -3,6 +3,7 @@ import { z } from 'zod';
 import type { SecurityCheck } from './pilot-security.ts';
 import {
   pilot,
+  newsletter,
   budgets,
   availabilitySlots,
   sources,
@@ -29,16 +30,28 @@ const schema = z.object({
     .min(1)
     .max(6),
   consent: z.literal('yes'),
+  newsletterConsent: z
+    .enum(['yes', 'no', ''])
+    .optional()
+    .transform((value) => value === 'yes'),
   source: z.enum(sources).default('direct'),
   website: z.string().max(0).default(''),
 });
 
-export type Application = Omit<z.infer<typeof schema>, 'website'> & {
+export type Application = Omit<
+  z.infer<typeof schema>,
+  'website' | 'newsletterConsent'
+> & {
   id: string;
   pilotId: string;
   submittedAt: string;
   consentVersion: string;
   schemaVersion: number;
+  // Optional in historical records; absence never means consent.
+  newsletterConsent?: boolean;
+  newsletterConsentAt?: string | null;
+  newsletterConsentVersion?: string;
+  newsletterConsentText?: string;
 };
 
 type Options = {
@@ -198,14 +211,18 @@ export function createPilotHandler({
       );
     }
     const { website: _honeypot, ...data } = result.data;
+    const submittedAt = now().toISOString();
     let application: Application = {
       ...data,
       email: data.email.toLowerCase(),
       id: randomUUID(),
       pilotId: pilot.id,
-      submittedAt: now().toISOString(),
+      submittedAt,
       consentVersion: pilot.consentVersion,
       schemaVersion: pilot.schemaVersion,
+      newsletterConsentAt: data.newsletterConsent ? submittedAt : null,
+      newsletterConsentVersion: newsletter.consentVersion,
+      newsletterConsentText: newsletter.consentText,
     };
     try {
       application = (await save(application)) ?? application;
