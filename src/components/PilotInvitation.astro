@@ -3,8 +3,9 @@ import { pilot } from '../data/pilot';
 
 interface Props {
   locale?: 'es' | 'en';
+  showArrow?: boolean;
 }
-const { locale = 'es' } = Astro.props;
+const { locale = 'es', showArrow = true } = Astro.props;
 const copy =
   locale === 'es'
     ? {
@@ -22,9 +23,9 @@ const copy =
 <aside class="pilot-invitation" data-pilot-closes={pilot.closesAt}>
   <a href="/segundo-cerebro/#aplicar">
     <span><strong>{copy.title}</strong><span>{copy.detail}</span></span>
-    <span class="pilot-invitation__action"
-      >{copy.action} <span aria-hidden="true">↗</span></span
-    >
+    <span class="pilot-invitation__action">
+      {copy.action}{showArrow && <span aria-hidden="true">↗</span>}
+    </span>
   </a>
 </aside>
 
