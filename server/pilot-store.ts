@@ -77,7 +77,11 @@ export async function listApplications(
 }
 
 export async function readReviewState(): Promise<ReviewSnapshot> {
-  const result = await get(REVIEW_PATH, { access: 'private', useCache: false });
+  const result = await get(REVIEW_PATH, {
+    access: 'private',
+    useCache: false,
+    headers: { 'Accept-Encoding': 'identity' },
+  });
   if (!result) return { state: { version: 1, reviews: {} }, etag: null };
   if (result.statusCode !== 200) throw new Error('Unexpected review response');
   return {

@@ -34,7 +34,13 @@ const recordSchema = z.object({
 });
 export type NotificationRecord = z.infer<typeof recordSchema>;
 type Snapshot = { record: NotificationRecord | null; etag: string | null };
-export class NotificationConflictError extends Error {}
+export class NotificationConflictError extends Error {
+  readonly weakEtag: boolean;
+  constructor(weakEtag = false) {
+    super();
+    this.weakEtag = weakEtag;
+  }
+}
 const safeErrorClasses = new Set([
   'BlobError',
   'BlobAccessError',
@@ -61,11 +67,14 @@ export class NotificationStorageError extends Error {
   readonly phase: StoragePhase;
   readonly errorClass: string;
   readonly issueCodes: string[];
+  readonly weakEtag?: boolean;
   constructor(phase: StoragePhase = 'read', error?: unknown) {
     super('No se pudo guardar el estado del aviso.');
     this.phase = phase;
     const name = error instanceof Error ? error.constructor.name : '';
     this.errorClass = safeErrorClasses.has(name) ? name : 'Error';
+    if (error instanceof NotificationConflictError)
+      this.weakEtag = error.weakEtag;
     this.issueCodes =
       error instanceof z.ZodError
         ? [...new Set(error.issues.map((issue) => issue.code))]
@@ -84,6 +93,9 @@ export function logNotificationError(
       phase: known ? error.phase : 'unclassified',
       errorClass: known ? error.errorClass : 'Error',
       code: known ? 'notification_storage_failed' : 'notification_failed',
+      ...(known && error.weakEtag !== undefined
+        ? { weakEtag: error.weakEtag }
+        : {}),
       ...(known && error.issueCodes.length
         ? { issueCodes: error.issueCodes }
         : {}),
@@ -211,6 +223,7 @@ export function createPilotNotifications(options: Options) {
     if (!validConfig(settings)) return { status: 'unconfigured' };
     let claimed: NotificationRecord | undefined;
     let previousUncertain = false;
+    let claimError: unknown;
     for (let attempt = 0; attempt < 4; attempt++) {
       const snapshot = await read(application.id);
       const prior = snapshot.record;
@@ -255,10 +268,12 @@ export function createPilotNotifications(options: Options) {
         break;
       } catch (error) {
         claimed = undefined;
+        claimError = error;
         if (!(error instanceof NotificationConflictError)) throw error;
       }
     }
-    if (!claimed) throw new NotificationStorageError('claim_conflict');
+    if (!claimed)
+      throw new NotificationStorageError('claim_conflict', claimError);
     const sending = claimed;
     let result: NotificationRecord = {
       ...sending,
@@ -367,6 +382,8 @@ const blobStore: NotificationStore = {
     const result = await get(pathname(id), {
       access: 'private',
       useCache: false,
+      // CAS needs the original representation's strong ETag, not a compressed variant.
+      headers: { 'Accept-Encoding': 'identity' },
     });
     if (!result) return { record: null, etag: null };
     if (result.statusCode !== 200) throw new NotificationStorageError();
@@ -390,7 +407,7 @@ const blobStore: NotificationStore = {
         error instanceof BlobPreconditionFailedError ||
         (etag === null && (await blobStore.read(id)).etag)
       )
-        throw new NotificationConflictError();
+        throw new NotificationConflictError(Boolean(etag?.startsWith('W/')));
       throw error;
     }
   },
