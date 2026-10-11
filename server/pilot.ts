@@ -42,6 +42,8 @@ export type Application = Omit<
   z.infer<typeof schema>,
   'website' | 'newsletterConsent'
 > & {
+  name: string;
+  email: string;
   id: string;
   pilotId: string;
   submittedAt: string;
@@ -225,7 +227,8 @@ export function createPilotHandler({
       newsletterConsentText: newsletter.consentText,
     };
     try {
-      application = (await save(application)) ?? application;
+      const saved = await save(application);
+      if (saved) application = saved;
     } catch {
       // Never log applicant information or report success before durable storage.
       return reply(

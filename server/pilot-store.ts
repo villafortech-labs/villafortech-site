@@ -86,7 +86,11 @@ export async function readReviewState(): Promise<ReviewSnapshot> {
   if (!result) return { state: { version: 1, reviews: {} }, etag: null };
   if (result.statusCode !== 200) throw new Error('Unexpected review response');
   return {
-    state: stateSchema.parse(await new Response(result.stream).json()),
+    // The runtime schema requires updatedAt, including when its value is null.
+    // Vercel's function compiler can otherwise infer nullable keys as optional.
+    state: stateSchema.parse(
+      await new Response(result.stream).json(),
+    ) as ReviewState,
     etag: result.blob.etag,
   };
 }
