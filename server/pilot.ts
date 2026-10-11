@@ -5,14 +5,23 @@ import {
   budgets,
   availabilitySlots,
   sources,
+  roles,
+  goals,
+  toolOptions,
 } from '../src/data/pilot.ts';
 
 const schema = z.object({
   name: z.string().trim().min(2).max(100),
   email: z.string().trim().max(254).pipe(z.email()),
   whatsapp: z.string().trim().max(40).default(''),
-  role: z.string().trim().min(2).max(180),
-  tools: z.string().trim().min(2).max(350),
+  country: z.string().trim().max(80).default(''),
+  role: z.enum(roles.map((role) => role.value)),
+  goal: z.enum(goals.map((goal) => goal.value)),
+  tools: z
+    .array(z.enum(toolOptions.map((tool) => tool.value)))
+    .min(1)
+    .max(toolOptions.length),
+  project: z.string().trim().max(250).default(''),
   budget: z.enum(budgets.map((budget) => budget.value)),
   availability: z
     .array(z.enum(availabilitySlots.map((slot) => slot.value)))
@@ -139,13 +148,14 @@ export function createPilotHandler({
     const params = new URLSearchParams(body);
     const result = schema.safeParse({
       ...Object.fromEntries(params),
+      tools: [...new Set(params.getAll('tools[]'))],
       availability: [...new Set(params.getAll('availability[]'))],
     });
     if (!result.success) {
       return reply(
         request,
         400,
-        'Revisa tus datos, elige un presupuesto y al menos un horario, y acepta el uso de tus respuestas.',
+        'Revisa tus datos y selecciona tu área, objetivo, herramientas, presupuesto y al menos un horario. Acepta el uso de tus respuestas para enviar.',
       );
     }
     const { website: _honeypot, ...data } = result.data;
@@ -171,7 +181,7 @@ export function createPilotHandler({
     return reply(
       request,
       201,
-      'Tu inscripción quedó guardada. El miércoles 14 de octubre te escribiré si tu caso está entre los cinco seleccionados para coordinar tu sesión del 15 o 16. Revisa también spam. El horario y el cupo quedan confirmados cuando los acordemos por correo.',
+      'Tu aplicación quedó guardada. El miércoles 14 de octubre te escribiré si tu caso está entre los cinco seleccionados para coordinar tu sesión del 15 o 16. Revisa también spam. El horario y el cupo quedan confirmados cuando los acordemos por correo.',
       application.id,
     );
   };

@@ -5,8 +5,9 @@ import { createPilotHandler, type Application } from '../server/pilot.ts';
 const valid = {
   name: 'Prueba técnica',
   email: 'qa@example.invalid',
-  role: 'Prueba del formulario',
-  tools: 'Drive, notas y ChatGPT',
+  role: 'technology',
+  goal: 'projects',
+  tools: ['google', 'notes', 'chatgpt'],
   budget: '0',
   availability: ['15-morning', '16-afternoon'],
   consent: 'yes',
@@ -14,13 +15,17 @@ const valid = {
   website: '',
 };
 function request(
-  data: typeof valid & { whatsapp?: string } = valid,
+  data: typeof valid & {
+    whatsapp?: string;
+    country?: string;
+    project?: string;
+  } = valid,
   overrides: RequestInit = {},
 ) {
   const body = new URLSearchParams();
   for (const [key, values] of Object.entries(data)) {
     for (const value of Array.isArray(values) ? values : [values])
-      body.append(key === 'availability' ? 'availability[]' : key, value);
+      body.append(Array.isArray(values) ? `${key}[]` : key, value);
   }
   return new Request('https://www.villafortech.com/api/segundo-cerebro', {
     method: 'POST',
@@ -54,7 +59,11 @@ test('persists validated application before confirming, without disclosing answe
   assert.equal(records[0].email, valid.email);
   assert.equal(records[0].whatsapp, '');
   assert.equal(records[0].budget, '0');
-  assert.equal(records[0].schemaVersion, 2);
+  assert.equal(records[0].schemaVersion, 3);
+  assert.deepEqual(records[0].tools, valid.tools);
+  assert.equal(records[0].goal, valid.goal);
+  assert.equal(records[0].country, '');
+  assert.equal(records[0].project, '');
   assert.deepEqual(records[0].availability, valid.availability);
   assert.equal(records[0].source, 'instagram');
   assert.ok(!('website' in records[0]));
@@ -73,12 +82,62 @@ test('invalid email, missing consent, honeypot and oversized fields never persis
     { budget: 'invented' },
     { source: 'https://untrusted.example/?personal=data' },
     { website: 'bot' },
-    { tools: 'x'.repeat(351) },
+    { role: 'invented' },
+    { goal: '' },
+    { tools: [] },
+    { tools: ['invented'] },
+    { country: 'x'.repeat(81) },
+    { project: 'x'.repeat(251) },
     { whatsapp: 'x'.repeat(41) },
   ]) {
     assert.equal((await handler(request({ ...valid, ...patch }))).status, 400);
   }
   assert.equal(records.length, 0);
+});
+test('preserves autofilled contact data and optional context, deduplicating selected tools', async () => {
+  const { handler, records } = fixture();
+  assert.equal(
+    (
+      await handler(
+        request({
+          ...valid,
+          name: ' María José ',
+          email: ' QA@EXAMPLE.INVALID ',
+          whatsapp: ' +1 (202) 555-0147 ',
+          country: ' Ecuador ',
+          tools: ['google', 'google', 'chatgpt'],
+          project: ' Organizar documentación ',
+        }),
+      )
+    ).status,
+    201,
+  );
+  assert.equal(records[0].name, 'María José');
+  assert.equal(records[0].email, 'qa@example.invalid');
+  assert.equal(records[0].country, 'Ecuador');
+  assert.equal(records[0].project, 'Organizar documentación');
+  assert.deepEqual(records[0].tools, ['google', 'chatgpt']);
+});
+test('a student starting without tools or a budget can apply with all optional fields omitted', async () => {
+  const { handler, records } = fixture();
+  assert.equal(
+    (
+      await handler(
+        request({
+          ...valid,
+          role: 'student',
+          goal: 'start',
+          tools: ['starting'],
+          budget: '0',
+        }),
+      )
+    ).status,
+    201,
+  );
+  assert.equal(records.length, 1);
+  assert.equal(records[0].whatsapp, '');
+  assert.equal(records[0].country, '');
+  assert.equal(records[0].project, '');
 });
 test('optional WhatsApp accepts an empty field and preserves a supplied phone number', async () => {
   const { handler, records } = fixture();

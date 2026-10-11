@@ -1,34 +1,42 @@
 ---
 import PilotLayout from '../layouts/PilotLayout.astro';
-import { pilot, budgets, availabilitySlots } from '../data/pilot';
+import {
+  pilot,
+  budgets,
+  availabilitySlots,
+  roles,
+  goals,
+  toolOptions,
+  countrySuggestions,
+} from '../data/pilot';
 ---
 
 <PilotLayout>
   <section class="hero pilot-shell" aria-labelledby="pilot-title">
     <div class="hero-copy">
-      <p class="eyebrow">Para estudiantes y profesionales</p>
+      <p class="eyebrow">5 personas · Una sesión individual gratis</p>
       <h1 id="pilot-title">Tu segundo cerebro.<br /><em>Hecho contigo.</em></h1>
       <p class="pilot-intro">
-        Convierte tus apuntes, documentos e ideas en un espacio que puedas{' '}
-        <strong>organizar, consultar y usar con IA.</strong>
+        Vamos a integrar la IA a tu forma de trabajar,{' '}
+        <strong>con tu información y tus proyectos.</strong>
       </p>
       <p class="hero-note">
-        El{' '}<strong>15 y 16 de octubre</strong>{' '}ayudaré a cinco personas
-        a construir una primera versión con una materia, una tesis o un proyecto
-        de trabajo. Una sesión gratis de 75 minutos, tú y yo.
+        El{' '}<strong>15 y 16 de octubre</strong>{' '}trabajaré uno a uno con
+        cinco personas. Te llevarás tu segundo cerebro para organizar y usar tus
+        notas, documentos y decisiones con IA, y una guía para seguir haciéndolo
+        crecer.
       </p>
       <a class="pilot-button" href="#aplicar"
-        >Quiero mi sesión gratis <span aria-hidden="true">↗</span></a
+        >Quiero aplicar <span aria-hidden="true">↗</span></a
       >
       <p class="small">
         Inscríbete hasta el martes 13 de octubre.<br />Sin crear una cuenta. Sin
-        pagos.
+        pagos. Si eres estudiante, también puedes participar.
       </p>
       <div class="host">
         <img src="/brand/clover.svg" width="28" height="28" alt="" />
         <p>
-          <strong>Roberto Villafuerte</strong><br />Villa for Tech · Tecnología
-          que puedes usar.
+          <strong>Roberto Villafuerte · AI Engineer</strong><br />Villa for Tech
         </p>
       </div>
     </div>
@@ -40,8 +48,8 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
       <ul>
         <li>
           <span aria-hidden="true">01</span><p>
-            <strong>Ordenamos un proyecto.</strong><br />Notas, documentos,
-            decisiones y próximos pasos.
+            <strong>Construimos tu segundo cerebro.</strong><br />Notas,
+            documentos, decisiones y próximos pasos.
           </p>
         </li>
         <li>
@@ -52,12 +60,12 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
         </li>
         <li>
           <span aria-hidden="true">03</span><p>
-            <strong>Te llevas cómo seguir.</strong><br />Una guía sencilla y una
-            revisión breve después.
+            <strong>Te llevas una guía para seguir.</strong><br />Cómo
+            actualizarlo y hacerlo crecer con tus proyectos.
           </p>
         </li>
       </ul>
-      <p class="card-foot">15–16 OCT <span>75 MIN · 1 A 1 · GRATIS</span></p>
+      <p class="card-foot">15–16 OCT <span>1 A 1 · GRATIS</span></p>
     </aside>
   </section>
 
@@ -70,8 +78,8 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
       <p class="eyebrow">Inscripción rápida</p>
       <h2 id="apply-title">Vamos a trabajar<br /><em>con lo tuyo.</em></h2>
       <p>
-        Cuéntame qué estudias o a qué te dedicas, qué usas hoy y cuándo puedes.
-        Eso es todo para apuntarte.
+        Completa tus datos, marca tus opciones y envía tu aplicación. Elegiré
+        cinco casos que podamos trabajar juntos.
       </p>
       <dl class="dates">
         <div><dt>Sesiones</dt><dd>Jueves 15 o viernes 16 de octubre</dd></div>
@@ -96,11 +104,21 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
           >.
         </p>
       </div>
-      <p class="form-guide">15 o 16 de octubre · Sesión individual gratis</p>
+      <p class="form-guide">
+        5 cupos gratis · 15 o 16 de octubre · Cierre: martes 13
+      </p>
+      <p class="form-promise">
+        Tu segundo cerebro y una guía para seguir haciéndolo crecer.
+      </p>
+      <p class="hint form-instructions">
+        Solo escribe tus datos de contacto; el resto se elige. Los campos
+        opcionales están indicados.
+      </p>
       <form
         id="pilot-form"
         action="/api/segundo-cerebro"
         method="post"
+        autocomplete="on"
         data-closes-at={pilot.closesAt}
       >
         <div class="field-grid">
@@ -111,6 +129,8 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
               id="name"
               name="name"
               autocomplete="name"
+              autocapitalize="words"
+              enterkeyhint="next"
               minlength="2"
               maxlength="100"
               placeholder="Tu nombre"
@@ -125,57 +145,87 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
               name="email"
               autocomplete="email"
               inputmode="email"
+              spellcheck="false"
+              enterkeyhint="next"
               maxlength="254"
               placeholder="nombre@correo.com"
               required
             />
           </div>
         </div>
-        <div class="field">
-          <label for="whatsapp">WhatsApp (opcional)</label>
-          <input
-            type="tel"
-            id="whatsapp"
-            name="whatsapp"
-            autocomplete="tel"
-            maxlength="40"
-            placeholder="Incluye el código de país"
-            aria-describedby="whatsapp-hint"
-          />
-          <p class="hint" id="whatsapp-hint">
-            Si prefieres que también pueda contactarte por WhatsApp para
-            coordinar tu sesión.
-          </p>
+        <div class="field-grid">
+          <div class="field">
+            <label for="whatsapp">WhatsApp (opcional)</label>
+            <input
+              type="tel"
+              id="whatsapp"
+              name="whatsapp"
+              autocomplete="tel"
+              inputmode="tel"
+              enterkeyhint="next"
+              maxlength="40"
+              placeholder="Incluye el código de país"
+              aria-describedby="whatsapp-hint"
+            />
+            <p class="hint" id="whatsapp-hint">
+              Con código de país, si quieres coordinar por WhatsApp.
+            </p>
+          </div>
+          <div class="field">
+            <label for="country">País (opcional)</label>
+            <input
+              type="text"
+              id="country"
+              name="country"
+              autocomplete="country-name"
+              list="country-options"
+              maxlength="80"
+              placeholder="Elige o escribe tu país"
+            />
+            <datalist id="country-options">
+              {countrySuggestions.map((country) => <option value={country} />)}
+            </datalist>
+            <p class="hint">Para coordinar desde dónde participas.</p>
+          </div>
         </div>
         <div class="field">
-          <label for="role">¿Qué estudias o a qué te dedicas?</label>
-          <input
-            type="text"
-            id="role"
-            name="role"
-            minlength="2"
-            maxlength="180"
-            placeholder="Ej.: estudio medicina, diseño, ventas…"
-            required
-          />
+          <label for="role">¿A qué te dedicas?</label>
+          <select id="role" name="role" required>
+            <option value="" selected disabled
+              >Elige el área que más se acerque</option
+            >
+            {
+              roles.map((role) => (
+                <option value={role.value}>{role.label}</option>
+              ))
+            }
+          </select>
         </div>
         <div class="field">
-          <label for="tools"
-            >¿Dónde está tu información y qué herramientas usas?</label
-          >
-          <input
-            type="text"
-            id="tools"
-            name="tools"
-            minlength="2"
-            maxlength="350"
-            placeholder="Ej.: Drive, notas del celular, WhatsApp, ChatGPT…"
-            required
-          />
-          <p class="hint">
-            Una frase basta. No envíes archivos ni información confidencial.
-          </p>
+          <label for="goal">¿Para qué quieres usar tu segundo cerebro?</label>
+          <select id="goal" name="goal" required>
+            <option value="" selected disabled>Elige tu prioridad</option>
+            {
+              goals.map((goal) => (
+                <option value={goal.value}>{goal.label}</option>
+              ))
+            }
+          </select>
         </div>
+        <fieldset class="choice-field" aria-describedby="tools-hint">
+          <legend>¿Dónde está tu información y qué herramientas usas?</legend>
+          <p class="hint" id="tools-hint">Marca todas las que correspondan.</p>
+          <div class="tools-options">
+            {
+              toolOptions.map((tool) => (
+                <label class="choice">
+                  <input type="checkbox" name="tools[]" value={tool.value} />
+                  <span>{tool.label}</span>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
         <fieldset class="choice-field" aria-describedby="budget-hint">
           <legend
             >¿Qué presupuesto mensual tienes para herramientas de IA?</legend
@@ -206,7 +256,7 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
           <legend>¿Cuándo podrías asistir?</legend>
           <p class="hint" id="availability-hint">
             Marca todas las franjas que te sirven. Hora de Ecuador continental
-            (UTC−5). Cada sesión dura 75 minutos.
+            (UTC−5).
           </p>
           <div class="slot-days">
             {
@@ -239,6 +289,22 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
             exacta por correo.
           </p>
         </fieldset>
+        <div class="field">
+          <label for="project"
+            >¿Qué proyecto te gustaría trabajar? (opcional)</label
+          >
+          <input
+            type="text"
+            id="project"
+            name="project"
+            maxlength="250"
+            placeholder="Una frase, si quieres contarme algo más"
+          />
+          <p class="hint">
+            Puedes aclarar tu área o herramientas aquí. No incluyas información
+            confidencial.
+          </p>
+        </div>
         <label class="consent"
           ><input type="checkbox" name="consent" value="yes" required /><span
             >Autorizo usar mis respuestas para esta inscripción y contactarme
@@ -257,10 +323,11 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
         </div>
         <p id="form-status" role="status" tabindex="-1"></p>
         <button class="pilot-button" id="submit-button" type="submit"
-          >Quiero mi sesión gratis <span aria-hidden="true">↗</span></button
+          >Enviar mi aplicación <span aria-hidden="true">↗</span></button
         >
         <p class="small">
-          Solo te escribiré sobre esta convocatoria. Nada de publicidad.
+          Tu aplicación estará enviada cuando veas la confirmación. Te escribiré
+          el miércoles 14 si tu caso es seleccionado. Sin publicidad.
         </p>
       </form>
       <section
@@ -270,8 +337,8 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
         hidden
         aria-labelledby="success-title"
       >
-        <p class="eyebrow">Inscripción recibida</p>
-        <h2 id="success-title">Ya estás en la lista.</h2>
+        <p class="eyebrow">Aplicación recibida</p>
+        <h2 id="success-title">Ya recibí tus respuestas.</h2>
         <p id="success-detail"></p>
         <p class="small">
           Para corregir tus datos, escribe a <a href={`mailto:${pilot.contact}`}
@@ -285,7 +352,7 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
   <section class="details pilot-shell" aria-labelledby="details-title">
     <p class="eyebrow">Lo que necesitas para empezar</p>
     <h2 id="details-title">
-      Un proyecto real.<br /><em>Un primer sistema que puedas usar.</em>
+      Tu información.<br /><em>Un segundo cerebro que puedas usar.</em>
     </h2>
     <div class="detail-grid">
       <div>
@@ -308,9 +375,11 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
       </div>
     </div>
     <p class="small">
-      Trabajaremos con una materia, una tesis o un proyecto de trabajo. Esta
-      primera sesión no incluye migraciones completas ni desarrollos de software
-      a medida.
+      Si eres técnico, podemos incluir documentación, decisiones técnicas y
+      código de tu proyecto. Si eres estudiante, también puedes participar.
+      Construiremos una estructura que puedas mantener; las migraciones
+      completas y el desarrollo de software a medida quedan fuera de esta
+      sesión.
     </p>
   </section>
   <section
@@ -355,6 +424,17 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
       );
     slots.forEach((slot) => slot.addEventListener('change', validateSlots));
     validateSlots();
+    const tools = Array.from(
+      form.querySelectorAll<HTMLInputElement>('[name="tools[]"]'),
+    );
+    const validateTools = () =>
+      tools[0]?.setCustomValidity(
+        tools.some((tool) => tool.checked)
+          ? ''
+          : 'Marca una herramienta o «Aún no tengo un sistema».',
+      );
+    tools.forEach((tool) => tool.addEventListener('change', validateTools));
+    validateTools();
     const closeIfNeeded = () => {
       if (Date.now() < Date.parse(form.dataset.closesAt ?? '')) return false;
       form.hidden = true;
@@ -366,9 +446,10 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
       event.preventDefault();
       if (submit.disabled || closeIfNeeded()) return;
       validateSlots();
+      validateTools();
       if (!form.reportValidity()) return;
       submit.disabled = true;
-      submit.textContent = 'Guardando tu inscripción…';
+      submit.textContent = 'Enviando tu aplicación…';
       status.textContent = '';
       try {
         const body = new URLSearchParams();
@@ -396,7 +477,7 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
             : 'No pudimos confirmar el envío. Tus respuestas siguen aquí; comprueba tu conexión e inténtalo de nuevo.';
         status.focus();
         submit.disabled = false;
-        submit.textContent = 'Volver a enviar mi inscripción';
+        submit.textContent = 'Volver a enviar mi aplicación';
       }
     });
   }
@@ -563,8 +644,15 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
   .form-guide {
     font-size: 0.76rem;
     font-weight: 650;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     color: var(--leaf);
+  }
+  .form-instructions {
+    margin-bottom: 22px;
+  }
+  .form-promise {
+    font-size: 1rem;
+    font-weight: 650;
   }
   .field-grid {
     display: grid;
@@ -583,7 +671,8 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
   }
   input[type='text'],
   input[type='email'],
-  input[type='tel'] {
+  input[type='tel'],
+  select {
     width: 100%;
     min-width: 0;
     min-height: 48px;
@@ -593,6 +682,11 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
     background: var(--white);
     color: var(--forest);
     font-size: 1rem;
+  }
+  select {
+    font-family: inherit;
+    padding-right: 26px;
+    text-overflow: ellipsis;
   }
   input::placeholder {
     color: #66706b;
@@ -618,6 +712,12 @@ import { pilot, budgets, availabilitySlots } from '../data/pilot';
     display: flex;
     flex-wrap: wrap;
     gap: 7px;
+  }
+  .tools-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-top: 12px;
   }
   .choice {
     display: flex;
