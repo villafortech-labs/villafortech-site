@@ -1,5 +1,6 @@
 ---
 import ArrowIcon from '../components/ArrowIcon.astro';
+import PilotInvitation from '../components/PilotInvitation.astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
@@ -110,6 +111,7 @@ const evidenceLabel = (evidence?: string) =>
   description={profile.positioning.statement}
   locale={locale}
 >
+  <div class="shell"><PilotInvitation locale={locale} /></div>
   <section class="intro shell" aria-labelledby="intro-title">
     <div class="intro__copy">
       <p class="intro__byline">

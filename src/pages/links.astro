@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArrowIcon from '../components/ArrowIcon.astro';
+import PilotInvitation from '../components/PilotInvitation.astro';
 import { links, socialProfiles } from '../data/links';
 import profileEn from '../data/profile';
 import profileEs from '../data/profile.es';
@@ -83,6 +84,7 @@ const destinations = [
       <h1 id="links-title">{profile.name}</h1>
       <p class="links-mission">{profile.positioning.statement}</p>
     </header>
+    <PilotInvitation locale={locale} />
     <nav aria-label={copy.navigation}>
       <ol class="links-list">
         {

@@ -1,5 +1,15 @@
 {
   "redirects": [
+    {
+      "source": "/ia",
+      "destination": "/segundo-cerebro/#aplicar",
+      "permanent": false
+    },
+    {
+      "source": "/ia/",
+      "destination": "/segundo-cerebro/#aplicar",
+      "permanent": false
+    },
     { "source": "/es", "destination": "/", "permanent": true },
     { "source": "/es/", "destination": "/", "permanent": true }
   ]
