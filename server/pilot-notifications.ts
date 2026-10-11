@@ -35,10 +35,60 @@ const recordSchema = z.object({
 export type NotificationRecord = z.infer<typeof recordSchema>;
 type Snapshot = { record: NotificationRecord | null; etag: string | null };
 export class NotificationConflictError extends Error {}
+const safeErrorClasses = new Set([
+  'BlobError',
+  'BlobAccessError',
+  'BlobPreconditionFailedError',
+  'BlobServiceRateLimited',
+  'BlobServiceNotAvailable',
+  'BlobUnknownError',
+  'BlobNotFoundError',
+  'BlobStoreNotFoundError',
+  'BlobStoreSuspendedError',
+  'BlobRequestAbortedError',
+  'ZodError',
+  'SyntaxError',
+  'TypeError',
+  'NotificationConflictError',
+]);
+type StoragePhase =
+  | 'read'
+  | 'claim_write'
+  | 'final_write'
+  | 'hold_write'
+  | 'claim_conflict';
 export class NotificationStorageError extends Error {
-  constructor() {
+  readonly phase: StoragePhase;
+  readonly errorClass: string;
+  readonly issueCodes: string[];
+  constructor(phase: StoragePhase = 'read', error?: unknown) {
     super('No se pudo guardar el estado del aviso.');
+    this.phase = phase;
+    const name = error instanceof Error ? error.constructor.name : '';
+    this.errorClass = safeErrorClasses.has(name) ? name : 'Error';
+    this.issueCodes =
+      error instanceof z.ZodError
+        ? [...new Set(error.issues.map((issue) => issue.code))]
+        : [];
   }
+}
+export function logNotificationError(
+  context: 'background' | 'admin',
+  error: unknown,
+) {
+  const known = error instanceof NotificationStorageError;
+  console.error(
+    JSON.stringify({
+      event: 'pilot_notification_error',
+      context,
+      phase: known ? error.phase : 'unclassified',
+      errorClass: known ? error.errorClass : 'Error',
+      code: known ? 'notification_storage_failed' : 'notification_failed',
+      ...(known && error.issueCodes.length
+        ? { issueCodes: error.issueCodes }
+        : {}),
+    }),
+  );
 }
 export type NotificationStore = {
   read: (id: string) => Promise<Snapshot>;
@@ -135,20 +185,21 @@ export function createPilotNotifications(options: Options) {
   async function read(id: string) {
     try {
       return await store.read(id);
-    } catch {
-      throw new NotificationStorageError();
+    } catch (error) {
+      throw new NotificationStorageError('read', error);
     }
   }
   async function write(
     id: string,
     record: NotificationRecord,
     etag: string | null,
+    phase: StoragePhase,
   ) {
     try {
       await store.write(id, record, etag);
     } catch (error) {
       if (error instanceof NotificationConflictError) throw error;
-      throw new NotificationStorageError();
+      throw new NotificationStorageError(phase, error);
     }
   }
   async function notifyApplication(
@@ -181,7 +232,7 @@ export function createPilotNotifications(options: Options) {
           reason: 'delivery_unknown',
           updatedAt: current.toISOString(),
         };
-        await write(application.id, blocked, snapshot.etag);
+        await write(application.id, blocked, snapshot.etag, 'hold_write');
         return publicState(blocked);
       }
       claimed = {
@@ -199,7 +250,7 @@ export function createPilotNotifications(options: Options) {
         uncertainSince: prior?.uncertainSince ?? current.toISOString(),
       };
       try {
-        await write(application.id, claimed, snapshot.etag);
+        await write(application.id, claimed, snapshot.etag, 'claim_write');
         previousUncertain = Boolean(prior?.uncertainSince);
         break;
       } catch (error) {
@@ -207,7 +258,7 @@ export function createPilotNotifications(options: Options) {
         if (!(error instanceof NotificationConflictError)) throw error;
       }
     }
-    if (!claimed) throw new NotificationStorageError();
+    if (!claimed) throw new NotificationStorageError('claim_conflict');
     const sending = claimed;
     let result: NotificationRecord = {
       ...sending,
@@ -276,7 +327,7 @@ export function createPilotNotifications(options: Options) {
     result.updatedAt = now().toISOString();
     const latest = await read(application.id);
     if (latest.record?.status === 'sent') return publicState(latest.record);
-    await write(application.id, result, latest.etag);
+    await write(application.id, result, latest.etag, 'final_write');
     return publicState(result);
   }
   async function getNotificationStates(

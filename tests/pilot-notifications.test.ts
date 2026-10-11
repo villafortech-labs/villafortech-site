@@ -5,6 +5,7 @@ import {
   createPilotNotifications,
   NotificationConflictError,
   NotificationStorageError,
+  logNotificationError,
   type NotificationRecord,
   type NotificationStore,
 } from '../server/pilot-notifications.ts';
@@ -309,4 +310,40 @@ test('invalid IDs cannot enter storage and malformed success responses are marke
   assert.equal(result.status, 'failed');
   assert.equal(result.reason, 'invalid_response');
   assert.ok(f.records.get(application.id)?.record.uncertainSince);
+});
+
+test('diagnostics report a safe storage phase and class without private error details', async () => {
+  const f = fixture();
+  f.failWriteAt(2);
+  let captured: unknown;
+  try {
+    await f.notifyApplication(application);
+  } catch (error) {
+    captured = error;
+  }
+  assert.ok(captured instanceof NotificationStorageError);
+  assert.equal(captured.phase, 'final_write');
+  const lines: string[] = [];
+  const original = console.error;
+  try {
+    console.error = (value: unknown) => {
+      lines.push(String(value));
+    };
+    logNotificationError('background', captured);
+    logNotificationError(
+      'admin',
+      new Error('secret token and applicant@email.example'),
+    );
+  } finally {
+    console.error = original;
+  }
+  assert.deepEqual(JSON.parse(lines[0]), {
+    event: 'pilot_notification_error',
+    context: 'background',
+    phase: 'final_write',
+    errorClass: 'Error',
+    code: 'notification_storage_failed',
+  });
+  assert.ok(!lines.join('').includes('secret'));
+  assert.ok(!lines.join('').includes('applicant@'));
 });

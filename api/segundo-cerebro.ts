@@ -1,6 +1,9 @@
 import { put } from '@vercel/blob';
 import { waitUntil } from '@vercel/functions';
-import { notifyApplication } from '../server/pilot-notifications.ts';
+import {
+  notifyApplication,
+  logNotificationError,
+} from '../server/pilot-notifications.ts';
 import { createPilotHandler } from '../server/pilot.ts';
 
 const previewOrigin =
@@ -12,7 +15,11 @@ export default {
   fetch: createPilotHandler({
     allowedOrigins: previewOrigin,
     afterSave(application) {
-      waitUntil(notifyApplication(application).catch(() => undefined));
+      waitUntil(
+        notifyApplication(application).catch((error: unknown) =>
+          logNotificationError('background', error),
+        ),
+      );
     },
     async save(application) {
       await put(
