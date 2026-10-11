@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ArrowIcon from '../components/ArrowIcon.astro';
 import PilotInvitation from '../components/PilotInvitation.astro';
 import { links, socialProfiles } from '../data/links';
 import profileEn from '../data/profile';
@@ -109,6 +110,9 @@ const destinations = [
                     </span>
                   </>
                 </span>
+                <ArrowIcon
+                  direction={destination.external ? 'diagonal' : 'right'}
+                />
                 {destination.external && (
                   <span class="sr-only">{sharedCopy[locale].newTab}</span>
                 )}
@@ -192,6 +196,9 @@ const destinations = [
   }
   .profile-link--primary:hover {
     background: var(--leaf);
+  }
+  .profile-link .arrow-icon {
+    flex: 0 0 20px;
   }
   .links-motto {
     margin-top: 32px;
