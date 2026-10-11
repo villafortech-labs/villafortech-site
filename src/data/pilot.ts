@@ -91,7 +91,9 @@ export const availabilitySlots = [
 export const sources = [
   'direct',
   'instagram',
+  'instagram_boost',
   'tiktok',
+  'tiktok_promote',
   'youtube',
   'linkedin',
   'threads',

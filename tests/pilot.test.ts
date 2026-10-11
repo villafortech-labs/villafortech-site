@@ -78,6 +78,17 @@ test('persists validated application before confirming, without disclosing answe
   assert.equal(result.email, undefined);
   assert.equal(response.headers.get('cache-control'), 'no-store');
 });
+test('paid campaign sources survive validation and storage', async () => {
+  const { handler, records } = fixture();
+  for (const source of ['instagram_boost', 'tiktok_promote']) {
+    const response = await handler(request({ ...valid, source }));
+    assert.equal(response.status, 201);
+  }
+  assert.deepEqual(
+    records.map((record) => record.source),
+    ['instagram_boost', 'tiktok_promote'],
+  );
+});
 test('newsletter is a separate optional opt-in with server-recorded evidence', async () => {
   const { handler, records } = fixture();
   for (const newsletterConsent of [undefined, '', 'no', 'yes']) {
