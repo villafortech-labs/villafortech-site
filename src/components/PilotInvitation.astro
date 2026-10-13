@@ -1,11 +1,11 @@
 ---
 import { pilot } from '../data/pilot';
+import ArrowIcon from './ArrowIcon.astro';
 
 interface Props {
   locale?: 'es' | 'en';
-  showArrow?: boolean;
 }
-const { locale = 'es', showArrow = true } = Astro.props;
+const { locale = 'es' } = Astro.props;
 const copy =
   locale === 'es'
     ? {
@@ -22,9 +22,13 @@ const copy =
 
 <aside class="pilot-invitation" data-pilot-closes={pilot.closesAt}>
   <a href="/segundo-cerebro/#aplicar">
-    <span><strong>{copy.title}</strong><span>{copy.detail}</span></span>
+    <span>
+      <strong>{copy.title}</strong>
+      <span class="pilot-invitation__detail">{copy.detail}</span>
+    </span>
     <span class="pilot-invitation__action">
-      {copy.action}{showArrow && <span aria-hidden="true">↗</span>}
+      <span>{copy.action}</span>
+      <ArrowIcon direction="right" />
     </span>
   </a>
 </aside>
@@ -60,14 +64,21 @@ const copy =
     display: block;
     font-size: 1.05rem;
   }
-  .pilot-invitation a > span > span {
+  .pilot-invitation__detail {
     display: block;
     margin-top: 0.35rem;
     font-size: 0.875rem;
   }
   .pilot-invitation .pilot-invitation__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 100%;
     flex-shrink: 0;
     font-weight: 650;
+  }
+  .pilot-invitation__action :global(.arrow-icon) {
+    flex: 0 0 20px;
   }
   .pilot-invitation a:hover {
     background: #285d48;
