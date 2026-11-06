@@ -4,8 +4,8 @@ export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'Roberto Villafuerte',
   headline: 'AI Engineer',
-  brandLabel: 'Technology from Latin America',
-  location: 'Quito, Ecuador',
+  brandLabel: 'Building with AI and sharing what I learn',
+  location: 'Latin America',
   currentRole: {
     title: 'Applied AI Engineer',
     organization: 'COMPUMAX',
@@ -18,13 +18,13 @@ export const profile = {
     ],
   },
   introduction:
-    'I design and build AI and data systems, with an emphasis on the architecture that makes them reliable, secure, and maintainable.',
+    'I build with AI and share what I learn. My focus is AI Engineering: putting ideas into practice, testing them, and understanding how they work.',
   positioning: {
-    statement: 'I build technology and share the process from Latin America.',
+    statement: 'I build with AI and share what I learn.',
     detail:
-      'I want to help expand the world-class technology and companies built from Latin America. I share the real work: projects, experiments, decisions, and lessons.',
+      'I want to help create technology and companies with a global reach from Latin America. I share the projects, decisions, and lessons that are part of that path.',
     opportunities:
-      'Technical depth, useful work, and evidence people can inspect. From Quito, Ecuador.',
+      'Learn, build, and test. Projects and decisions that other people can inspect.',
   },
   services: [
     {
@@ -50,7 +50,7 @@ export const profile = {
       'A scholarship made it possible for me to study Computer Science Engineering at Universidad San Francisco de Quito. There, curiosity became a discipline I could use to understand problems and build.',
       'When ChatGPT appeared, I wanted to understand how systems like it were possible. I began with machine learning and soon became more interested in the engineering around the model: data, services, evaluation, reliability, and the product decisions connecting them.',
       "Along the way, I worked in the United States through Work and Travel, worked remotely in data analysis and machine learning, helped design SaliHub's data architecture, and spent an exchange semester at the University of Helsinki. Together, those experiences broadened my technical perspective and my sense of what I could build.",
-      'That path shapes my mission: to help Latin America keep creating world-class technology and companies. I want to contribute by building, developing technical depth, and sharing useful evidence with other engineers, students, and founders. My specialization and next main project remain open.',
+      'That path shapes my mission: to help create technology and companies with a global reach from Latin America. Today I am going deeper into AI Engineering and sharing what I learn by building. The sector and product for a future company remain open.',
     ],
     milestones: [
       { place: 'Puyo', detail: 'Turing and the first questions' },
@@ -58,7 +58,7 @@ export const profile = {
       { place: 'Work', detail: 'United States and remote data work' },
       { place: 'SaliHub', detail: 'Data architecture for a health platform' },
       { place: 'Helsinki', detail: 'Exchange semester' },
-      { place: 'Next', detail: 'Technical founder and company builder' },
+      { place: 'Next', detail: 'AI Engineering and new projects' },
     ],
   },
   pointOfView: {
@@ -67,10 +67,10 @@ export const profile = {
       'Technical depth and useful work are the foundation. I share decisions, results, and limitations that other people can inspect.',
   },
   about: [
-    'I build technology and share the process from Latin America.',
-    'My experience includes AI and data systems. The mission is broader: to help create world-class technology and companies from the region.',
-    'I share projects, experiments, and lessons to connect with technically serious engineers, students, researchers, and founders.',
-    'Spanish is my primary publishing language, with selected English summaries and technical materials for international access. My specialization and next main project remain undecided.',
+    'I build with AI and share what I learn.',
+    'I am going deeper into AI Engineering, with the ambition to create technology and companies with a global reach from Latin America.',
+    'Through Villa for Tech, I share explanations, resources, and projects for people who want to understand AI, practice, and move forward professionally. There is also room for salsa, Chinese, and life away from the screen.',
+    'I write mainly in Spanish, with technical material and selected adaptations in English. The sector and product for a future company remain open.',
   ],
   experience: [
     {

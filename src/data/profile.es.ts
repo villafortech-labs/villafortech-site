@@ -4,8 +4,8 @@ export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'Roberto Villafuerte',
   headline: 'AI Engineer',
-  brandLabel: 'Tecnología desde Latinoamérica',
-  location: 'Quito, Ecuador',
+  brandLabel: 'Construyo con IA y comparto lo que aprendo',
+  location: 'Latinoamérica',
   currentRole: {
     title: 'Ingeniero de IA Aplicada',
     organization: 'COMPUMAX',
@@ -18,14 +18,13 @@ export const profile = {
     ],
   },
   introduction:
-    'Diseño y construyo sistemas de IA y datos, con énfasis en la arquitectura que los hace confiables, seguros y mantenibles.',
+    'Construyo con IA y comparto lo que aprendo. Mi foco es AI Engineering: llevar ideas a la práctica, probarlas y entender cómo funcionan.',
   positioning: {
-    statement:
-      'Construyo tecnología y comparto el proceso desde Latinoamérica.',
+    statement: 'Construyo con IA y comparto lo que aprendo.',
     detail:
-      'Quiero contribuir a que desde Latinoamérica se creen más tecnologías y empresas de talla mundial. Comparto el trabajo real: proyectos, experimentos, decisiones y aprendizajes.',
+      'Quiero contribuir a crear tecnología y empresas desde Latinoamérica con alcance global. Comparto proyectos, decisiones y aprendizajes que forman parte de ese camino.',
     opportunities:
-      'Profundidad técnica, trabajo útil y evidencia que se puede revisar. Desde Quito, Ecuador.',
+      'Aprender, construir y comprobar. Proyectos y decisiones que otras personas pueden revisar.',
   },
   services: [
     {
@@ -51,7 +50,7 @@ export const profile = {
       'Una beca hizo posible que estudiara Ingeniería en Ciencias de la Computación en la Universidad San Francisco de Quito. Ahí, la curiosidad se convirtió en una disciplina para entender problemas y construir sistemas.',
       'Cuando apareció ChatGPT, quise entender cómo era posible construir sistemas así. Empecé por el aprendizaje automático y pronto me interesé más por todo lo que hace falta alrededor del modelo: datos, servicios, evaluación, confiabilidad y las decisiones de producto que articulan esas piezas.',
       'A lo largo del camino, trabajé en Estados Unidos mediante Work and Travel, trabajé de forma remota en análisis de datos y aprendizaje automático, ayudé a diseñar la arquitectura de datos de SaliHub y cursé un semestre de intercambio en University of Helsinki. En conjunto, esas experiencias ampliaron mi perspectiva técnica y mi idea de lo que podía construir.',
-      'Ese recorrido da forma a mi misión: contribuir a que Latinoamérica siga creando tecnología y empresas de talla mundial. Quiero hacerlo construyendo, desarrollando profundidad técnica y compartiendo evidencia útil con otros ingenieros, estudiantes y fundadores. Mi especialización y mi próximo proyecto principal siguen abiertos.',
+      'Ese recorrido da forma a mi misión: contribuir a crear tecnología y empresas desde Latinoamérica con alcance global. Hoy profundizo en AI Engineering y comparto lo que aprendo construyendo. El sector y el producto de una futura empresa siguen abiertos.',
     ],
     milestones: [
       { place: 'Puyo', detail: 'Turing y las primeras preguntas' },
@@ -67,7 +66,7 @@ export const profile = {
       { place: 'Helsinki', detail: 'Semestre de intercambio' },
       {
         place: 'Siguiente etapa',
-        detail: 'Fundador técnico y constructor de empresas',
+        detail: 'AI Engineering y nuevos proyectos',
       },
     ],
   },
@@ -77,10 +76,10 @@ export const profile = {
       'La profundidad técnica y el trabajo útil son la base. Comparto decisiones, resultados y límites que otras personas puedan revisar.',
   },
   about: [
-    'Construyo tecnología y comparto el proceso desde Latinoamérica.',
-    'Mi experiencia incluye sistemas de IA y datos. La misión es más amplia: contribuir a crear tecnología y empresas de talla mundial desde la región.',
-    'Comparto proyectos, experimentos y aprendizajes para conectar con ingenieros, estudiantes, investigadores y fundadores que construyen con seriedad técnica.',
-    'Escribo principalmente en español, con resúmenes y materiales técnicos en inglés para facilitar el acceso internacional. La especialización y el próximo proyecto principal siguen por decidir.',
+    'Construyo con IA y comparto lo que aprendo.',
+    'Estoy profundizando en AI Engineering, con la ambición de crear tecnología y empresas desde Latinoamérica con alcance global.',
+    'En Villa for Tech comparto explicaciones, recursos y proyectos para quienes quieren entender IA, practicar y avanzar profesionalmente. También hay espacio para la salsa, el chino y la vida fuera de la pantalla.',
+    'Escribo principalmente en español, con materiales técnicos y algunas adaptaciones en inglés. El sector y el producto de una futura empresa siguen abiertos.',
   ],
   experience: [
     {

@@ -1,0 +1,84 @@
+---
+title: 'Panorama: convertir un registro cotidiano en una perspectiva financiera'
+shortTitle: 'Panorama'
+eyebrow: 'Producto propio · IA aplicada'
+slug: 'es-panorama'
+translationKey: 'panorama'
+locale: 'es'
+date: '2026-11-03'
+updated: '2026-11-06'
+projectPeriod: '2026 · En desarrollo'
+summary: 'Una aplicación para organizar gastos, ingresos y planes. La IA ayuda a interpretar lo que registras; tú revisas la propuesta antes de guardarla.'
+tags: ['Producto', 'IA aplicada', 'Desarrollo web y móvil']
+role: 'Diseño de producto e ingeniería'
+organization: 'Proyecto propio'
+stack:
+  [
+    'TypeScript',
+    'React Native',
+    'Expo',
+    'Fastify',
+    'PostgreSQL',
+    'Amazon Bedrock',
+  ]
+featured: true
+featuredOrder: 0
+status: 'in-progress'
+evidence: 'sanitized'
+disclosure: 'Producto web público · Implementación privada · Vista ilustrativa con datos ficticios.'
+links:
+  demo: 'https://panorama.villafortech.com/'
+---
+
+import PanoramaPreview from '../../components/PanoramaPreview.astro';
+
+<div class="article-deck">
+  Un gasto puede empezar como una frase, una nota de voz o un comprobante. Estoy
+  construyendo Panorama para convertir esa información en registros revisables y
+  una visión más clara de lo gastado y lo previsto.
+</div>
+
+<PanoramaPreview locale="es" />
+
+## La pregunta
+
+¿Cómo reducir el trabajo de registrar las finanzas sin perder el control sobre lo que se guarda?
+
+Panorama reúne gastos, ingresos, presupuesto, suscripciones y planes. El reto de producto es hacer que la captura sea sencilla, pero que el resultado siga siendo comprensible: qué se interpretó, qué falta confirmar y cómo cambia el resumen.
+
+## De una frase a un registro
+
+El recorrido separa cuatro momentos:
+
+1. **Capturar.** Escribir, hablar o aportar un comprobante.
+2. **Interpretar.** Proponer información estructurada a partir de la entrada.
+3. **Revisar.** Comprobar importe, tipo y otros datos antes de confirmar.
+4. **Registrar.** Guardar la decisión y actualizar los cálculos del sistema.
+
+La ilustración muestra un ejemplo inventado: «Gasté $8 en almuerzo». La propuesta de gasto permanece fuera del resumen hasta que se revisa y confirma. Es una representación editorial del flujo, no una captura de una cuenta ni una sesión ejecutable.
+
+## Dónde termina la IA
+
+La interpretación propone; el dominio financiero calcula. El sistema representa los importes en centavos enteros y aplica reglas explícitas para distinguir dinero registrado, consumo y previsiones.
+
+Esa separación evita tratar una respuesta del modelo como si fuera, por sí misma, una operación confirmada. También permite comprobar los cálculos y los cambios de estado con casos conocidos.
+
+El resumen distingue lo gastado de lo previsto. Un ingreso esperado todavía no es dinero recibido, y el dinero declarado por la persona no es un saldo verificado con su banco.
+
+## Construir el recorrido completo
+
+El cliente usa React Native y Expo para compartir trabajo entre web y móvil. La API está construida con TypeScript y Fastify, con persistencia en PostgreSQL y un adaptador de interpretación mediante Amazon Bedrock.
+
+El trabajo incluye interfaz, contratos entre cliente y servidor, estados de revisión, persistencia y recuperación de intentos. Una interpretación correcta todavía necesita una experiencia que permita entenderla, corregirla y guardarla de forma consistente.
+
+## Estado y alcance
+
+La versión web está disponible en [panorama.villafortech.com](https://panorama.villafortech.com/). La entrada pública respondió correctamente el 6 de noviembre de 2026; esta comprobación no repite los recorridos autenticados. Las comprobaciones documentadas del 26 de octubre incluyen interpretación con el proveedor real, revisión antes de guardar, persistencia y recorridos web con datos sintéticos.
+
+El producto sigue en desarrollo. Esa evidencia no equivale a validar todos los recorridos, dispositivos o condiciones reales. Esta página no anuncia disponibilidad en tiendas ni compras activas.
+
+La versión descrita no conecta bancos ni importa correo. Organiza información aportada por la persona; no sustituye una comprobación bancaria ni ofrece recomendaciones de inversión.
+
+## Lo que me está enseñando
+
+Construir con IA exige prestar tanta atención a los límites del modelo como al resto del producto. En Panorama, la parte decisiva es el paso entre una propuesta y un registro confirmado: conservar la intención de la persona, mostrar qué va a ocurrir y mantener cálculos que se puedan revisar.

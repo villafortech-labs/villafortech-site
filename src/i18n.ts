@@ -4,24 +4,24 @@ export const defaultLocale: Locale = 'es';
 
 export const localeRoutes = {
   en: {
-    home: '/en',
-    projects: '/projects',
-    about: '/about',
-    contact: '/contact',
-    resume: '/resume',
-    writing: '/writing',
-    links: '/en/links',
-    references: '/references',
+    home: '/en/',
+    projects: '/projects/',
+    about: '/about/',
+    contact: '/contact/',
+    resume: '/resume/',
+    writing: '/writing/',
+    links: '/en/links/',
+    references: '/references/',
   },
   es: {
     home: '/',
-    projects: '/es/projects',
-    about: '/es/about',
-    contact: '/es/contact',
-    resume: '/es/resume',
-    writing: '/es/writing',
-    links: '/links',
-    references: '/es/references',
+    projects: '/es/projects/',
+    about: '/es/about/',
+    contact: '/es/contact/',
+    resume: '/es/resume/',
+    writing: '/es/writing/',
+    links: '/links/',
+    references: '/es/references/',
   },
 } as const;
 
@@ -119,11 +119,11 @@ function matchRoute(pathname: string): RouteMatch | undefined {
       'links',
       'references',
     ] as const) {
-      if (path === routes[key]) return { key };
+      if (path === cleanPath(routes[key])) return { key };
     }
 
     for (const key of ['projects', 'writing', 'references'] as const) {
-      const prefix = `${routes[key]}/`;
+      const prefix = withTrailingSlash(routes[key]);
       if (path.startsWith(prefix)) {
         return { key, slug: path.slice(prefix.length) };
       }
@@ -139,7 +139,7 @@ export function pathFor(
   slug?: string,
 ): string {
   const base = localeRoutes[locale][key];
-  return slug ? `${base}/${slug}` : base;
+  return slug ? `${withTrailingSlash(base)}${slug}/` : base;
 }
 
 export function alternateLocalePath(

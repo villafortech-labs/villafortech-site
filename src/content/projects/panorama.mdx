@@ -1,0 +1,84 @@
+---
+title: 'Panorama: from everyday entries to a clearer financial picture'
+shortTitle: 'Panorama'
+eyebrow: 'Independent product · Applied AI'
+slug: 'panorama'
+translationKey: 'panorama'
+locale: 'en'
+date: '2026-11-03'
+updated: '2026-11-06'
+projectPeriod: '2026 · In development'
+summary: 'An application for organizing expenses, income, and plans. AI helps interpret what you enter; you review the proposal before saving it.'
+tags: ['Product', 'Applied AI', 'Web and mobile development']
+role: 'Product design and engineering'
+organization: 'Independent project'
+stack:
+  [
+    'TypeScript',
+    'React Native',
+    'Expo',
+    'Fastify',
+    'PostgreSQL',
+    'Amazon Bedrock',
+  ]
+featured: true
+featuredOrder: 0
+status: 'in-progress'
+evidence: 'sanitized'
+disclosure: 'Public web product · Private implementation · Illustrative view with fictional data.'
+links:
+  demo: 'https://panorama.villafortech.com/'
+---
+
+import PanoramaPreview from '../../components/PanoramaPreview.astro';
+
+<div class="article-deck">
+  An expense can start as a sentence, a voice note, or a receipt. I’m building
+  Panorama to turn that information into reviewable entries and a clearer
+  picture of spending and upcoming plans.
+</div>
+
+<PanoramaPreview locale="en" />
+
+## The question
+
+How can recording personal finances take less effort while keeping the person in control of what gets saved?
+
+Panorama brings together expenses, income, budgets, subscriptions, and plans. The product challenge is to make capture simple while keeping the result understandable: what was interpreted, what still needs confirmation, and how the summary will change.
+
+## From a sentence to an entry
+
+The flow separates four moments:
+
+1. **Capture.** Write, speak, or provide a receipt.
+2. **Interpret.** Propose structured information from the input.
+3. **Review.** Check the amount, type, and other details before confirming.
+4. **Record.** Save the decision and update the system’s calculations.
+
+The illustration uses a fictional example: “I spent $8 on lunch.” The proposed expense stays outside the summary until it has been reviewed and confirmed. This is an editorial representation of the flow, not a screenshot of an account or an executable session.
+
+## Where AI stops
+
+Interpretation proposes; the financial domain calculates. The system represents amounts as integer cents and applies explicit rules to distinguish recorded money, consumption, and forecasts.
+
+This separation keeps a model response from being treated as a confirmed operation on its own. It also makes calculations and state changes testable against known cases.
+
+The summary distinguishes money already spent from planned spending. Expected income is not yet received money, and an amount declared by a person is not a bank-verified balance.
+
+## Building the whole journey
+
+The client uses React Native and Expo to share work across web and mobile. The API uses TypeScript and Fastify, with PostgreSQL persistence and an interpretation adapter through Amazon Bedrock.
+
+The work includes interface design, client–server contracts, review states, persistence, and attempt recovery. Even a correct interpretation still needs an experience that helps the person understand, correct, and save it consistently.
+
+## Status and scope
+
+The web version is available at [panorama.villafortech.com](https://panorama.villafortech.com/). Its public entry point responded successfully on November 6, 2026; this check does not repeat the authenticated journeys. Documented checks from October 26 cover interpretation through the real provider, review before saving, persistence, and web journeys using synthetic data.
+
+The product remains in development. That evidence does not validate every journey, device, or real-world condition. This page does not announce app-store availability or active purchases.
+
+The version described here does not connect to banks or import email. It organizes information provided by the person; it does not replace bank verification or provide investment recommendations.
+
+## What I’m learning
+
+Building with AI means paying as much attention to the model’s boundaries as to the rest of the product. In Panorama, the decisive step lies between a proposal and a confirmed entry: preserving the person’s intent, showing what will happen, and keeping calculations open to inspection.

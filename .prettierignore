@@ -11,3 +11,6 @@ plan.md
 # Provider-authored reference skills installed by the marketplace CLI
 .agents/skills/
 skills-lock.json
+
+# Runtime design questions, not authored source
+.impeccable/questions/

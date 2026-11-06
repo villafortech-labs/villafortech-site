@@ -75,7 +75,7 @@ const posts = (
             {posts.map((post, index) => (
               <a
                 class="work-record"
-                href={`${routes.writing}/${post.data.translationKey ?? post.data.slug}`}
+                href={`${routes.writing}${post.data.translationKey ?? post.data.slug}`}
               >
                 <span class="work-record__number">
                   {String(index + 1).padStart(2, '0')}
@@ -102,7 +102,7 @@ const posts = (
             <span>{copy.emptyLabel}</span>
             <p>{copy.empty}</p>
             <a
-              href={`${routes.projects}/fairness-aware-candidate-pre-screening`}
+              href={`${routes.projects}fairness-aware-candidate-pre-screening`}
             >
               {copy.currentCase} <ArrowIcon direction="right" />
             </a>

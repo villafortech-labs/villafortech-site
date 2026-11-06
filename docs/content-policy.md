@@ -4,17 +4,17 @@ The public brand leads with the mission:
 
 > Construyo tecnología y comparto el proceso desde Latinoamérica.
 
-Roberto wants to contribute to the world-class technology and companies built from Latin America. This is an aspiration and a direction for his work, not a claim that he has founded those companies or that the region lacks existing capability. Villa for Tech is the editorial/lab label; Criterio vivo remains the visual identity.
+Roberto wants to contribute to the world-class technology and companies built from Latin America. This is an aspiration and a direction for his work, not a claim that he has founded those companies or that the region lacks existing capability. Villa for Tech is Roberto’s editorial space. The original green clover remains a binding visual asset.
 
 Spanish is the primary publishing language, with selected English summaries, adaptations, and technical artifacts for international access. The site enters in Spanish at `/` and provides English at `/en/`. Existing project, résumé, and case-study evidence remains available in both languages.
 
-The intended audience is technically serious Latin American engineers, students, researchers, and founders, with international access for collaborators. Technical depth, useful real work, inspectable evidence, integrity, and sustainable production are the foundation. The audience direction remains a hypothesis to validate through real relationships and feedback.
+The adopted primary audience is Spanish-speaking people in training, early in their careers or transitioning toward technology. Readers do not need to program or want to found a company. The site also offers inspectable professional work for collaborators.
 
-No technical specialty, new flagship, program enrollment, or 12-month technical focus is selected. Chronos is on hold; Materia is an unadopted proposal. Inference, technical AI safety, and document understanding are exploratory topics, not commitments. Existing demonstrated AI/data experience and historical employment titles remain factual professional evidence. The résumé may describe that experience without defining the entire brand by it.
+AI Engineering is the technical focus adopted on 3 November 2026: learn by building and share what is verified. The main business, sector and buyer remain open. Chronos is on hold; Materia is not adopted. Existing professional records remain evidence of the work performed.
 
-Contact invites a conversation; it does not advertise consulting services. Brand growth remains active and selling is disabled. Prepared content is not a publication. The September 12 user request authorizes this profile/site update; it does not authorize publishing separate posts or research findings. Thesis status and clinical/private data boundaries require their canonical source and separate publication authorization.
+Contact invites a conversation; it does not advertise consulting services. Brand growth remains active and selling is disabled. Prepared content is not a publication. The 6 November website renewal request authorizes this site update; it does not authorize separate social posts or publication of private research data. Thesis status and clinical/private data boundaries require their canonical source and separate publication authorization.
 
-This dated strategy update supersedes the previous English-default and AI-Engineer-only public positioning. The site must not upgrade the certainty of existing professional claims or turn implementation artifacts into deployment or business-impact claims.
+This renewal preserves Spanish-first routing, the regional ambition and the adopted audience A. The site must not upgrade the certainty of existing professional claims or turn implementation artifacts into deployment or business-impact claims.
 
 ## Evidence labels
 

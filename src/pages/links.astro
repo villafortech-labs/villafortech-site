@@ -1,221 +1,218 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArrowIcon from '../components/ArrowIcon.astro';
-import PilotInvitation from '../components/PilotInvitation.astro';
-import { links, socialProfiles } from '../data/links';
-import profileEn from '../data/profile';
-import profileEs from '../data/profile.es';
+import { socialProfiles } from '../data/links';
 import { localeRoutes, sharedCopy, type Locale } from '../i18n';
 
 interface Props {
   locale?: Locale;
 }
 const { locale = 'es' } = Astro.props;
-const profile = locale === 'es' ? profileEs : profileEn;
 const routes = localeRoutes[locale];
 const copy = {
   es: {
-    title: 'Mis redes',
+    title: 'Proyectos y redes',
     description:
-      'Conecta con Roberto Villafuerte en LinkedIn y encuentra sus proyectos, código, videos y redes de Villa for Tech.',
-    connect: 'Conectar en LinkedIn',
-    connectDetail: 'Sigamos la conversación',
-    projects: 'Explorar mis proyectos',
-    projectsDetail: 'Decisiones, resultados y evidencia',
-    contact: 'Contacto',
-    contactDetail: 'Ideas, preguntas y colaboraciones',
-    navigation: 'Proyectos y perfiles de Roberto Villafuerte',
+      'Encuentra los proyectos, el código, los videos y las redes de Roberto Villafuerte y Villa for Tech.',
+    intro: 'Elige por dónde seguir.',
+    projects: 'Ver los proyectos',
+    projectsDetail: 'Qué construí, cómo funciona y lo que aprendí.',
+    profiles: 'Encuéntrame en',
+    navigation: 'Redes y código de Roberto Villafuerte',
+    contact: 'Escríbeme',
+    contactDetail: 'Para una pregunta o una conversación más larga.',
   },
   en: {
-    title: 'My links',
+    title: 'Projects and links',
     description:
-      'Connect with Roberto Villafuerte on LinkedIn and explore his projects, code, videos, and Villa for Tech profiles.',
-    connect: 'Connect on LinkedIn',
-    connectDetail: 'Keep the conversation going',
-    projects: 'Explore my projects',
-    projectsDetail: 'Decisions, results, and evidence',
-    contact: 'Get in touch',
-    contactDetail: 'Ideas, questions, and collaborations',
-    navigation: 'Roberto Villafuerte’s projects and profiles',
+      'Find Roberto Villafuerte’s projects, code, videos, and Villa for Tech profiles.',
+    intro: 'Choose where to go next.',
+    projects: 'See the projects',
+    projectsDetail: 'What I built, how it works, and what I learned.',
+    profiles: 'Find me on',
+    navigation: 'Roberto Villafuerte’s profiles and code',
+    contact: 'Write to me',
+    contactDetail: 'For a question or a longer conversation.',
   },
 }[locale];
-const destinations = [
-  {
-    label: copy.connect,
-    detail: copy.connectDetail,
-    href: links.linkedin,
-    external: true,
-  },
-  {
-    label: copy.projects,
-    detail: copy.projectsDetail,
-    href: routes.projects,
-    external: false,
-  },
-  ...socialProfiles
-    .filter((social) => social.name !== 'LinkedIn')
-    .map((social) => ({
-      label: social.name,
-      detail: social.description[locale],
-      href: social.url,
-      external: true,
-    })),
-  {
-    label: copy.contact,
-    detail: copy.contactDetail,
-    href: routes.contact,
-    external: false,
-  },
-];
+const destinations = socialProfiles.filter(
+  (social) => social.name !== 'Instagram',
+);
 ---
 
 <BaseLayout title={copy.title} description={copy.description} locale={locale}>
-  <section class="links-page" aria-labelledby="links-title">
-    <header class="links-heading">
-      <img
-        class="links-portrait"
-        src="/images/roberto-villafuerte-yed07995.png"
-        width="96"
-        height="96"
-        alt="Roberto Villafuerte"
-        fetchpriority="high"
-      />
-      <p class="eyebrow">Villa for Tech</p>
-      <h1 id="links-title">{profile.name}</h1>
-      <p class="links-mission">{profile.positioning.statement}</p>
+  <section class="link-directory shell" aria-labelledby="links-title">
+    <header class="link-directory__heading">
+      <h1 id="links-title">{copy.title}</h1>
+      <p>{copy.intro}</p>
     </header>
-    <PilotInvitation locale={locale} />
-    <nav aria-label={copy.navigation}>
-      <ol class="links-list">
-        {
-          destinations.map((destination, index) => (
-            <li>
-              <a
-                class:list={[
-                  'profile-link',
-                  {
-                    'profile-link--primary': index === 0,
-                    'profile-link--priority': index < 5,
-                  },
-                ]}
-                href={destination.href}
-                target={destination.external ? '_blank' : undefined}
-                rel={destination.external ? 'noopener noreferrer' : undefined}
-              >
-                <span>
-                  <>
-                    <strong>{destination.label}</strong>
-                    <span class="profile-link__detail">
-                      {destination.detail}
-                    </span>
-                  </>
-                </span>
-                <ArrowIcon
-                  direction={destination.external ? 'diagonal' : 'right'}
-                />
-                {destination.external && (
+
+    <a class="project-entry" href={routes.projects}>
+      <span>
+        <strong>{copy.projects}</strong>
+        <span>{copy.projectsDetail}</span>
+      </span>
+      <ArrowIcon direction="right" />
+    </a>
+
+    <div class="link-directory__networks">
+      <h2>{copy.profiles}</h2>
+      <nav aria-label={copy.navigation}>
+        <ul class="network-list">
+          {
+            destinations.map((destination) => (
+              <li>
+                <a
+                  class="network-link"
+                  href={destination.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>
+                    <strong>{destination.name}</strong>
+                    <span>{destination.description[locale]}</span>
+                  </span>
+                  <ArrowIcon direction="diagonal" />
                   <span class="sr-only">{sharedCopy[locale].newTab}</span>
-                )}
-              </a>
-            </li>
-          ))
-        }
-      </ol>
-    </nav>
-    <p class="links-motto">{sharedCopy[locale].footerNote}</p>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <a class="directory-contact" href={routes.contact}>
+      <span>
+        <strong>{copy.contact}</strong>
+        <span>{copy.contactDetail}</span>
+      </span>
+      <ArrowIcon direction="right" />
+    </a>
   </section>
 </BaseLayout>
 
 <style>
-  .links-page {
-    width: min(calc(100% - 32px), 520px);
-    margin-inline: auto;
-    padding-block: 32px 64px;
+  .link-directory {
+    max-width: 880px;
+    padding-block: clamp(3rem, 7vw, 6rem) 5rem;
   }
-  .links-heading {
-    text-align: center;
-    margin-bottom: 28px;
+  .link-directory__heading {
+    margin-bottom: 2.5rem;
   }
-  .links-portrait {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    margin: 0 auto 18px;
+  .link-directory__heading h1 {
+    max-width: 12ch;
+    font: 650 clamp(2.7rem, 7vw, 4.6rem) / 1.05 var(--font-display);
+    letter-spacing: -0.04em;
+    text-wrap: balance;
   }
-  .links-heading .eyebrow {
-    margin-bottom: 8px;
-  }
-  .links-heading h1 {
-    font: 400 clamp(2.4rem, 7vw, 3.1rem)/1.1 var(--font-display);
-    letter-spacing: -0.025em;
-  }
-  .links-mission {
-    max-width: 380px;
-    margin: 14px auto 0;
+  .link-directory__heading p {
+    margin-top: 1rem;
+    font-size: 1.125rem;
     color: var(--leaf);
-    line-height: 1.6;
   }
-  .links-list {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    gap: 10px;
-  }
-  .profile-link {
-    min-height: 76px;
+  .project-entry,
+  .directory-contact,
+  .network-link {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--line);
+    gap: 1.5rem;
     text-decoration: none;
   }
-  .profile-link strong {
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  .profile-link__detail {
-    display: block;
-    margin-top: 2px;
-    font-size: 0.8125rem;
-    color: var(--leaf);
-  }
-  .profile-link--priority {
-    border: 1px solid var(--forest);
-  }
-  .profile-link--primary {
+  .project-entry {
+    min-height: 150px;
+    padding: 2rem;
+    border-radius: 16px;
     background: var(--forest);
     color: var(--paper);
+    transition: background-color 180ms ease;
   }
-  .profile-link--primary .profile-link__detail {
+  .project-entry strong {
+    display: block;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    letter-spacing: -0.03em;
+  }
+  .project-entry span > span {
+    display: block;
+    margin-top: 0.65rem;
     color: var(--sage);
+    line-height: 1.5;
   }
-  .profile-link:hover {
-    background: var(--sage);
+  .project-entry :global(.arrow-icon),
+  .directory-contact :global(.arrow-icon),
+  .network-link :global(.arrow-icon) {
+    flex-shrink: 0;
   }
-  .profile-link--primary:hover {
-    background: var(--leaf);
+  .project-entry :global(.arrow-icon) {
+    width: 28px;
+    height: 28px;
   }
-  .profile-link .arrow-icon {
-    flex: 0 0 20px;
+  .link-directory__networks {
+    margin-top: 3.5rem;
   }
-  .links-motto {
-    margin-top: 32px;
-    text-align: center;
+  .link-directory__networks h2 {
+    margin-bottom: 1.25rem;
+    font-size: 1.125rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+  .network-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2.5rem;
+    padding: 0;
+    list-style: none;
+  }
+  .network-link {
+    min-height: 96px;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .network-link strong,
+  .directory-contact strong {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 650;
+  }
+  .network-link span > span,
+  .directory-contact span > span {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.9rem;
     color: var(--leaf);
-    font: italic 400 1.5rem/1.4 var(--font-display);
+    line-height: 1.5;
   }
-  @media (max-width: 380px) {
-    .profile-link {
-      padding-inline: 16px;
+  .directory-contact {
+    padding-block: 2rem 0;
+    margin-top: 1.5rem;
+  }
+  .network-link:focus-visible,
+  .directory-contact:focus-visible,
+  .project-entry:focus-visible {
+    outline: 3px solid var(--leaf);
+    outline-offset: 5px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .project-entry:hover {
+      background: var(--leaf);
     }
-    .links-page {
-      padding-top: 24px;
+    .network-link:hover strong,
+    .directory-contact:hover strong {
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
     }
-    .links-portrait {
-      width: 80px;
-      height: 80px;
+  }
+  @media (max-width: 540px) {
+    .project-entry {
+      min-height: 146px;
+      padding: 1.5rem;
+    }
+    .network-list {
+      grid-template-columns: 1fr;
+    }
+    .network-link {
+      min-height: 84px;
     }
   }
 </style>

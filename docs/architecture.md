@@ -24,7 +24,7 @@
 
 `BaseLayout` owns canonical URLs, Open Graph and Twitter metadata, the shared social image, Person/WebSite structured data, navigation, and footer. `ContentLayout` adds case-study metadata, evidence disclosure, source actions, and the article rail.
 
-The public profile directory is Spanish at `/links/` and English at `/en/links/`, using `pages/links.astro` with an English wrapper and the existing `BaseLayout`. Its LinkedIn-first ordering and all seven social destinations come from `src/data/links.ts`, which also supplies profile/contact data and Person `sameAs` references. No client JavaScript or new service is required. The homepage links directly to LinkedIn; navigation and the footer expose the localized directory.
+The public profile directory is Spanish at `/links/` and English at `/en/links/`, using `pages/links.astro` with an English wrapper and the existing `BaseLayout`. Its social and contact destinations come from `src/data/links.ts`, which also supplies profile/contact data and Person `sameAs` references. No client JavaScript or new service is required. The directory avoids repeating the visitor’s social-profile biography and portrait. Navigation and the footer expose the localized directory.
 
 ## Public reference archive
 
@@ -43,17 +43,15 @@ Indexes query the collection directly. There is no duplicate JSON project regist
 
 ## Design system
 
-`src/styles/global.css` is the new Criterio vivo screen design, built independently of the previous layout. It uses the approved paper (#F3EEE3), forest (#162F2B), leaf (#34644F), sage (#D9DDCC), and clay (#A44438) palette. Instrument Serif is used for the signature and editorial headings; Manrope is used for reading and the homepage opening. Local font files and OFL licenses live in `public/fonts/`; no remote font service is required.
+The 6 November renewal presents Roberto as a person who builds and learns. `src/styles/renewal.css` supplies shared screen tokens over the established compatibility styles: cool offwhite (#f5f6f2), deep green (#172a25), green (#285d46) and sage (#e4e9df), with locally hosted Manrope for both display and reading. The original green clover is preserved byte-for-byte at `public/brand/clover.svg`, without a backing shape or effect. Navigation and footer use the clover with a text name.
 
-The approved outlined signatures, clover, and micro mark live in `public/brand/`. The header switches between the original horizontal and principal signatures without distorting either. Photography retains its natural colors. `src/styles/print.css` isolates the résumé print layout from screen styling.
+`home-renewal.css`, `about-renewal.css` and `projects-renewal.css` own their page compositions. Photography retains the complete original frames and natural colors. Optimized WebP derivatives live in `public/images/renewal/`; provenance is recorded in the session's asset manifest. The approved portrait is YED07995. The programming photograph is a personal archive frame, not evidence of work on a specific case. The Chinese study photo and salsa frame were user-selected for the published personal carousel.
 
-Project diagrams remain semantic Astro components representing the documented data and control flows. Their visual presentation follows the same brand colors and readable text hierarchy.
-
-The site-wide social asset is `public/og-mission.png`, rendered by `scripts/render-social-preview.mjs` using the approved signature, palette, Manrope, and the Spanish mission. Its essential text is kept inside a LinkedIn-safe crop. `public/og.jpg` remains as a historical asset. The homepage uses the complete YED07995 photograph as an unchanged 755 × 1133 JPEG from the approved PDF selection. It keeps its native proportions and shows the entire frame at every screen size; the square headshot is reserved for social profiles. The Helsinki photograph uses responsive AVIF and WebP sources with the original JPEG as a fallback.
+The bilingual 1200 × 630 link images are `public/og-renewal-es.png` and `public/og-renewal-en.png`. BaseLayout selects the appropriate locale. Earlier assets are retained as history. Existing project diagrams remain semantic components with scoped disclosure; Panorama's conceptual illustration labels its numbers as fictional.
 
 ## JavaScript policy
 
-Navigation uses native HTML. One small progressive-enhancement script marks visible sections for finite CSS motion, while the résumé retains its inline `window.print()` action. Complete content remains visible without JavaScript. Add client JavaScript only when a user-visible capability cannot be expressed accessibly with HTML and CSS.
+Static HTML and native browser controls lead. The homepage uses native disclosure controls, and mobile navigation is a native details element. Screen content is visible without JavaScript. There is no repeated scroll reveal. One finite portrait entry uses CSS clip-path and transform; reduced motion removes it and all positional UI transitions. Existing résumé print behavior and archived registration routes remain intact. No analytics, signup, newsletter or external service was introduced.
 
 ## Spanish-first routing (September 12, 2026)
 

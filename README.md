@@ -2,7 +2,7 @@
 
 Roberto Villafuerte's personal engineering site at [www.villafortech.com](https://www.villafortech.com).
 
-Spanish is the default entry language; English remains available at `/en/`. The public mission is “Construyo tecnología y comparto el proceso desde Latinoamérica.” The technical specialization and next main project remain undecided.
+Spanish is the default entry language; English remains available at `/en/`. The public mission is “Construyo tecnología y comparto el proceso desde Latinoamérica.” AI Engineering is the adopted technical focus; the next main business, sector and buyer remain open.
 
 The site is an evidence-led portfolio: public work links to source, private work is clearly marked as sanitized, and case studies separate implemented behavior from unsupported outcome claims.
 

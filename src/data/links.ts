@@ -6,7 +6,7 @@ export const links = {
   linkedin: 'https://www.linkedin.com/in/robertovillafuerte/',
   linkedinDisplay: 'linkedin.com/in/robertovillafuerte',
   youtube: 'https://www.youtube.com/@VillaforTech',
-  instagram: 'https://www.instagram.com/villafortech_/',
+  instagram: 'https://www.instagram.com/villafortech/',
   tiktok: 'https://www.tiktok.com/@villafortech',
   threads: 'https://www.threads.com/@villafortech',
   x: 'https://x.com/VillaForTech',

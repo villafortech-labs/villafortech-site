@@ -1,84 +1,167 @@
 ---
 import ArrowIcon from '../components/ArrowIcon.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import profileEn from '../data/profile';
-import profileEs from '../data/profile.es';
+import { links } from '../data/links';
 import { sharedCopy, type Locale } from '../i18n';
 interface Props {
   locale?: Locale;
 }
 const { locale = 'en' } = Astro.props;
-const profile = locale === 'es' ? profileEs : profileEn;
 const shared = sharedCopy[locale];
 const copy = {
   en: {
     title: 'Contact',
     description:
-      'Contact Roberto Villafuerte to exchange ideas about building technology and companies, or explore a technical collaboration.',
-    eyebrow: 'Let’s talk',
-    heading: 'A good question is a good start.',
-    deck: 'Projects, ideas, something that failed or something you are trying to understand. If it connects with my work, I’d like to hear about it.',
-    note: 'A little context helps: what you are exploring, where you got stuck, and what you have tried.',
-    email: '01 / Email',
-    connect: '02 / Conversation',
-    code: '03 / Code and evidence',
-    location: 'Writing and building from Quito, Ecuador.',
+      'Write to Roberto Villafuerte to share a project, ask a question, or exchange ideas.',
+    heading: 'Let’s talk.',
+    deck: 'A project, an idea, a question. If something here made you want to start a conversation, I’d like to hear from you.',
+    note: 'Tell me a little about what you’re exploring.',
+    email: 'Send me an email',
+    connect: 'Connect on LinkedIn',
+    code: 'See my code on GitHub',
   },
   es: {
     title: 'Contacto',
     description:
-      'Contacta a Roberto Villafuerte para intercambiar ideas sobre construir tecnología y empresas, o explorar una colaboración técnica.',
-    eyebrow: 'Conversemos',
-    heading: 'Una buena pregunta es un buen comienzo.',
-    deck: 'Proyectos, ideas, algo que falló o algo que estás intentando entender. Si conecta con mi trabajo, me gustará conocerlo.',
-    note: 'Un poco de contexto ayuda: qué estás explorando, dónde te atascaste y qué has intentado.',
-    email: '01 / Correo',
-    connect: '02 / Conversación',
-    code: '03 / Código y evidencia',
-    location: 'Escribo y construyo desde Quito, Ecuador.',
+      'Escríbele a Roberto Villafuerte para compartir un proyecto, hacer una pregunta o intercambiar ideas.',
+    heading: 'Conversemos.',
+    deck: 'Un proyecto, una idea, una pregunta. Si algo de lo que viste aquí te dio ganas de conversar, me gustará leerte.',
+    note: 'Cuéntame un poco sobre lo que estás explorando.',
+    email: 'Envíame un correo',
+    connect: 'Conectar en LinkedIn',
+    code: 'Ver mi código en GitHub',
   },
 }[locale];
 ---
 
 <BaseLayout title={copy.title} description={copy.description} locale={locale}>
-  <section class="contact-page">
-    <div class="shell contact-page__grid">
-      <div>
-        <p class="eyebrow">{copy.eyebrow}</p><h1>{copy.heading}</h1><p
-          class="contact-page__deck"
-        >
-          {copy.deck}
-        </p><p class="contact-note">{copy.note}</p>
-      </div>
-      <div>
-        <div class="contact-ledger" id="brief">
-          <a
-            class="contact-line contact-line--primary"
-            href={profile.links.email}
-            ><span>{copy.email}</span><strong
-              >{profile.links.emailAddress}</strong
-            ><span aria-hidden="true"><ArrowIcon /></span></a
-          >
-          <a
-            class="contact-line"
-            href={profile.links.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            ><span>{copy.connect}</span><strong>LinkedIn</strong><span
-              aria-hidden="true"><ArrowIcon /></span
-            ><span class="sr-only">{shared.newTab}</span></a
-          >
-          <a
-            class="contact-line"
-            href={profile.links.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            ><span>{copy.code}</span><strong>GitHub</strong><span
-              aria-hidden="true"><ArrowIcon /></span
-            ><span class="sr-only">{shared.newTab}</span></a
-          >
-        </div><p class="contact-location">{copy.location}</p>
-      </div>
+  <section class="contact-surface shell" aria-labelledby="contact-title">
+    <header class="contact-surface__intro">
+      <h1 id="contact-title">{copy.heading}</h1>
+      <p>{copy.deck}</p>
+    </header>
+
+    <div class="contact-surface__destinations" id="brief">
+      <a class="email-entry" href={links.email}>
+        <span>{copy.email}</span>
+        <strong>{links.emailAddress}</strong>
+        <ArrowIcon direction="diagonal" />
+      </a>
+      <p class="contact-surface__note">{copy.note}</p>
+      <nav class="contact-networks" aria-label={copy.title}>
+        <a href={links.linkedin} target="_blank" rel="noopener noreferrer">
+          <span>{copy.connect}</span>
+          <ArrowIcon direction="diagonal" />
+          <span class="sr-only">{shared.newTab}</span>
+        </a>
+        <a href={links.github} target="_blank" rel="noopener noreferrer">
+          <span>{copy.code}</span>
+          <ArrowIcon direction="diagonal" />
+          <span class="sr-only">{shared.newTab}</span>
+        </a>
+      </nav>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .contact-surface {
+    min-height: min(720px, calc(100svh - 180px));
+    padding-block: clamp(3.5rem, 9vw, 8rem);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: start;
+  }
+  .contact-surface__intro h1 {
+    font: 650 clamp(2.75rem, 6vw, 5rem) / 1.05 var(--font-display);
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  .contact-surface__intro p {
+    max-width: 34ch;
+    margin-top: 1.75rem;
+    color: var(--leaf);
+    font-size: clamp(1.125rem, 1.7vw, 1.35rem);
+    line-height: 1.65;
+  }
+  .contact-surface__destinations {
+    padding-top: 0.5rem;
+    min-width: 0;
+  }
+  .email-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 24px;
+    column-gap: 1rem;
+    row-gap: 1rem;
+    padding: 1.75rem;
+    background: var(--sage);
+    border-radius: 16px;
+    text-decoration: none;
+    transition: background-color 180ms ease;
+  }
+  .email-entry > span {
+    font-size: 0.95rem;
+    color: var(--leaf);
+  }
+  .email-entry strong {
+    grid-column: 1;
+    font-size: clamp(1.15rem, 2.1vw, 1.7rem);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+  }
+  .email-entry :global(.arrow-icon) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+  .contact-surface__note {
+    margin: 1rem 0 2rem;
+    color: var(--leaf);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .contact-networks a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 72px;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    font-weight: 550;
+  }
+  .contact-networks :global(.arrow-icon) {
+    flex-shrink: 0;
+  }
+  .email-entry:focus-visible,
+  .contact-networks a:focus-visible {
+    outline: 3px solid var(--leaf);
+    outline-offset: 5px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .email-entry:hover {
+      background: color-mix(in srgb, var(--sage) 88%, var(--leaf));
+    }
+    .contact-networks a:hover > span:first-child {
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
+    }
+  }
+  @media (max-width: 760px) {
+    .contact-surface {
+      min-height: 0;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .contact-surface__intro p {
+      max-width: 42ch;
+    }
+    .email-entry strong {
+      font-size: clamp(1.15rem, 4.9vw, 1.7rem);
+    }
+  }
+</style>

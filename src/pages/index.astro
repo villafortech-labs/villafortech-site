@@ -1,310 +1,291 @@
 ---
-import ArrowIcon from '../components/ArrowIcon.astro';
-import PilotInvitation from '../components/PilotInvitation.astro';
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/Button.astro';
-import profileEn from '../data/profile';
-import profileEs from '../data/profile.es';
-import { localeRoutes, sharedCopy, type Locale } from '../i18n';
-
+import ArrowIcon from '../components/ArrowIcon.astro';
+import { getCollection } from 'astro:content';
+import { links } from '../data/links';
+import { localeRoutes, type Locale } from '../i18n';
+import '../styles/home-renewal.css';
 interface Props {
   locale?: Locale;
 }
 const { locale = 'es' } = Astro.props;
-const profile = locale === 'es' ? profileEs : profileEn;
 const routes = localeRoutes[locale];
-const copy = {
-  en: {
-    verbs: ['I build technology', 'and share the process.'],
-    subject: 'From Latin America.',
-    projects: 'Explore the projects',
-    about: 'A little about me',
-    linkedin: 'Connect on LinkedIn',
-    chapter: '01 / Selected work',
-    workTitle: 'Ideas, put to the test.',
-    workDeck:
-      'The problem, the decisions, and the evidence. What was built, and what remains to be validated.',
-    public: 'Public source',
-    sanitized: 'Sanitized engineering note',
-    private: 'Private work',
-    read: 'Read the case study',
-    all: 'All projects',
-    focusLabel: 'What to look for',
-    focus: [
-      'Separate model fitting, policy selection, and held-out measurement.',
-      'Follow the evidence from the data to the governance verdict.',
-      'Read the evaluation limits alongside the results.',
-    ],
-    practice: '02 / Engineering practice',
-    practiceTitle: 'Build with technical depth.',
-    practiceDeck:
-      'My experience includes data, software, and AI systems. These projects show the work I can support with evidence while I explore what to build next.',
-    story: '03 / The person behind the work',
-    storyTitle: 'From Puyo, with curiosity.',
-    storyLink: 'Read my story',
-    storyNote: 'Think rigorously. Live curiously.',
-    contactLabel: 'Keep the conversation going',
-    contactTitle: 'What are you exploring?',
-    contactDeck:
-      'If a project raises a question, or our interests overlap, I’d like to hear from you.',
-    contact: 'Get in touch',
-  },
-  es: {
-    verbs: ['Construyo tecnología', 'y comparto el proceso.'],
-    subject: 'Desde Latinoamérica.',
-    projects: 'Explorar los proyectos',
-    about: 'Un poco sobre mí',
-    linkedin: 'Conectar en LinkedIn',
-    chapter: '01 / Proyectos seleccionados',
-    workTitle: 'Ideas que pasan por la prueba.',
-    workDeck:
-      'El problema, las decisiones y la evidencia. Qué se construyó y qué queda por validar.',
-    public: 'Código público',
-    sanitized: 'Nota sin información sensible',
-    private: 'Trabajo privado',
-    read: 'Leer el caso de estudio',
-    all: 'Todos los proyectos',
-    focusLabel: 'Dónde poner la atención',
-    focus: [
-      'Separar ajuste del modelo, selección de políticas y medición reservada.',
-      'Seguir la evidencia desde los datos hasta el veredicto de gobernanza.',
-      'Leer los límites de la evaluación junto con los resultados.',
-    ],
-    practice: '02 / Práctica de ingeniería',
-    practiceTitle: 'Construir con profundidad técnica.',
-    practiceDeck:
-      'Mi experiencia incluye datos, software y sistemas de IA. Estos proyectos muestran el trabajo que puedo respaldar con evidencia mientras exploro qué construir después.',
-    story: '03 / La persona detrás del trabajo',
-    storyTitle: 'Desde Puyo, con curiosidad.',
-    storyLink: 'Conocer mi historia',
-    storyNote: 'Pensar con rigor. Vivir con curiosidad.',
-    contactLabel: 'Sigamos la conversación',
-    contactTitle: '¿Qué estás explorando?',
-    contactDeck:
-      'Si un proyecto te dejó una pregunta o compartimos algún interés, me gustará leerte.',
-    contact: 'Escríbeme',
-  },
-}[locale];
-const projects = (
-  await getCollection(
-    'projects',
-    ({ data }) =>
-      data.evidence !== 'hold' && data.locale === locale && data.featured,
-  )
-)
-  .sort((a, b) => (a.data.featuredOrder ?? 99) - (b.data.featuredOrder ?? 99))
-  .slice(0, 3);
-const featuredProject = projects.at(0);
-const projectPath = (project: (typeof projects)[number]) =>
-  `${routes.projects}/${project.data.translationKey ?? project.data.slug}/`;
-const evidenceLabel = (evidence?: string) =>
-  evidence === 'public'
-    ? copy.public
-    : evidence === 'sanitized'
-      ? copy.sanitized
-      : copy.private;
+const es = locale === 'es';
+const copy = es
+  ? {
+      title: 'Soy Roberto.',
+      lead: 'Construyo con IA y comparto lo que aprendo.',
+      intro:
+        'Me estoy formando como AI Engineer para crear tecnología y fundar empresas desde Latinoamérica con alcance global.',
+      work: 'Ver mis proyectos',
+      about: 'Conocer mi historia',
+      current: 'Lo que estoy construyendo.',
+      currentText:
+        'Una aplicación propia, sistemas que he construido y preguntas que sigo explorando. Cada proyecto cuenta sus decisiones y sus límites.',
+      all: 'Ver todos los proyectos',
+      read: 'Leer el proyecto',
+      practice: 'Aprender también es probar.',
+      practiceText:
+        'Me interesa entender cómo funcionan las cosas y llevarlas a un proyecto. Aquí comparto el proceso: el problema, las decisiones y lo que falta por resolver.',
+      steps: [
+        {
+          title: 'Partir de un problema concreto',
+          text: 'Qué necesita hacer el sistema, para quién y con qué datos. Antes de elegir el modelo, aclarar la pregunta.',
+        },
+        {
+          title: 'Construir algo que se pueda revisar',
+          text: 'Conectar datos, modelos y software. Documentar las decisiones para que el resultado no dependa de una demostración aislada.',
+        },
+        {
+          title: 'Comprobar y contar lo aprendido',
+          text: 'Mirar las pruebas y los límites junto al resultado. Compartir una conclusión que pueda sostener con el trabajo realizado.',
+        },
+      ],
+      life: 'Fuera de la pantalla.',
+      lifeText:
+        'La curiosidad también me lleva a otros lugares. Bailo salsa, aprendo chino y me gusta conocer culturas distintas.',
+      salsa:
+        'Empecé salsa para salir de mi zona de confort. Se convirtió en uno de mis hobbies favoritos.',
+      travel: 'Viajar y conocer otras formas de vivir.',
+      story: 'Más sobre mí',
+      note: 'Construir tecnología es una parte de mi vida. Hay más historias en el camino.',
+      talk: 'Sigamos conversando.',
+      talkText:
+        'Si compartimos una pregunta, una idea o las ganas de construir algo, me gustará leerte.',
+      contact: 'Escríbeme',
+    }
+  : {
+      title: 'I’m Roberto.',
+      lead: 'I build with AI and share what I learn.',
+      intro:
+        'I’m training as an AI Engineer to build technology and start companies from Latin America with a global reach.',
+      work: 'See my projects',
+      about: 'Read my story',
+      current: 'What I’m building.',
+      currentText:
+        'An app of my own, systems I’ve built, and questions I’m still exploring. Each project explains its decisions and limitations.',
+      all: 'See all projects',
+      read: 'Read the project',
+      practice: 'Learning means trying things.',
+      practiceText:
+        'I want to understand how things work and turn that understanding into projects. I share the process: the problem, the decisions, and what remains unresolved.',
+      steps: [
+        {
+          title: 'Start with a concrete problem',
+          text: 'What the system needs to do, for whom, and with what data. Clarify the question before choosing a model.',
+        },
+        {
+          title: 'Build something others can inspect',
+          text: 'Connect data, models, and software. Document decisions so the result goes beyond an isolated demonstration.',
+        },
+        {
+          title: 'Check and share what I learn',
+          text: 'Read the tests and limitations alongside the result. Share conclusions supported by the work itself.',
+        },
+      ],
+      life: 'Away from the screen.',
+      lifeText:
+        'Curiosity takes me other places, too. I dance salsa, learn Chinese, and enjoy getting to know different cultures.',
+      salsa:
+        'I started salsa to leave my comfort zone. It became one of my favorite hobbies.',
+      travel: 'Traveling and discovering other ways of living.',
+      story: 'More about me',
+      note: 'Building technology is one part of my life. There are more stories along the way.',
+      talk: 'Let’s keep talking.',
+      talkText:
+        'If we share a question, an idea, or the desire to build something, I’d like to hear from you.',
+      contact: 'Get in touch',
+    };
+const workCopy: Record<string, { title: string; summary: string }> = es
+  ? {
+      panorama: {
+        title: 'Panorama',
+        summary:
+          'Una app propia para registrar gastos y entender mejor los movimientos del día a día.',
+      },
+      'fairness-aware-candidate-pre-screening': {
+        title: 'Equidad en machine learning',
+        summary:
+          'Un laboratorio público para revisar datos, políticas y límites de una evaluación.',
+      },
+      'compumax-rag-pipeline': {
+        title: 'IA para soporte',
+        summary:
+          'Recuperación de información, servicios y escalamiento a una persona en un mismo sistema.',
+      },
+    }
+  : {
+      panorama: {
+        title: 'Panorama',
+        summary:
+          'My own app for recording expenses and making everyday transactions easier to understand.',
+      },
+      'fairness-aware-candidate-pre-screening': {
+        title: 'Fairness in machine learning',
+        summary:
+          'A public lab for inspecting data, policies, and the limits of an evaluation.',
+      },
+      'compumax-rag-pipeline': {
+        title: 'AI for support',
+        summary:
+          'Information retrieval, services, and human escalation connected in one system.',
+      },
+    };
+const order = [
+  'panorama',
+  'fairness-aware-candidate-pre-screening',
+  'compumax-rag-pipeline',
+];
+const collection = await getCollection(
+  'projects',
+  ({ data }) => data.locale === locale && data.evidence !== 'hold',
+);
+const projects = order.flatMap((key) => {
+  const entry = collection.find(
+    ({ data }) => (data.translationKey ?? data.slug) === key,
+  );
+  return entry ? [{ entry, key, ...workCopy[key] }] : [];
+});
 ---
 
 <BaseLayout
-  title={profile.name}
-  description={profile.positioning.statement}
+  title="Roberto Villafuerte"
+  description={`${copy.lead} ${copy.intro}`}
   locale={locale}
 >
-  <div class="shell"><PilotInvitation locale={locale} /></div>
-  <section class="intro shell" aria-labelledby="intro-title">
-    <div class="intro__copy">
-      <p class="intro__byline">
-        <span>{profile.brandLabel}</span><span>{profile.location}</span>
+  <section class="hello shell" aria-labelledby="hello-title">
+    <div class="hello__words">
+      <h1 id="hello-title">{copy.title}</h1>
+      <p class="hello__lead">{copy.lead}</p><p class="hello__intro">
+        {copy.intro}
       </p>
-      <h1 id="intro-title">
-        {copy.verbs.map((line) => <span>{line} </span>)}
-        <em>{copy.subject}</em>
-      </h1>
-      <p class="intro__description">{profile.positioning.detail}</p>
-      <div class="intro__actions">
-        <Button href={routes.projects} size="lg"
-          >{copy.projects}<span aria-hidden="true"><ArrowIcon /></span></Button
+      <div class="hello__actions">
+        <a class="renewal-button" href="#proyectos"
+          >{copy.work}<ArrowIcon direction="right" /></a
         >
-        <a
-          class="plain-link"
-          href={profile.links.linkedin}
-          target="_blank"
-          rel="noopener noreferrer"
-          >{copy.linkedin}<span aria-hidden="true"><ArrowIcon /></span><span
-            class="sr-only">{sharedCopy[locale].newTab}</span
-          ></a
+        <a class="renewal-link" href={routes.about}>{copy.about}<ArrowIcon /></a
         >
       </div>
     </div>
-    <figure class="intro__portrait">
-      <picture>
-        <img
-          src="/images/roberto-villafuerte-yed07995-full.jpg"
-          width="755"
-          height="1133"
-          alt="Roberto Villafuerte"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </picture>
-      <figcaption>
-        <span>Roberto Villafuerte</span><span>{profile.brandLabel}</span>
-      </figcaption>
+    <figure class="hello__photo">
+      <img
+        src="/images/renewal/portrait.webp"
+        width="640"
+        height="961"
+        alt="Roberto Villafuerte"
+        fetchpriority="high"
+        decoding="async"
+      />
     </figure>
   </section>
-
-  <section
-    class="selected-work section-space"
-    aria-labelledby="selected-work-title"
-  >
-    <div class="shell">
-      <header class="chapter-heading" data-reveal>
-        <div>
-          <p class="eyebrow">{copy.chapter}</p><h2 id="selected-work-title">
-            {copy.workTitle}
-          </h2>
-        </div>
-        <p>{copy.workDeck}</p>
+  <section class="building" id="proyectos" aria-labelledby="building-title">
+    <div class="shell building__layout">
+      <header>
+        <h2 id="building-title">{copy.current}</h2><p>{copy.currentText}</p><a
+          class="renewal-link"
+          href={routes.projects}>{copy.all}<ArrowIcon direction="right" /></a
+        >
       </header>
-      {
-        featuredProject && (
-          <article class="project-feature" data-reveal>
-            <div class="project-feature__main">
-              <div class="project-feature__meta">
-                <>
-                  <span>01</span>
-                  <span>{evidenceLabel(featuredProject.data.evidence)}</span>
-                </>
-              </div>
-              <h3>
-                <a href={projectPath(featuredProject)}>
-                  {featuredProject.data.shortTitle ||
-                    featuredProject.data.title}
-                </a>
-              </h3>
-              <p>{featuredProject.data.summary}</p>
-              <a class="plain-link" href={projectPath(featuredProject)}>
-                {copy.read}
-                <span aria-hidden="true">
-                  <ArrowIcon />
-                </span>
-              </a>
-            </div>
-            <div class="project-feature__notes">
-              <p class="eyebrow">{copy.focusLabel}</p>
-              <ol>
-                {copy.focus.map((item, index) => (
-                  <li>
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <p>{item}</p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </article>
-        )
-      }
-      <div class="project-pair">
+      <div class="building__projects">
         {
-          projects.slice(1).map((project, index) => (
-            <article class="project-note" data-reveal>
-              <div class="project-note__meta">
+          projects.map((project) => (
+            <article>
+              <a
+                href={`${routes.projects}${project.key}/`}
+                class="building__project"
+              >
                 <>
-                  <span>{String(index + 2).padStart(2, '0')}</span>
-                  <span>{project.data.organization || project.data.role}</span>
-                </>
-              </div>
-              <h3>
-                <a href={projectPath(project)}>
-                  {project.data.shortTitle || project.data.title}
-                </a>
-              </h3>
-              <p>{project.data.summary}</p>
-              <p class="project-note__evidence">
-                {evidenceLabel(project.data.evidence)}
-              </p>
-              <a class="plain-link" href={projectPath(project)}>
-                {copy.read}
-                <span aria-hidden="true">
+                  <div>
+                    <>
+                      <h3>{project.title}</h3>
+                      <p>{project.summary}</p>
+                      <span class="building__read">{copy.read}</span>
+                    </>
+                  </div>
                   <ArrowIcon />
-                </span>
+                </>
               </a>
             </article>
           ))
         }
       </div>
-      <div class="section-end">
-        <a class="plain-link" href={routes.projects}
-          >{copy.all}<span aria-hidden="true"
-            ><ArrowIcon direction="right" /></span
-          ></a
-        >
-      </div>
     </div>
   </section>
-
-  <section class="practice section-space" aria-labelledby="practice-title">
-    <div class="shell practice__layout" data-reveal>
-      <header>
-        <p class="eyebrow">{copy.practice}</p><h2 id="practice-title">
-          {copy.practiceTitle}
-        </h2><p>{copy.practiceDeck}</p>
-      </header>
-      <ol class="practice__list">
+  <section class="learning shell" aria-labelledby="learning-title">
+    <figure class="learning__photo">
+      <img
+        src="/images/renewal/coding.webp"
+        width="1200"
+        height="675"
+        alt={es
+          ? 'Una sesión de programación en mi portátil'
+          : 'A programming session on my laptop'}
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <div class="learning__copy">
+      <h2 id="learning-title">{copy.practice}</h2><p>{copy.practiceText}</p>
+      <div class="learning__questions">
         {
-          profile.services.map((service, index) => (
-            <li>
+          copy.steps.map((step) => (
+            <details name="learning">
               <>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <div>
-                  <>
-                    <h3>{service.title}</h3>
-                    <p>{service.detail}</p>
-                  </>
-                </div>
+                <summary>
+                  {step.title}
+                  <span class="details-indicator" aria-hidden="true" />
+                </summary>
+                <p>{step.text}</p>
               </>
-            </li>
+            </details>
           ))
         }
-      </ol>
-    </div>
-  </section>
-
-  <section class="origin section-space" aria-labelledby="origin-title">
-    <div class="shell origin__layout" data-reveal>
-      <div class="origin__heading">
-        <p class="eyebrow">{copy.story}</p><h2 id="origin-title">
-          {copy.storyTitle}
-        </h2><p class="origin__motto">{copy.storyNote}</p>
-      </div>
-      <div class="origin__copy">
-        {
-          profile.story.paragraphs
-            .slice(0, 2)
-            .map((paragraph) => <p>{paragraph}</p>)
-        }<a class="plain-link" href={routes.about}
-          >{copy.storyLink}<span aria-hidden="true"
-            ><ArrowIcon direction="right" /></span
-          ></a
-        >
       </div>
     </div>
   </section>
-
-  <section class="conversation" aria-labelledby="conversation-title">
-    <div class="shell conversation__layout">
-      <div>
-        <p class="eyebrow">{copy.contactLabel}</p><h2 id="conversation-title">
-          {copy.contactTitle}
-        </h2>
-      </div><div>
-        <p>{copy.contactDeck}</p><Button
-          href={routes.contact}
-          variant="secondary"
-          >{copy.contact}<span aria-hidden="true"><ArrowIcon /></span></Button
-        >
+  <section class="elsewhere" aria-labelledby="elsewhere-title">
+    <div class="shell">
+      <header class="elsewhere__heading">
+        <h2 id="elsewhere-title">{copy.life}</h2><p>{copy.lifeText}</p>
+      </header>
+      <div class="elsewhere__layout">
+        <figure class="elsewhere__travel">
+          <img
+            src="/images/renewal/travel.webp"
+            width="960"
+            height="1280"
+            alt={es
+              ? 'Roberto junto a una cabina telefónica roja en Londres'
+              : 'Roberto beside a red telephone box in London'}
+            loading="lazy"
+            decoding="async"
+          /><figcaption>{copy.travel}</figcaption>
+        </figure>
+        <figure class="elsewhere__salsa">
+          <img
+            src="/images/renewal/salsa.webp"
+            width="675"
+            height="1200"
+            alt={es
+              ? 'Una noche de salsa con música en vivo'
+              : 'A salsa night with live music'}
+            loading="lazy"
+            decoding="async"
+          /><figcaption>{copy.salsa}</figcaption>
+        </figure>
+        <div class="elsewhere__note">
+          <p>{copy.note}</p><a class="renewal-link" href={routes.about}
+            >{copy.story}<ArrowIcon direction="right" /></a
+          >
+        </div>
       </div>
+    </div>
+  </section>
+  <section class="say-hello shell" aria-labelledby="talk-title">
+    <h2 id="talk-title">{copy.talk}</h2><div>
+      <p>{copy.talkText}</p><a class="renewal-button" href={links.email}
+        >{copy.contact}<ArrowIcon /></a
+      >
     </div>
   </section>
 </BaseLayout>
