@@ -128,7 +128,7 @@ export const profile = {
     {
       institution: 'Universidad San Francisco de Quito (USFQ)',
       program: 'Ingeniería en Ciencias de la Computación (BEng)',
-      period: '2022 - graduación prevista: diciembre de 2026',
+      period: '2022 - 2026',
       detail:
         'Estudios de pregrado en ciencias de la computación e ingeniería de software con apoyo de una beca; actualmente curso el último año.',
     },

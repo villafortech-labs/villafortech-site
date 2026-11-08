@@ -118,7 +118,7 @@ export const profile = {
     {
       institution: 'Universidad San Francisco de Quito (USFQ)',
       program: 'BEng, Computer Science Engineering',
-      period: '2022 - Expected December 2026',
+      period: '2022 - 2026',
       detail:
         'Scholarship-supported undergraduate studies in computer science and software engineering; currently in the final year.',
     },
