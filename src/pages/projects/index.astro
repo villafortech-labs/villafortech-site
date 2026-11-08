@@ -1,144 +1,128 @@
 ---
 import ArrowIcon from '../../components/ArrowIcon.astro';
-import PanoramaPreview from '../../components/PanoramaPreview.astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { localeRoutes, type Locale } from '../../i18n';
-import '../../styles/projects-renewal.css';
 
 interface Props {
   locale?: Locale;
 }
+
 const { locale = 'en' } = Astro.props;
-const es = locale === 'es';
 const routes = localeRoutes[locale];
 const copy = {
-  title: es ? 'Proyectos' : 'Projects',
-  description: es
-    ? 'Los proyectos de Roberto Villafuerte: Panorama, sistemas de IA, arquitectura de datos y aprendizaje automático. El problema, las decisiones y la evidencia.'
-    : 'Projects by Roberto Villafuerte: Panorama, AI systems, data architecture, and machine learning. The problem, the decisions, and the evidence.',
-  heading: es ? 'Lo que aprendo, construyendo.' : 'What I learn by building.',
-  deck: es
-    ? 'Un producto propio, experimentos y trabajo en equipo. Cada caso cuenta qué construí, por qué tomé ciertas decisiones y qué queda por comprobar.'
-    : 'An independent product, experiments, and work with others. Each case explains what I built, why I made those decisions, and what still needs testing.',
-  panorama: es
-    ? 'Panorama, de una idea al producto.'
-    : 'Panorama, from idea to product.',
-  panoramaDeck: es
-    ? 'Estoy construyendo una aplicación para organizar gastos, ingresos y planes. La IA ayuda a interpretar lo que registras; tú revisas la propuesta antes de guardarla.'
-    : 'I’m building an application for organizing expenses, income, and plans. AI helps interpret what you enter; you review the proposal before saving it.',
-  panoramaNote: es
-    ? 'Producto web público. Implementación privada.'
-    : 'Public web product. Private implementation.',
-  more: es ? 'Trabajo que puedo mostrar.' : 'Work I can share.',
-  moreDeck: es
-    ? 'Código abierto cuando está disponible; notas delimitadas cuando el trabajo es privado.'
-    : 'Open source where available; carefully scoped notes where the work is private.',
-  read: es ? 'Leer el caso' : 'Read the case',
-  visit: es ? 'Abrir Panorama' : 'Open Panorama',
-  topics: es ? 'Tecnologías y temas' : 'Technologies and topics',
-  public: es ? 'Código y evidencia públicos' : 'Public source and evidence',
-  sanitized: es ? 'Nota de un trabajo privado' : 'Note on private work',
-  private: es ? 'Trabajo privado' : 'Private work',
-};
+  en: {
+    title: 'Selected work',
+    description:
+      'Engineering case studies and carefully scoped project notes by Roberto Villafuerte across AI, data, backend, and machine-learning systems.',
+    eyebrow: 'Selected work / Engineering case studies',
+    heading: 'Systems, decisions, and the work behind them.',
+    deck: 'Case studies across AI systems, data architecture, and machine-learning infrastructure: what I built, the decisions behind it, and what changed.',
+    case: 'Case / Context',
+    evidence: 'Evidence',
+    period: 'Period',
+    technologies: 'Technologies and topics',
+  },
+  es: {
+    title: 'Proyectos seleccionados',
+    description:
+      'Casos de ingeniería y notas de proyectos cuidadosamente delimitadas de Roberto Villafuerte sobre sistemas de IA, datos, backend y aprendizaje automático.',
+    eyebrow: 'Proyectos seleccionados / Casos de ingeniería',
+    heading: 'Sistemas, decisiones y el trabajo que hay detrás.',
+    deck: 'Casos sobre sistemas de IA, arquitectura de datos e infraestructura de aprendizaje automático: qué construí, las decisiones detrás de cada sistema y qué cambió.',
+    case: 'Caso / Contexto',
+    evidence: 'Evidencia',
+    period: 'Periodo',
+    technologies: 'Tecnologías y temas',
+  },
+}[locale];
+
 const projects = (
   await getCollection(
     'projects',
-    ({ data }) => data.evidence !== 'hold' && data.locale === locale,
+    ({ data }) =>
+      data.evidence !== 'hold' &&
+      data.locale === locale &&
+      data.translationKey !== 'panorama',
   )
-).sort(
-  (a, b) =>
-    (a.data.featuredOrder ?? 99) - (b.data.featuredOrder ?? 99) ||
-    new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-);
-const panorama = projects.find(
-  (project) => project.data.translationKey === 'panorama',
-);
-const otherProjects = projects.filter(
-  (project) => project.data.translationKey !== 'panorama',
-);
-const href = (project: (typeof projects)[number]) =>
-  `${routes.projects}${project.data.translationKey ?? project.data.slug}/`;
-const evidenceLabel = (evidence?: string) =>
-  evidence === 'public'
-    ? copy.public
-    : evidence === 'sanitized'
-      ? copy.sanitized
-      : copy.private;
+).sort((a, b) => {
+  const orderA = a.data.featuredOrder ?? 99;
+  const orderB = b.data.featuredOrder ?? 99;
+  return (
+    orderA - orderB ||
+    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+});
+
+const evidenceLabel =
+  locale === 'es'
+    ? {
+        public: 'Fuente pública',
+        sanitized: 'Nota sin información sensible',
+        private: 'Trabajo privado',
+        hold: 'No publicado',
+      }
+    : {
+        public: 'Public source',
+        sanitized: 'Sanitized note',
+        private: 'Private work',
+        hold: 'Not published',
+      };
 ---
 
 <BaseLayout title={copy.title} description={copy.description} locale={locale}>
-  <header class="project-opening shell">
-    <h1>{copy.heading}</h1>
-    <p>{copy.deck}</p>
+  <header class="page-hero page-hero--work">
+    <div class="shell page-hero__grid">
+      <div>
+        <p class="eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.heading}</h1>
+      </div>
+      <p class="page-hero__deck">{copy.deck}</p>
+    </div>
   </header>
 
-  {
-    panorama && (
-      <section class="project-product" aria-labelledby="panorama-heading">
-        <div class="shell project-product__layout">
-          <div class="project-product__copy">
-            <h2 id="panorama-heading">{copy.panorama}</h2>
-            <p>{copy.panoramaDeck}</p>
-            <p class="project-product__note">{copy.panoramaNote}</p>
-            <div class="project-product__actions">
-              <a class="plain-link" href={href(panorama)}>
-                {copy.read}
-                <ArrowIcon direction="right" />
-              </a>
-              <a class="plain-link" href={panorama.data.links?.demo}>
-                {copy.visit}
-                <ArrowIcon />
-              </a>
-            </div>
-          </div>
-          <PanoramaPreview locale={locale} compact />
-        </div>
-      </section>
-    )
-  }
-
-  <section
-    class="project-archive shell"
-    aria-labelledby="project-archive-heading"
-  >
-    <div class="project-archive__heading">
-      <h2 id="project-archive-heading">{copy.more}</h2>
-      <p>{copy.moreDeck}</p>
-    </div>
-    <div class="project-archive__list">
-      {
-        otherProjects.map((project) => (
-          <article class="project-entry">
-            <div class="project-entry__title">
-              <p>{project.data.organization || project.data.role}</p>
-              <h3>
-                <a href={href(project)}>
-                  {project.data.shortTitle || project.data.title}
-                </a>
-              </h3>
-              <p>
+  <section class="work-index">
+    <div class="shell">
+      <div class="work-index__header" aria-hidden="true">
+        <span>{copy.case}</span><span>{copy.evidence}</span><span
+          >{copy.period}</span
+        >
+      </div>
+      <div class="work-list">
+        {
+          projects.map((project, index) => (
+            <a
+              class:list={['work-record', index === 0 && 'work-record--lead']}
+              href={`${routes.projects}${project.data.translationKey ?? project.data.slug}/`}
+            >
+              <span class="work-record__number">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div class="work-record__copy">
+                <p>{project.data.organization || project.data.role}</p>
+                <h2>{project.data.shortTitle || project.data.title}</h2>
+                <p>{project.data.summary}</p>
+                <ul aria-label={copy.technologies}>
+                  {project.data.tags.slice(0, 4).map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </div>
+              <span
+                class={`evidence-state evidence-state--${project.data.evidence || 'private'}`}
+              >
+                {evidenceLabel[project.data.evidence || 'private']}
+              </span>
+              <span class="work-record__period">
                 {project.data.projectPeriod || project.data.date.slice(0, 4)}
-              </p>
-            </div>
-            <div class="project-entry__body">
-              <p>{project.data.summary}</p>
-              <p class="project-entry__evidence">
-                {evidenceLabel(project.data.evidence)}
-              </p>
-              <ul aria-label={copy.topics}>
-                {project.data.tags.slice(0, 4).map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
-              <a class="plain-link" href={href(project)}>
-                {copy.read}
-                <ArrowIcon direction="right" />
-              </a>
-            </div>
-          </article>
-        ))
-      }
+              </span>
+              <span class="work-record__arrow" aria-hidden="true">
+                <ArrowIcon />
+              </span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </section>
 </BaseLayout>

@@ -1,0 +1,451 @@
+/* The pre-renewal information architecture, dressed in the 6 November visual system. */
+.intro {
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.8fr);
+  min-height: calc(100svh - 88px);
+  gap: clamp(48px, 7vw, 112px);
+  padding-block: 64px 88px;
+}
+.intro h1 {
+  font-size: clamp(2.75rem, 4.4vw, 4.25rem);
+  font-weight: 600;
+  line-height: 1.09;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.intro h1 > span:nth-child(2) {
+  color: var(--forest);
+}
+.intro h1 em {
+  font: 500 clamp(2.35rem, 3.7vw, 3.6rem)/1.15 var(--font-sans);
+  letter-spacing: -0.03em;
+  margin-top: 18px;
+}
+.intro__description {
+  max-width: 47ch;
+  color: var(--leaf);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  margin-top: 28px;
+}
+.intro__portrait {
+  max-width: 370px;
+}
+.intro__portrait picture {
+  background: transparent;
+}
+.intro__portrait figcaption {
+  font-size: 0.875rem;
+  justify-content: flex-start;
+  gap: 4px 18px;
+}
+.intro__portrait figcaption span:first-child {
+  font: 500 0.875rem/1.6 var(--font-sans);
+}
+.intro__portrait figcaption span:last-child {
+  font-size: 0.8125rem;
+}
+.button {
+  border-radius: 4px;
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 180ms ease;
+}
+.button:active {
+  transform: scale(0.97);
+}
+.plain-link,
+.text-link,
+.back-link {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+.selected-work {
+  border: 0;
+  padding-block: 100px;
+}
+.chapter-heading {
+  margin-bottom: 48px;
+}
+.chapter-heading h2,
+.practice h2,
+.origin h2,
+.conversation h2,
+.education-block h2 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.4rem, 4vw, 3.75rem);
+  line-height: 1.12;
+}
+.project-feature {
+  gap: 48px;
+  padding: 48px;
+}
+.project-feature__main {
+  padding: 0;
+}
+.project-feature__notes {
+  border: 0;
+  padding: 0;
+  align-self: center;
+}
+.project-feature__meta {
+  justify-content: flex-start;
+  font-size: 0.875rem;
+}
+.project-feature__meta > span:first-child,
+.project-note__meta > span:first-child,
+.project-feature__notes li > span,
+.practice__list li > span,
+.work-record__number {
+  display: none;
+}
+.project-feature h3 {
+  margin-block: 24px;
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 550;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+}
+.project-feature__notes li {
+  grid-template-columns: 1fr;
+  padding-block: 16px;
+  border: 0;
+}
+.project-feature__notes li:first-child {
+  padding-top: 0;
+}
+.project-feature__notes li:last-child {
+  padding-bottom: 0;
+}
+.project-note__meta {
+  border: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.project-note h3 {
+  font-family: var(--font-sans);
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  font-size: clamp(1.7rem, 2.8vw, 2.5rem);
+  line-height: 1.16;
+}
+.project-note__evidence {
+  font-size: 0.875rem;
+}
+.section-end {
+  border: 0;
+}
+.practice {
+  padding-block: 96px;
+}
+.practice__layout {
+  gap: 80px;
+}
+.practice__list li {
+  grid-template-columns: 1fr;
+  padding-block: 24px;
+  border: 0;
+}
+.practice__list h3 {
+  font-size: 1.375rem;
+  font-weight: 550;
+}
+.practice__list p {
+  font-size: 1rem;
+  color: var(--leaf);
+}
+.origin {
+  padding-block: 100px;
+}
+.origin__motto {
+  font: 400 1.25rem/1.5 var(--font-sans);
+}
+.origin__copy > p {
+  line-height: 1.75;
+}
+.conversation {
+  padding-block: 88px;
+}
+.page-hero,
+.about-opening {
+  padding-block: 64px 80px;
+}
+.page-hero h1,
+.about-opening h1,
+.contact-page h1 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  line-height: 1.07;
+}
+.about-opening__grid {
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.8fr);
+  gap: clamp(48px, 7vw, 112px);
+}
+.about-opening figure {
+  max-width: 370px;
+  justify-self: end;
+}
+.about-opening picture {
+  aspect-ratio: auto;
+  overflow: visible;
+}
+.about-opening img {
+  height: auto;
+  object-fit: contain;
+}
+.life-story {
+  border: 0;
+  padding-block: 80px 96px;
+}
+.life-story__index li {
+  border: 0;
+}
+.life-story__index strong {
+  font: 550 1.6rem/1.2 var(--font-sans);
+}
+.life-story__index small {
+  font-size: 0.875rem;
+}
+.life-story__copy h2 {
+  font: 550 clamp(1.75rem, 3vw, 2.5rem)/1.15 var(--font-sans);
+  letter-spacing: -0.025em;
+}
+.education-block {
+  padding-block: 88px;
+}
+.education-ledger article {
+  border: 0;
+}
+.work-index {
+  padding-bottom: 80px;
+}
+.work-list {
+  border: 0;
+}
+.work-record {
+  grid-template-columns: minmax(0, 1fr) 180px 130px 24px;
+  gap: 32px;
+  padding-block: 40px;
+  border: 0;
+}
+.work-record h2 {
+  font-family: var(--font-sans);
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  font-size: clamp(1.9rem, 3vw, 2.75rem);
+  line-height: 1.14;
+}
+.work-record__copy > p:first-child {
+  font-size: 0.875rem;
+}
+.contact-ledger,
+.contact-line {
+  border: 0;
+}
+.contact-line:first-child {
+  padding-top: 0;
+}
+.contact-line strong {
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+.links-page {
+  padding-top: 56px;
+}
+.links-heading {
+  text-align: left;
+  margin-bottom: 36px;
+}
+.links-heading h1 {
+  font: 600 clamp(2.5rem, 8vw, 3.5rem)/1.08 var(--font-sans);
+  letter-spacing: -0.03em;
+}
+.profile-link--priority {
+  border: 0;
+}
+.profile-link {
+  border: 0;
+  padding-block: 18px;
+}
+.profile-link--primary {
+  border-radius: 4px;
+}
+.links-motto {
+  font: 400 1rem/1.6 var(--font-sans);
+}
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    transform: translateY(-2px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .intro__portrait {
+    animation: configured-portrait 600ms var(--ease-out) both;
+  }
+  @keyframes configured-portrait {
+    from {
+      clip-path: inset(0 0 8% 0);
+      transform: translateY(8px);
+    }
+    to {
+      clip-path: inset(0);
+      transform: translateY(0);
+    }
+  }
+}
+@media (max-width: 1000px) {
+  .work-record {
+    grid-template-columns: minmax(0, 1fr) 150px 90px 24px;
+    gap: 24px;
+  }
+  .practice__layout,
+  .origin__layout,
+  .life-story__grid {
+    gap: 48px;
+  }
+  .project-feature {
+    gap: 36px;
+    padding: 36px;
+  }
+}
+@media (max-width: 800px) {
+  .intro,
+  .about-opening__grid {
+    grid-template-columns: 1.1fr 0.8fr;
+    gap: 40px;
+    min-height: auto;
+  }
+  .intro h1 {
+    font-size: 2.75rem;
+  }
+  .intro h1 em {
+    font-size: 2.25rem;
+  }
+  .intro__actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .project-feature {
+    grid-template-columns: 1fr;
+  }
+  .chapter-heading,
+  .page-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .chapter-heading > p {
+    max-width: 60ch;
+  }
+  .work-record {
+    grid-template-columns: minmax(0, 1fr) 24px;
+    gap: 20px;
+  }
+  .work-record__copy {
+    grid-column: 1;
+  }
+  .evidence-state,
+  .work-record__period {
+    grid-column: 1;
+  }
+  .work-record__arrow {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .life-story__grid {
+    grid-template-columns: 1fr;
+  }
+  .life-story__index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+  }
+  .life-story__index li {
+    padding: 0;
+  }
+}
+@media (max-width: 600px) {
+  .intro {
+    grid-template-columns: 1fr;
+    padding-block: 40px 64px;
+    gap: 40px;
+  }
+  .intro h1 {
+    font-size: clamp(2.25rem, 9.7vw, 3rem);
+  }
+  .intro h1 em {
+    font-size: clamp(2rem, 8.2vw, 2.6rem);
+  }
+  .intro__description {
+    font-size: 1rem;
+  }
+  .intro__actions {
+    align-items: stretch;
+  }
+  .intro__portrait {
+    justify-self: center;
+  }
+  .intro__portrait figcaption span:last-child {
+    display: none;
+  }
+  .selected-work,
+  .practice,
+  .origin,
+  .conversation {
+    padding-block: 64px;
+  }
+  .project-feature {
+    padding: 28px 24px;
+    gap: 28px;
+  }
+  .project-pair {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-top: 40px;
+  }
+  .practice__layout,
+  .origin__layout,
+  .conversation__layout,
+  .education-block__layout,
+  .contact-page__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .about-opening {
+    padding-block: 40px 64px;
+  }
+  .about-opening__grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .about-opening h1,
+  .page-hero h1,
+  .contact-page h1 {
+    font-size: clamp(2.5rem, 10vw, 3.25rem);
+  }
+  .about-opening figure {
+    justify-self: center;
+    width: 100%;
+  }
+  .life-story {
+    padding-block: 40px 64px;
+  }
+  .education-block {
+    padding-block: 64px;
+  }
+  .page-hero {
+    padding-block: 40px;
+  }
+  .work-index {
+    padding-bottom: 40px;
+  }
+  .contact-page {
+    padding-block: 40px 64px;
+  }
+  .contact-line strong {
+    font-size: clamp(1.2rem, 5.2vw, 1.6rem);
+  }
+}

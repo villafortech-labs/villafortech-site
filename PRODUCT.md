@@ -12,7 +12,7 @@ People discovering Roberto Villafuerte's work, including Spanish-speaking learne
 
 ## Product Purpose
 
-Roberto's personal website presents the person, his work and his ambition to build technology and companies from Latin America. The current request explicitly authorizes renewal using Emil Kowalski, Impeccable and Taste, asking the site to show who he is.
+Roberto's personal website presents the person, his work and his ambition to build technology and companies from Latin America. The 8 November request restores the pre-renewal website configuration while retaining the visual style implemented on 6 November using Emil Kowalski, Impeccable and Taste.
 
 ## Capabilities and Constraints
 
@@ -26,6 +26,6 @@ Roberto is the author; Villa for Tech is his editorial space. Preserve the origi
 
 Existing profile records and published case studies. Approved YED07995 portrait. Published personal carousel from 2 November with user-selected descriptions of AI Engineering, salsa, Chinese, Panorama and thesis. The 4 November restoration is the incumbent baseline eb3ec19; earlier redesigns are recoverable history, not the active design.
 
-## Open Decisions
+## Current Configuration
 
-An optional question about the relative emphasis on person and projects is pending. This session starts with a balanced presentation inferred from 'muéstrame cómo soy'; it is not recorded as a permanent user preference.
+The user explicitly asked on 8 November for the new visual style on the previous website configuration. The baseline is eb3ec19: regional mission, Fair-ML / SaliHub / COMPUMAX selected work, engineering practice, origin and professional biography/education. Preserve current facts and working links. The social link directory still honors the more specific prior request against duplicating a social-profile portrait and biography. Already public Panorama case routes remain available, without displacing the previous project selection.

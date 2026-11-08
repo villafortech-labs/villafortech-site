@@ -1,12 +1,12 @@
 # Roberto Villafuerte — personal field journal
 
-The 6 November renewal uses a balanced portrait of the person and his work. The user's 'muéstrame cómo soy' leads: the author appears before the catalogue of professional evidence. This is the implementation direction, not a new standing preference inferred from silence.
+The 8 November correction applies the visual system of 6 November to the preceding website configuration. The previous mission and content structure lead again: building technology and sharing the process from Latin America, selected engineering work, technical practice, origin, biography and education. The personal-first homepage and added lifestyle sequence are recoverable in c1cf5d2.
 
 ## Visual system
 
 Locally hosted Manrope carries both large display type and reading. Cool offwhite #f5f6f2 is the main ground, deep green #172a25 the ink and project band, #285d46 the supporting text, and #e4e9df the personal-photo ground. Headings stay below 6rem and tracking at or above -0.04em. Photography keeps its natural colors and complete frames. The canonical green clover is used without a plate, frame or added effect.
 
-Composition changes with the content: a personal opening and full portrait; an inverse project index; programming alongside native disclosure controls; a personal photo sequence; a short invitation to write. Mobile stacks these in reading order and provides a full-height native menu. Dense case studies retain diagrams and inspectable evidence.
+`previous-structure.css` adapts the original page classes to the retained typography, colors, whitespace and controls. Homepage keeps its previous annotated Fair-ML feature and two supporting projects, followed by engineering practice, origin and contact. About keeps the prior story and education; project index, links and contact use their previous structures. The index omits the later Panorama addition, while keeping its published case routes accessible. Mobile stacks in reading order and retains the full-height menu.
 
 ## Interaction
 

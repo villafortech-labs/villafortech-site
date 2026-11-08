@@ -4,7 +4,7 @@ export const profile = {
   name: 'Roberto Villafuerte',
   siteName: 'Roberto Villafuerte',
   headline: 'AI Engineer',
-  brandLabel: 'Construyo con IA y comparto lo que aprendo',
+  brandLabel: 'Tecnología desde Latinoamérica',
   location: 'Latinoamérica',
   currentRole: {
     title: 'Ingeniero de IA Aplicada',
@@ -18,13 +18,14 @@ export const profile = {
     ],
   },
   introduction:
-    'Construyo con IA y comparto lo que aprendo. Mi foco es AI Engineering: llevar ideas a la práctica, probarlas y entender cómo funcionan.',
+    'Diseño y construyo sistemas de IA y datos, con énfasis en la arquitectura que los hace confiables, seguros y mantenibles.',
   positioning: {
-    statement: 'Construyo con IA y comparto lo que aprendo.',
+    statement:
+      'Construyo tecnología y comparto el proceso desde Latinoamérica.',
     detail:
-      'Quiero contribuir a crear tecnología y empresas desde Latinoamérica con alcance global. Comparto proyectos, decisiones y aprendizajes que forman parte de ese camino.',
+      'Quiero contribuir a que desde Latinoamérica se creen más tecnologías y empresas de talla mundial. Comparto el trabajo real: proyectos, experimentos, decisiones y aprendizajes.',
     opportunities:
-      'Aprender, construir y comprobar. Proyectos y decisiones que otras personas pueden revisar.',
+      'Profundidad técnica, trabajo útil y evidencia que se puede revisar.',
   },
   services: [
     {

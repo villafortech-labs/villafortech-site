@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/renewal.css';
+import '../styles/previous-structure.css';
 import '../styles/print.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
@@ -28,7 +29,7 @@ interface Props {
 const {
   title,
   description,
-  image = '/og-renewal-es.png',
+  image = '/og-configuration-es.png',
   noIndex = false,
   type = 'website',
   locale = localeFromPath(Astro.url.pathname),
@@ -48,8 +49,8 @@ const localizedProfile = locale === 'es' ? profileEs : profile;
 const localizedHeadline = localizedProfile.brandLabel;
 const pageTitle = title === profile.name ? title : `${title} | ${profile.name}`;
 const imageURL = new URL(
-  image === '/og-renewal-es.png' && locale === 'en'
-    ? '/og-renewal-en.png'
+  image === '/og-configuration-es.png' && locale === 'en'
+    ? '/og-configuration-en.png'
     : image,
   Astro.site,
 );

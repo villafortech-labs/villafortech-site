@@ -1,202 +1,162 @@
 ---
 import ArrowIcon from '../components/ArrowIcon.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import profileEn from '../data/profile';
+import profileEs from '../data/profile.es';
 import { localeRoutes, type Locale } from '../i18n';
-import '../styles/about-renewal.css';
-
 interface Props {
   locale?: Locale;
 }
-
 const { locale = 'en' } = Astro.props;
+const profile = locale === 'es' ? profileEs : profileEn;
 const routes = localeRoutes[locale];
 const copy = {
   en: {
-    title: 'About me',
+    title: 'About',
     description:
-      'I am Roberto Villafuerte. AI Engineering, projects, salsa, and the curiosity behind my work.',
-    heading: 'I’m Roberto.',
+      'Roberto Villafuerte: building technology from Latin America. The experiences, questions, and people behind the work.',
+    eyebrow: 'The person behind the work',
+    heading: 'Curiosity brought me here.',
     intro:
-      'I like understanding how things work and putting that curiosity to the test by building them. Today I am going deeper into AI Engineering and sharing the process through Villa for Tech.',
-    mission:
-      'I want to help create technology and companies with a global reach from Latin America.',
+      'I grew up in Puyo, in the Ecuadorian Amazon. I build technology and share what I learn, with the ambition to help create world-class technology and companies from Latin America.',
     photo:
-      'Roberto at the University of Helsinki, beside a portrait of Linus Torvalds',
-    storyHeading: 'A scholarship. An exchange. More questions.',
-    story: [
-      'I grew up in Puyo. A scholarship gave me the chance to study Computer Science Engineering at Universidad San Francisco de Quito.',
-      'During my exchange at the University of Helsinki, I took master’s-level courses in machine learning systems, data platforms, trustworthy ML, and software architecture. Learning in different places has been part of my path, including studying Mandarin in China.',
+      'Roberto Villafuerte next to a portrait of Linus Torvalds at the University of Helsinki',
+    caption: 'University of Helsinki / Linus Torvalds Auditorium',
+    timeline: 'Places along the way',
+    headings: [
+      'A first question.',
+      'The chance to study.',
+      'Looking beyond the model.',
+      'Learning in different contexts.',
+      'What I am building toward.',
     ],
-    workHeading: 'Learning by building.',
-    work: [
-      'My work has included forecasting models, support automation, and data architecture for a health platform. I am interested in what makes an idea work beyond a demonstration: the data, the evaluation, and the system around the model.',
-      'In SYNTHCLP, my thesis project, we are studying synthetic speech data and evaluating whether it can help classify clinical cases. With Panorama Finanzas, I built an app to track my expenses and put my skills into practice.',
-    ],
-    codingAlt: 'Roberto’s hands at the keyboard during a programming session',
-    projects: 'See my projects',
-    lifeHeading: 'There’s also salsa. And Chinese.',
-    salsaHeading: 'Salsa',
-    salsa:
-      'I started dancing salsa to step outside my comfort zone. Over time, I grew to love it, and it is now one of my favorite hobbies.',
-    salsaAlt: 'A stage, lights, and people at a salsa venue',
-    chineseHeading: 'Learning Chinese',
-    chinese:
-      'I am learning Chinese and want to explore more of Asia’s cultures: their traditions, stories, and ways of seeing the world.',
-    chineseAlt: 'People around a table during a Chinese-language activity',
-    closeHeading: 'The work. The learning. The life around it.',
-    close:
-      'That is what I want to share here. If you are learning, building, or working through a similar question, we can start a conversation.',
-    contact: 'Get in touch',
-    resume: 'Read my résumé',
+    education: 'Education',
+    educationTitle: 'A foundation to keep building on.',
+    resume: 'Read the résumé',
+    projects: 'Explore the projects',
   },
   es: {
     title: 'Sobre mí',
     description:
-      'Soy Roberto Villafuerte. AI Engineering, proyectos, salsa y la curiosidad detrás de mi trabajo.',
-    heading: 'Soy Roberto.',
+      'Roberto Villafuerte: construir tecnología desde Latinoamérica. Las experiencias, preguntas y personas detrás del trabajo.',
+    eyebrow: 'La persona detrás del trabajo',
+    heading: 'La curiosidad me trajo hasta aquí.',
     intro:
-      'Me gusta entender cómo funcionan las cosas y poner esa curiosidad a prueba construyéndolas. Hoy estoy profundizando en AI Engineering y compartiendo el proceso en Villa for Tech.',
-    mission:
-      'Quiero contribuir a crear tecnología y empresas desde Latinoamérica con alcance global.',
+      'Crecí en Puyo, en la Amazonía ecuatoriana. Construyo tecnología y comparto lo que aprendo, con la ambición de contribuir a crear tecnología y empresas de talla mundial desde Latinoamérica.',
     photo:
-      'Roberto en la Universidad de Helsinki, junto a un retrato de Linus Torvalds',
-    storyHeading: 'Una beca. Un intercambio. Más preguntas.',
-    story: [
-      'Crecí en Puyo. Una beca me dio la oportunidad de estudiar Ingeniería en Ciencias de la Computación en la Universidad San Francisco de Quito.',
-      'Durante mi intercambio en la Universidad de Helsinki, tomé asignaturas de nivel de maestría sobre sistemas de aprendizaje automático, plataformas de datos, confiabilidad y arquitectura de software. Aprender en lugares distintos ha sido parte del camino, también cuando fui a China a estudiar mandarín.',
+      'Roberto Villafuerte junto a un retrato de Linus Torvalds en la Universidad de Helsinki',
+    caption: 'Universidad de Helsinki / Auditorio Linus Torvalds',
+    timeline: 'Lugares del camino',
+    headings: [
+      'Una primera pregunta.',
+      'La oportunidad de estudiar.',
+      'Mirar más allá del modelo.',
+      'Aprender en distintos contextos.',
+      'Hacia dónde quiero ir.',
     ],
-    workHeading: 'Aprender construyendo.',
-    work: [
-      'He trabajado en modelos de predicción, automatización de soporte y arquitectura de datos para una plataforma de salud. Me interesa lo que hace funcionar una idea más allá de una demostración: los datos, la evaluación y el sistema alrededor del modelo.',
-      'En SYNTHCLP, mi proyecto de tesis, estudiamos datos sintéticos de voz y evaluamos si pueden ayudar a clasificar casos clínicos. Con Panorama Finanzas, construí una app para controlar mis gastos y poner en práctica mis habilidades.',
-    ],
-    codingAlt:
-      'Las manos de Roberto en el teclado durante una sesión de programación',
-    projects: 'Ver mis proyectos',
-    lifeHeading: 'También hay salsa. Y chino.',
-    salsaHeading: 'Salsa',
-    salsa:
-      'Empecé a bailar salsa para salir de mi zona de confort. Con el tiempo le fui cogiendo cariño y hoy es uno de mis hobbies favoritos.',
-    salsaAlt: 'Escenario, luces y público en un lugar de salsa',
-    chineseHeading: 'Aprendiendo chino',
-    chinese:
-      'Estoy aprendiendo chino y quiero explorar más las culturas de Asia: sus tradiciones, historias y formas de ver el mundo.',
-    chineseAlt: 'Personas reunidas en una mesa durante una actividad de chino',
-    closeHeading: 'El trabajo. Lo que aprendo. Lo que vivo.',
-    close:
-      'Eso es lo que quiero compartir aquí. Si estás aprendiendo, construyendo o dándole vueltas a una pregunta parecida, podemos conversar.',
-    contact: 'Hablemos',
-    resume: 'Ver mi currículum',
+    education: 'Formación',
+    educationTitle: 'Una base para seguir construyendo.',
+    resume: 'Ver el currículum',
+    projects: 'Explorar los proyectos',
   },
 }[locale];
 ---
 
 <BaseLayout title={copy.title} description={copy.description} locale={locale}>
-  <div class="renewal-about">
-    <section class="renewal-about__opening shell">
-      <div class="renewal-about__hello">
-        <h1>{copy.heading}</h1>
-        <p class="renewal-about__intro">{copy.intro}</p>
-        <p class="renewal-about__mission">{copy.mission}</p>
-        <a class="renewal-about__link" href={routes.projects}>
-          {copy.projects}<ArrowIcon direction="right" />
-        </a>
+  <section class="about-opening shell">
+    <div class="about-opening__grid">
+      <div class="about-opening__copy">
+        <p class="eyebrow">{copy.eyebrow}</p><h1>{copy.heading}</h1><p>
+          {copy.intro}
+        </p>
       </div>
-      <picture class="renewal-about__portrait">
-        <source
-          type="image/avif"
-          srcset="/images/roberto-linus-torvalds-auditorium-384.avif 384w, /images/roberto-linus-torvalds-auditorium-768.avif 768w"
-          sizes="(max-width: 700px) calc(100vw - 48px), 360px"
-        />
-        <source
-          type="image/webp"
-          srcset="/images/roberto-linus-torvalds-auditorium-384.webp 384w, /images/roberto-linus-torvalds-auditorium-768.webp 768w"
-          sizes="(max-width: 700px) calc(100vw - 48px), 360px"
-        />
-        <img
-          src="/images/roberto-linus-torvalds-auditorium.jpeg"
-          width="768"
-          height="1024"
-          alt={copy.photo}
-          decoding="async"
-          data-source="client"
-          data-subject="Roberto at the University of Helsinki"
-        />
-      </picture>
-    </section>
-
-    <section class="renewal-about__story shell">
-      <h2>{copy.storyHeading}</h2>
-      <div class="renewal-about__story-copy">
-        {copy.story.map((paragraph) => <p>{paragraph}</p>)}
-      </div>
-    </section>
-
-    <section class="renewal-about__work shell">
-      <div class="renewal-about__work-copy">
-        <h2>{copy.workHeading}</h2>
-        {copy.work.map((paragraph) => <p>{paragraph}</p>)}
-      </div>
-      <img
-        class="renewal-about__coding"
-        src="/images/renewal/coding.webp"
-        width="1920"
-        height="1080"
-        alt={copy.codingAlt}
-        loading="lazy"
-        decoding="async"
-        data-source="client"
-        data-subject="Programming session from Roberto’s personal archive"
-      />
-    </section>
-
-    <section class="renewal-about__life shell">
-      <h2>{copy.lifeHeading}</h2>
-      <div class="renewal-about__interests">
-        <article class="renewal-about__interest">
-          <h3>{copy.salsaHeading}</h3>
-          <p>{copy.salsa}</p>
-          <img
-            src="/images/renewal/salsa.webp"
-            width="1920"
-            height="1080"
-            alt={copy.salsaAlt}
-            loading="lazy"
-            decoding="async"
-            data-source="client"
-            data-subject="Salsa venue from Roberto’s personal archive"
+      <figure>
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/images/roberto-linus-torvalds-auditorium-384.avif 384w, /images/roberto-linus-torvalds-auditorium-768.avif 768w"
+            sizes="(max-width: 760px) min(calc(100vw - 48px), 360px), 330px"
           />
-        </article>
-        <article class="renewal-about__interest">
-          <h3>{copy.chineseHeading}</h3>
-          <p>{copy.chinese}</p>
-          <img
-            src="/images/renewal/chinese.webp"
-            width="1024"
-            height="768"
-            alt={copy.chineseAlt}
-            loading="lazy"
-            decoding="async"
-            data-source="client"
-            data-subject="Chinese-language activity from Roberto’s personal archive"
+          <source
+            type="image/webp"
+            srcset="/images/roberto-linus-torvalds-auditorium-384.webp 384w, /images/roberto-linus-torvalds-auditorium-768.webp 768w"
+            sizes="(max-width: 760px) min(calc(100vw - 48px), 360px), 330px"
           />
-        </article>
+          <img
+            src="/images/roberto-linus-torvalds-auditorium.jpeg"
+            width="768"
+            height="1024"
+            alt={copy.photo}
+            decoding="async"
+          />
+        </picture>
+        <figcaption>{copy.caption}</figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="life-story">
+    <div class="shell life-story__grid">
+      <aside aria-label={copy.timeline}>
+        <p class="eyebrow">{copy.timeline}</p>
+        <ol class="life-story__index">
+          {
+            profile.story.milestones
+              .filter((_, i) => [0, 1, 4].includes(i))
+              .map((item) => (
+                <li>
+                  <>
+                    <strong>{item.place}</strong>
+                    <small>{item.detail}</small>
+                  </>
+                </li>
+              ))
+          }
+        </ol>
+      </aside>
+      <div class="life-story__copy">
+        {
+          profile.story.paragraphs.map((paragraph, i) => (
+            <section>
+              <>
+                <h2>{copy.headings[i]}</h2>
+                <p>{paragraph}</p>
+              </>
+            </section>
+          ))
+        }
       </div>
-    </section>
-
-    <section class="renewal-about__close shell">
-      <h2>{copy.closeHeading}</h2>
+    </div>
+  </section>
+  <section class="education-block">
+    <div class="shell education-block__layout">
       <div>
-        <p>{copy.close}</p>
-        <nav class="renewal-about__actions" aria-label={copy.title}>
-          <a class="renewal-about__link" href={routes.contact}>
-            {copy.contact}<ArrowIcon direction="right" />
-          </a>
-          <a class="renewal-about__link" href={routes.resume}>
-            {copy.resume}<ArrowIcon direction="right" />
-          </a>
-        </nav>
+        <p class="eyebrow">{copy.education}</p><h2>{copy.educationTitle}</h2>
       </div>
-    </section>
-  </div>
+      <div>
+        <div class="education-ledger">
+          {
+            profile.education.map((item) => (
+              <article>
+                <>
+                  <span>{item.period}</span>
+                  <h3>{item.institution}</h3>
+                  <p class="education-ledger__program">{item.program}</p>
+                  <p>{item.detail}</p>
+                </>
+              </article>
+            ))
+          }
+        </div><div class="narrative-actions">
+          <Button href={routes.resume}>{copy.resume}</Button><a
+            class="plain-link"
+            href={routes.projects}
+            >{copy.projects}<span aria-hidden="true"
+              ><ArrowIcon direction="right" /></span
+            ></a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
