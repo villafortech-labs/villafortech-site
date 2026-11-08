@@ -49,9 +49,7 @@ const destinations = [
     external: false,
   },
   ...socialProfiles
-    .filter(
-      (social) => social.name !== 'LinkedIn' && social.name !== 'Instagram',
-    )
+    .filter((social) => social.name !== 'LinkedIn')
     .map((social) => ({
       label: social.name,
       detail: social.description[locale],
