@@ -1,0 +1,29 @@
+{
+  "schema": "eiv-website-design-reference-1",
+  "date_utc": "2026-11-15",
+  "live_page": {
+    "url": "https://www.villafortech.com/es/projects/",
+    "html_sha256": "91cb520b5cf124a2dcb96851206322256ecc03c6e532173e6fad313d8bc3fc50",
+    "extracted_inline_css_sha256": "d25ca0e87137c57c426f68ec5d31c1db57a06ab4375b4c10c548d6ca9ad5dcdd"
+  },
+  "live_overrides": {
+    "paper": "#f5f6f2",
+    "forest": "#172a25",
+    "leaf": "#285d46",
+    "sage": "#e4e9df",
+    "clay": "#285d46",
+    "font_display": "Manrope",
+    "brand": "clover icon with Roberto Villafuerte wordmark"
+  },
+  "clover": {
+    "url": "https://www.villafortech.com/brand/clover.svg",
+    "local_path": "villafortech-assets/brand/clover.svg",
+    "sha256": "bb9744ab1c62ac64678eaacc48809dcb0678da2b1eb07281412d6895c9ab0c03"
+  },
+  "website_checkout": {
+    "repository": "villafortech-labs/villafortech-site",
+    "commit": "71294e3c15166bf270151100688a62f339a7a3a9",
+    "difference": "This checkout uses the earlier paper/Instrument Serif/signature design. The HTML preview follows the later live CSS overrides; MDX keeps the compatible content schema and classes."
+  },
+  "deployment": "Draft only; production site was not changed"
+}

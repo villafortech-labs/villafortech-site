@@ -1,0 +1,181 @@
+---
+title: 'EIV: permisos verificables para agentes de IA'
+shortTitle: 'EIV · Modelo formal de permisos'
+eyebrow: 'Investigación e ingeniería personal'
+slug: 'es-eiv'
+translationKey: 'eiv'
+locale: 'es'
+date: '2026-11-15'
+projectPeriod: '2026'
+summary: 'Construí un modelo formal que representa la acción solicitada, compara interpretaciones y planifica aclaraciones. Cada decisión conserva sus entradas, comprobaciones y respuestas.'
+tags: ['Seguridad de IA', 'Métodos formales', 'Trazabilidad', 'Python']
+role: 'Autor y desarrollador'
+organization: 'Proyecto personal'
+stack: ['Python', 'JSON Schema', 'JavaScript', 'GitHub Actions']
+featured: false
+status: 'completed'
+evidence: 'hold'
+links:
+  github: 'https://github.com/VillaforTech/eiv'
+  writeup: 'https://github.com/VillaforTech/eiv/blob/master/docs/research-report.md'
+  reproduce: 'https://github.com/VillaforTech/eiv/blob/master/docs/reproducibility.md'
+disclosure: 'Laboratorio de investigación con decisiones y acciones simuladas. No ejecuta herramientas ni garantiza haber capturado toda la intención del usuario. La integración con un agente conversacional requiere un diseño y una evaluación separados.'
+---
+
+{/* Integration draft: src/content/projects/eiv.es.mdx. Keep evidence: hold until publication is reviewed. Source links point to the verified public repository; website activation remains separate. */}
+
+<div class="article-deck">
+  Un agente puede verificar un permiso correctamente y aun así actuar sobre una
+  interpretación equivocada. EIV convierte esa diferencia en algo que se puede
+  inspeccionar, reproducir y poner a prueba.
+</div>
+
+Si una persona pide enviar un informe a «Alex o Bea», el sistema necesita representar qué operación está considerando y qué interpretaciones del permiso son plausibles. Elegir una lectura y comprobarla no demuestra que corresponda a la intención original.
+
+Construí EIV —Especificación Interactiva Verificable— como proyecto personal de investigación e ingeniería para estudiar ese límite con un vocabulario finito de permisos. El núcleo recibe una acción solicitada, hechos, interpretaciones candidatas y preguntas disponibles. Comprueba sus consecuencias, selecciona una aclaración cuando resulta útil y devuelve una decisión simulada de permitir, denegar, preguntar o abstenerse.
+
+## Un modelo explícito de la acción
+
+Una solicitud identifica cinco dimensiones: **dominio, acción, recurso, destinatario y alcance**. Por ejemplo, enviar `report` a `alex` una vez. Las políticas candidatas añaden permisos o prohibiciones y condiciones sobre los hechos disponibles. Una operación de archivo utiliza un destinatario nulo; un mensaje requiere un destinatario explícito.
+
+El evaluador finito distingue consecuencia demostrada, refutación, inconsistencia, indeterminación y agotamiento de recursos. La capa de permisos no convierte contradicciones ni condiciones desconocidas en consentimiento. Una instrucción fuera de la gramática controlada tampoco se interpreta de forma arbitraria: el sistema se abstiene.
+
+<figure class="architecture-figure">
+  <figcaption class="architecture-figure__header">
+    <span>MODELO DE ACCIÓN / EJEMPLO ESTRUCTURADO ILUSTRATIVO</span>
+    <strong>¿Está permitido enviar el informe a Alex?</strong>
+    <small>
+      Las lecturas y el diálogo siguientes explican el contrato; no son una
+      ejecución del parser de texto libre.
+    </small>
+  </figcaption>
+  <ol class="data-boundary-map__path">
+    <li>
+      <span>01</span>
+      <strong>Representar</strong>
+      <p>La operación propuesta es enviar el informe a Alex una vez.</p>
+    </li>
+    <li>
+      <span>02</span>
+      <strong>Comparar</strong>
+      <p>
+        C1 incluye a Alex. C2 autoriza solo a Bea. Sus consecuencias para la
+        operación discrepan.
+      </p>
+    </li>
+    <li>
+      <span>03</span>
+      <strong>Aclarar</strong>
+      <p>La respuesta «solo a Bea» conserva C2 y descarta C1.</p>
+    </li>
+  </ol>
+  <div class="data-boundary-map__core">
+    <strong>DENY · El envío a Alex no está autorizado.</strong>
+    <p>
+      El registro conserva la pregunta, la respuesta y los candidatos antes y
+      después. No cambia silenciosamente el destinatario ni ejecuta otro envío.
+    </p>
+  </div>
+</figure>
+
+## Un registro que conecta entradas, respuestas y decisiones
+
+El laboratorio local exporta la instrucción, la solicitud estructurada, los hechos, las políticas candidatas, las comprobaciones de dimensiones y condiciones, los resultados formales y sus motivos. Cada aclaración añade el identificador de la pregunta, el de la respuesta y los candidatos activos antes y después de filtrar.
+
+Así se puede revisar **qué representó el sistema, qué información aportó el usuario y por qué cambió la decisión**. El registro contiene entradas observables y comprobaciones calculadas. No expone razonamiento privado de un modelo, no es un permiso firmado y no demuestra por sí solo que se haya capturado la intención real.
+
+Los datos enviados por el navegador se revalidan y las decisiones se recalculan. La aplicación no confía en un resultado almacenado por el cliente. El digest del caso detecta modificaciones accidentales; no cumple la función de autenticación o autorización.
+
+## Planificar aclaraciones con un objetivo declarado
+
+La versión 0.4 permite comparar tres estrategias: la primera pregunta relevante, una heurística que separa pares con decisiones distintas y un planificador exacto acotado.
+
+El planificador usa programación dinámica con memoización. Primero maximiza el número de hipótesis suministradas que llegan a una decisión unánime dentro del presupuesto. Después minimiza la suma de preguntas a través de sus ramas. Puede detenerse cuando seguir preguntando no mejora ese objetivo. Si se agota el límite de búsqueda, el llamador se abstiene.
+
+«Exacto» describe ese cálculo finito. Cada candidato pesa lo mismo; esos pesos no son probabilidades de la intención humana. La estrategia no consulta la etiqueta oculta de los experimentos ni puede recuperar una interpretación ausente. Las respuestas `other` y `unsure` terminan con abstención.
+
+## Evidencia reproducible, incluidos los resultados negativos
+
+<div class="fairness-evidence-ledger">
+  <div>
+    <span>PRUEBAS AUTOMATIZADAS</span>
+    <strong>194</strong>
+    <small>v0.4.0: Python 3.10–3.14, incluida integración HTTP</small>
+  </div>
+  <div>
+    <span>REFERENCIA DEL PLANIFICADOR</span>
+    <strong>564</strong>
+    <small>
+      Problemas finitos pequeños contrastados con un cálculo independiente
+    </small>
+  </div>
+  <div>
+    <span>REGISTROS HISTÓRICOS V3</span>
+    <strong>28.800</strong>
+    <small>Resultados correlacionados de un estudio construido</small>
+  </div>
+</div>
+
+En la porción V3 con cobertura completa y una pregunta, la selección dirigida resuelve correctamente **288/288** resultados, frente a **96/288** con la primera pregunta relevante. Con tres preguntas, ambas resuelven 288/288, usando 288 y 576 preguntas respectivamente. La estructura fue diseñada para contener una pregunta que separa perfectamente las consecuencias: es una comprobación del mecanismo, no una medida de ventaja general.
+
+La intervención de omisión conserva el fallo central. Al quitar todas las lecturas restrictivas, ambas políticas históricas permiten incorrectamente **144/144 casos cuya intención era denegar**. El planificador exacto también conserva ese fallo. El consenso equivocado evita que se pregunte.
+
+V3 contiene 1.440 casos construidos y 28.800 registros entre políticas, órdenes y presupuestos. Seis escenarios comparten una estructura booleana. Las repeticiones están correlacionadas; las etiquetas fueron escritas con IA y materializadas por el generador, sin revisión semántica humana independiente. Estos recuentos no estiman tasas de error reales.
+
+Un contraejemplo conocido mostró además que separar más pares no siempre resuelve más intenciones. Con una pregunta, la heurística resuelve 0/8 posibilidades y el planificador exacto resuelve 1/8. La extensión actual lo registra como una **corrección post hoc** a una limitación conocida, no como una comparación reservada. Su estudio separado conserva 17.280 resultados sobre casos ya inspeccionados.
+
+El proyecto mantiene también la evidencia menos favorable: en V2, reducir preguntas de 40 a 25 añadió cuatro falsas autorizaciones y cuatro falsas denegaciones. Un piloto local de diez casos produjo un candidato por caso y ninguna pregunta; sirve como evidencia de generación estructurada, no de eficacia de la aclaración.
+
+## Qué entregué
+
+- Un núcleo formal finito y políticas estructuradas de archivos y mensajes.
+- Un adaptador de inglés controlado, contratos JSON estrictos y abstención explícita.
+- Tres estrategias de aclaración, CLI y laboratorio local conectado al motor real.
+- Exportación de registros, revalidación de sesiones y límites de cómputo y transporte.
+- Instalación empaquetada, CI, pruebas de regresión y ejecución fuera del checkout.
+- Datos versionados, repetición aislada del código histórico, auditorías con cálculos de referencia separados y referencias académicas.
+
+El runtime habitual y la repetición científica utilizan la biblioteca estándar de Python. No requieren una llamada a un modelo, una API de pago ni una descarga de pesos. Los experimentos no ejecutan acciones de archivos o mensajes.
+
+## Reproducir el artefacto
+
+El código se publica con licencia MIT. La [versión v0.4.0](https://github.com/VillaforTech/eiv/releases/tag/v0.4.0) conserva el código y un ZIP con la evidencia histórica restaurada. La [validación del release](https://github.com/VillaforTech/eiv/actions/runs/43660978132) ejecutó 194 pruebas por versión de Python 3.10–3.14, cuatro pruebas de JavaScript, instalación fuera del checkout y repetición de experimentos. Estas son comprobaciones de ingeniería sobre el artefacto; no certifican seguridad real.
+
+Con Python 3.10 o posterior, desde un directorio nuevo:
+
+```sh
+git clone https://github.com/VillaforTech/eiv.git
+cd eiv
+git switch --detach v0.4.0
+python3 scripts/restore_evidence.py
+python3 -m unittest discover -s tests -v
+python3 -m eiv.web
+```
+
+El laboratorio se abre en **http://127.0.0.1:8765**. Permite inspeccionar candidatos, responder aclaraciones y descargar el registro calculado por Python. La vista estática de este caso es una ilustración separada; no conecta con el motor.
+
+Para repetir la evidencia histórica y la comparación del planificador, utiliza directorios de salida nuevos:
+
+```sh
+python3 scripts/reproduce.py --output build/reproduction-review
+python3 -m eiv_experiment.planner --output build/planner-review
+node --test portfolio/test-demo.cjs
+```
+
+La restauración verifica los bytes históricos sin llamadas de red y rechaza archivos en conflicto. La [guía de reproducción](https://github.com/VillaforTech/eiv/blob/v0.4.0/docs/reproducibility.md) explica los manifiestos y las comprobaciones. Para citar la versión, el repositorio incluye [CITATION.cff](https://github.com/VillaforTech/eiv/blob/v0.4.0/CITATION.cff).
+
+## Lo que sigue abierto
+
+Verificar las consecuencias de una interpretación no demuestra que esa interpretación cubra la intención real. La siguiente etapa de investigación requiere revisión semántica independiente, casos prospectivos y estudios de utilidad de las preguntas con personas.
+
+La aplicación prevista es un componente de permisos para agentes conversacionales. Un sistema que ejecutara herramientas necesitaría además un adaptador de chat evaluado, aprobaciones autenticadas, un punto de aplicación de permisos, revocación, protección frente a repetición, revalidación al ejecutar y recibos de ejecución. Esas capacidades no están implementadas por el simulador.
+
+La aportación actual es un artefacto inspeccionable y reproducible: permite examinar dónde termina la corrección formal y dónde siguen siendo necesarios supuestos sobre significado, hechos e intención.
+
+## Referencias
+
+La traducción interactiva a especificaciones formales, las preguntas de aclaración y la recuperación de interpretaciones omitidas tienen antecedentes claros. EIV adapta estas ideas a un estudio acotado de permisos; no afirma haber inventado su combinación.
+
+1. Ziyu Yao, Yu Su, Huan Sun y Wen-tau Yih. 2019. [Model-based Interactive Semantic Parsing: A Unified Framework and A Text-to-SQL Case Study](https://aclanthology.org/D19-1547/). EMNLP-IJCNLP. DOI: 10.18653/v1/D19-1547.
+2. Matthias Cosler, Christopher Hahn, Daniel Mendoza, Frederik Schmitt y Caroline Trippel. 2023. [nl2spec: Interactively Translating Unstructured Natural Language to Temporal Logics with Large Language Models](https://link.springer.com/chapter/10.1007/978-3-031-37703-7_18). CAV. DOI: 10.1007/978-3-031-37703-7_18.
+3. Irina Saparina y Mirella Lapata. 2025. [Disambiguate First, Parse Later: Generating Interpretations for Ambiguity Resolution in Semantic Parsing](https://aclanthology.org/2025.findings-acl.863/). Findings ACL. DOI: 10.18653/v1/2025.findings-acl.863.
