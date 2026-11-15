@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="EIV models an agent's requested action, checks candidate permissions, plans clarification, and exports auditable decision records. A reproducible research project by Roberto Villafuerte."
+    />
+    <meta name="theme-color" content="#123e36" />
+    <meta
+      property="og:title"
+      content="EIV — Verified consequences. Unverified intent."
+    />
+    <meta
+      property="og:description"
+      content="An open research engineering project by Roberto Villafuerte. Explore the boundary between checking a permission and understanding it."
+    />
+    <meta property="og:type" content="website" />
+    <title>EIV — Verified consequences. Unverified intent.</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="demo.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="wordmark" href="#" aria-label="EIV home"
+        ><span class="mark" aria-hidden="true">e<span>i</span>v</span
+        ><span class="wordmark-description"
+          >Interactive Verifiable<br />Specification</span
+        ></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#experiment">Try the idea</a><a href="#evidence">Evidence</a
+        ><a
+          href="https://github.com/VillaforTech/eiv/blob/v0.4.0/README.md"
+          class="nav-code"
+          >Source guide <span aria-hidden="true">↗</span></a
+        >
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="status-dot" aria-hidden="true"></span> Independent
+            research engineering · 2026
+          </p>
+          <h1 id="hero-title">
+            Verified<br />consequences.<br /><em>Unverified intent.</em>
+          </h1>
+          <p class="hero-lead">
+            An agent can check a permission perfectly—and still misunderstand
+            what you meant.
+          </p>
+          <p class="hero-description">
+            EIV is a formal permission workbench for agent design. It models a
+            requested action, checks what each interpretation permits, plans
+            clarification, and records how the user's answers change the
+            decision.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#experiment"
+              >Explore the experiment <span aria-hidden="true">↓</span></a
+            ><a
+              class="text-link"
+              href="https://github.com/VillaforTech/eiv/blob/v0.4.0/docs/research-report.md"
+              >Read the research <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <p class="byline">
+            Designed &amp; built by
+            <a href="https://villafortech.com">Roberto Villafuerte</a>
+          </p>
+        </div>
+        <div
+          class="hero-visual"
+          aria-label="Two interpretations of a permission disagree, so the system asks before deciding."
+        >
+          <div class="visual-topline">
+            <span class="micro">DECISION RECORD / 001</span
+            ><span class="micro">SIMULATED</span>
+          </div>
+          <div class="instruction-card">
+            <span class="micro">THE INSTRUCTION</span>
+            <p>“Share the report<br />with the team.”</p>
+            <span class="instruction-note"
+              >One sentence. More than one permission.</span
+            >
+          </div>
+          <div class="branch-line" aria-hidden="true"></div>
+          <div class="interpretations">
+            <div class="interpretation">
+              <span class="micro">READING A</span
+              ><strong>Internal members only</strong
+              ><span class="pill deny">External send: deny</span>
+            </div>
+            <div class="interpretation">
+              <span class="micro">READING B</span
+              ><strong>All collaborators</strong
+              ><span class="pill allow">External send: allow</span>
+            </div>
+          </div>
+          <div class="converge-line" aria-hidden="true"></div>
+          <div class="question-card">
+            <span class="question-icon" aria-hidden="true">?</span>
+            <div>
+              <span class="micro">DECISIONS DISAGREE → ASK</span>
+              <p>Does “team” include external collaborators?</p>
+            </div>
+          </div>
+          <p class="visual-footnote">
+            Illustrative meanings, not free-text parser output.
+          </p>
+        </div>
+      </section>
+      <div class="project-strip">
+        <div class="wrap strip-grid">
+          <span><b>01</b> Formal reasoning</span
+          ><span><b>02</b> Targeted clarification</span
+          ><span><b>03</b> Reproducible experiments</span
+          ><span><b>04</b> Failure analysis</span>
+        </div>
+      </div>
+
+      <section class="section wrap thesis" aria-labelledby="thesis-title">
+        <div>
+          <p class="eyebrow section-index">01 / THE PROBLEM</p>
+          <h2 id="thesis-title">
+            Correct logic is only<br />part of the contract.
+          </h2>
+        </div>
+        <div class="thesis-body">
+          <p>
+            Before a system can verify an action, someone has to decide what the
+            instruction means. If the intended meaning never enters the set of
+            interpretations, every subsequent check can agree on the wrong
+            answer.
+          </p>
+          <p>
+            EIV makes the proposed action explicit: the operation, resource,
+            recipient, scope, and relevant facts. It then compares candidate
+            permission policies and records the clarification steps behind a
+            simulated allow, deny, or abstain decision.
+          </p>
+          <p>
+            The intended application is a conversational agent with an
+            inspectable permission layer. The implemented artifact is a local
+            research workbench, CLI, and Python core; general chat and real tool
+            enforcement remain separate integration work.
+          </p>
+          <a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/docs/formal-action-model.md"
+            >Inspect the formal action model
+            <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </section>
+
+      <section
+        id="experiment"
+        class="experiment-section"
+        aria-labelledby="experiment-title"
+      >
+        <div class="wrap">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow section-index">
+                02 / AN INSPECTABLE EXPERIMENT
+              </p>
+              <h2 id="experiment-title">
+                Ask the question<br />that changes the action.
+              </h2>
+            </div>
+            <p>
+              Change the questioning strategy or remove a possible
+              interpretation. Watch how the same finite decision problem
+              changes.
+            </p>
+          </div>
+          <div class="lab-shell">
+            <div class="lab-header">
+              <span class="lab-status"
+                ><span class="status-dot" aria-hidden="true"></span> Educational
+                simulation</span
+              ><span class="micro"
+                >LOCAL JAVASCRIPT · NO MODEL · NO ACTIONS</span
+              >
+            </div>
+            <noscript
+              ><p class="notice">
+                Enable JavaScript to run this finite illustration. All research
+                findings and source links below remain available.
+              </p></noscript
+            >
+            <div class="lab-body">
+              <div class="lab-controls">
+                <p class="micro">FIXED SCENARIO</p>
+                <h3>Send report to Alex</h3>
+                <p class="scenario">
+                  The declared user intent is
+                  <strong>Bea, plain text, later</strong>. Only the recipient
+                  changes this permission decision.
+                </p>
+                <label for="strategy">Question policy</label
+                ><select id="strategy">
+                  <option value="targeted">
+                    Targeted · separate unlike decisions
+                  </option>
+                  <option value="first">
+                    First available · format, time, recipient
+                  </option>
+                </select>
+                <label for="budget">Question budget</label
+                ><select id="budget">
+                  <option value="1">1 question</option>
+                  <option value="2">2 questions</option>
+                  <option value="3">3 questions</option>
+                  <option value="0">0 questions</option>
+                </select>
+                <label class="checkbox-label" for="omission"
+                  ><input id="omission" type="checkbox" /><span
+                    >Omit every restrictive interpretation<small
+                      >Remove the candidates that mean Bea.</small
+                    ></span
+                  ></label
+                >
+                <button
+                  class="button button-outline reset-button"
+                  id="reset"
+                  type="button"
+                >
+                  Reset experiment <span aria-hidden="true">↺</span>
+                </button>
+                <p class="lab-disclaimer">
+                  This small illustration mirrors the pair-separation heuristic.
+                  It is separate from the Python verifier and is not a new
+                  benchmark result.
+                </p>
+              </div>
+              <div class="lab-stage">
+                <div class="state-heading">
+                  <div>
+                    <p class="micro">ACTIVE INTERPRETATIONS</p>
+                    <h3>
+                      <span id="candidate-count">8</span> possible readings
+                    </h3>
+                  </div>
+                  <span id="used-count" class="count-chip"
+                    >0 / 1 questions</span
+                  >
+                </div>
+                <div
+                  id="candidates"
+                  class="candidate-grid"
+                  aria-label="Active candidate interpretations"
+                ></div>
+                <div
+                  id="decision"
+                  class="decision"
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                ></div>
+                <div id="question-area" class="question-area" hidden>
+                  <p class="micro">NEXT QUESTION</p>
+                  <h4 id="question-text"></h4>
+                  <p id="answer-text" class="answer-preview"></p>
+                  <div class="question-actions">
+                    <button
+                      id="answer"
+                      class="button button-dark"
+                      type="button"
+                    >
+                      Apply truthful answer
+                      <span aria-hidden="true">→</span></button
+                    ><button
+                      id="unsure"
+                      class="button button-small"
+                      type="button"
+                    >
+                      Answer “unsure”
+                    </button>
+                  </div>
+                </div>
+                <details class="trace-details">
+                  <summary>Inspect the decision trace</summary>
+                  <ol id="trace" class="trace-list"></ol>
+                  <button id="export" class="text-button" type="button">
+                    Download trace as JSON ↓
+                  </button>
+                </details>
+              </div>
+            </div>
+            <div class="lab-bottom">
+              <span class="micro">TRY THIS</span>
+              <p>
+                Start with targeted / 1 question. Compare first available / 1,
+                then / 3. Finally, omit restrictive interpretations: consensus
+                becomes a false authorization.
+              </p>
+            </div>
+          </div>
+          <p class="under-lab">
+            For actual formal checks and the v0.4 exact planner, run the
+            <a href="https://github.com/VillaforTech/eiv/blob/v0.4.0/README.md"
+              >local Python workbench</a
+            >. This illustration shows only the historical targeted/first
+            strategies. Unsupported prose abstains; no real action executes.
+          </p>
+        </div>
+      </section>
+
+      <section
+        id="evidence"
+        class="section wrap evidence"
+        aria-labelledby="evidence-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow section-index">03 / THE EVIDENCE</p>
+            <h2 id="evidence-title">
+              Keep the result.<br />Keep the counterexample.
+            </h2>
+          </div>
+          <p>
+            A reproducible project should make it easy to inspect where a method
+            works—and just as easy to find where it does not.
+          </p>
+        </div>
+        <div class="result-cards">
+          <article class="result-card positive">
+            <span class="micro">CONSTRUCTED V3 · COMPLETE COVERAGE</span>
+            <p class="big-metric">288<span>/288</span></p>
+            <h3>Correctly resolved with one question</h3>
+            <p>
+              Targeted questioning resolves every outcome in this slice.
+              Ordinary-first resolves 96/288 under the same budget.
+            </p>
+            <div
+              class="metric-bars"
+              aria-label="Targeted: 288 of 288. Ordinary-first: 96 of 288."
+            >
+              <div class="bar-row">
+                <span>Targeted</span>
+                <div class="bar-track"><span class="bar-fill full"></span></div>
+                <b>288</b>
+              </div>
+              <div class="bar-row">
+                <span>Ordinary-first</span>
+                <div class="bar-track">
+                  <span class="bar-fill third"></span>
+                </div>
+                <b>96</b>
+              </div>
+            </div>
+            <p class="card-caveat">
+              At a three-question budget, both reach 288/288. The targeted
+              policy uses 288 questions; ordinary-first uses 576.
+            </p>
+          </article>
+          <article class="result-card negative">
+            <span class="micro">COVERAGE FAILURE · SAME V3 STUDY</span>
+            <p class="big-metric">144<span>/144</span></p>
+            <h3>False authorizations after omission</h3>
+            <p>
+              Remove every restrictive reading and both questioning policies
+              allow every latent-deny case in this slice.
+            </p>
+            <div class="warning-rule">
+              <span aria-hidden="true">↳</span
+              ><strong
+                >Wrong consensus prevents a question from being asked.</strong
+              >
+            </div>
+            <p class="card-caveat">
+              This is a deliberate intervention. It does not estimate how often
+              interpretation omissions happen in practice.
+            </p>
+          </article>
+        </div>
+        <div class="evidence-note">
+          <span class="micro">READ THE DENOMINATORS</span>
+          <p>
+            V3 contains
+            <strong>1,440 constructed cases and 28,800 outcome records</strong>
+            across policies, question orders, and budgets. The 288-row
+            comparisons above are specific slices. These repeats are correlated;
+            six scenarios share one Boolean structure. Cases are AI-authored and
+            lack independent human semantic review.
+          </p>
+        </div>
+        <div
+          class="table-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Additional findings table"
+        >
+          <table>
+            <caption>
+              Additional findings preserved in the repository
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Study</th>
+                <th scope="col">Observation</th>
+                <th scope="col">What it establishes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">V2 · 40 cases</th>
+                <td>
+                  Both methods: 28 correct. EIV: 25 vs 40 questions, with 4
+                  additional false allows and 4 additional false denials.
+                </td>
+                <td>Less questioning can be a negative tradeoff.</td>
+              </tr>
+              <tr>
+                <th scope="row">Local model pilot · 10 cases</th>
+                <td>7 correct; one candidate per case; zero questions.</td>
+                <td>
+                  Structured generation feasibility, without testing targeted
+                  clarification.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Selection counterexample · 8 intents</th>
+                <td>
+                  One-question budget: targeted resolves 0/8; first resolves
+                  1/8. Neither makes an incorrect decision.
+                </td>
+                <td>Pair-separation score is not generally budget-optimal.</td>
+              </tr>
+              <tr>
+                <th scope="row">V0.4 exact planner · post hoc</th>
+                <td>
+                  On the known counterexample, resolves 1/8 at budget one versus
+                  greedy 0/8; at larger budgets, avoids fruitless follow-up
+                  questions.
+                </td>
+                <td>
+                  A bounded engineering correction to a known failure.
+                  Missing-interpretation failures remain.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="evidence-note">
+          <span class="micro">V0.4 / ENGINEERING VALIDATION</span>
+          <p>
+            Release v0.4.0 passed
+            <strong
+              >194 automated tests on each Python version from 3.10 through
+              3.14</strong
+            >, including HTTP integration. The planner is checked against a
+            separate reference on <strong>564 small policy problems</strong>.
+            Its post-hoc experiment records
+            <strong>17,280 outcomes</strong> over inspected cases; it is
+            separate from the frozen V3 evidence and is not prospective
+            validation.
+          </p>
+        </div>
+        <div class="evidence-links">
+          <a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/results/dimensions-v3/analysis.md"
+            >Read V3 results ↗</a
+          ><a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/results/planner-v4/analysis.md"
+            >Inspect the exact planner comparison ↗</a
+          ><a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/evidence/current-validation.json"
+            >Validation receipt ↗</a
+          ><a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/docs/research-report.md"
+            >Full research report ↗</a
+          >
+        </div>
+      </section>
+
+      <section
+        class="architecture-section"
+        aria-labelledby="architecture-title"
+      >
+        <div class="wrap section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow section-index">04 / BUILT TO BE EXAMINED</p>
+              <h2 id="architecture-title">
+                A small core.<br />An explicit boundary.
+              </h2>
+            </div>
+            <p>
+              Python, finite models, strict structured inputs, and replayable
+              decisions. The scientific replay and local workbench need no
+              third-party runtime dependencies.
+            </p>
+          </div>
+          <div class="architecture-grid">
+            <article>
+              <span class="architecture-number">01</span>
+              <h3>Represent</h3>
+              <p>
+                Controlled English or strict JSON specifies the domain, action,
+                resource, recipient, scope, facts, candidate meanings, and
+                questions.
+              </p>
+              <code>eiv/permissions.py</code>
+            </article>
+            <article>
+              <span class="architecture-number">02</span>
+              <h3>Check</h3>
+              <p>
+                The finite evaluator checks each interpretation. Contradictions,
+                unknown conditions, and resource limits can lead to abstention.
+              </p>
+              <code>eiv/logic.py</code>
+            </article>
+            <article>
+              <span class="architecture-number">03</span>
+              <h3>Plan</h3>
+              <p>
+                Compare first, greedy, or exact bounded questioning. The v0.4
+                planner maximizes resolved supplied hypotheses, then minimizes
+                total questions.
+              </p>
+              <code>eiv/planning.py</code>
+            </article>
+            <article>
+              <span class="architecture-number">04</span>
+              <h3>Replay</h3>
+              <p>
+                The API revalidates posted sessions and recomputes decisions.
+                Export candidate checks, answer IDs, restrictions, and a final
+                reason in JSON.
+              </p>
+              <code>eiv/web.py</code>
+            </article>
+          </div>
+          <div class="boundary">
+            <span class="boundary-icon" aria-hidden="true">∴</span>
+            <p>
+              <strong>Consensus is conditional.</strong> An allow decision
+              depends on faithful interpretations, adequate coverage, correct
+              facts, and the declared finite semantics. EIV does not execute
+              tools, enforce real permissions, or prove that human intent is
+              covered.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section wrap" aria-labelledby="trace-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow section-index">05 / AN EXPLICIT ACTION RECORD</p>
+            <h2 id="trace-title">
+              Trace the decision<br />back to its inputs.
+            </h2>
+          </div>
+          <p>
+            The export records public inputs and computed checks. It exposes
+            what the system represented and how a reply changed the candidate
+            set. It is not a transcript of a model's private reasoning.
+          </p>
+        </div>
+        <div
+          class="table-scroll"
+          tabindex="0"
+          role="region"
+          aria-label="Formal action record table"
+        >
+          <table>
+            <caption>
+              What a reviewer can inspect in the current workbench
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Record</th>
+                <th scope="col">Concrete content</th>
+                <th scope="col">Boundary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Requested action</th>
+                <td>
+                  For example: messages / send / report / Alex / once, alongside
+                  the original instruction and supplied facts.
+                </td>
+                <td>
+                  An explicit proposed operation, not proof that the
+                  representation matches intent.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Candidate checks</th>
+                <td>
+                  Candidate IDs, matching permission dimensions, condition
+                  values, formal status, and allow/deny/abstain reasons.
+                </td>
+                <td>
+                  All checks remain conditional on the supplied policies and
+                  facts.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Clarification history</th>
+                <td>
+                  The selected question, answer ID, and candidate IDs before and
+                  after restriction.
+                </td>
+                <td>
+                  Answers filter existing meanings; they cannot silently expand
+                  permission or repair omitted meanings.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Final result</th>
+                <td>
+                  Decision, reason, active candidates, question counts, and
+                  explicit simulated/unverified-coverage flags.
+                </td>
+                <td>
+                  A replayable research result, not a signed capability or
+                  execution receipt.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="evidence-links">
+          <a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/docs/formal-action-model.md"
+            >Action model and trace contract ↗</a
+          ><a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/docs/usage.md"
+            >CLI and API examples ↗</a
+          ><a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/docs/architecture.md"
+            >Architecture and trust boundaries ↗</a
+          >
+        </div>
+        <div class="evidence-note">
+          <span class="micro">FROM WORKBENCH TO AGENT</span>
+          <p>
+            <strong>Implemented:</strong> finite permission reasoning, three
+            question strategies, local interaction, strict replay, and exported
+            evidence. <strong>Future integration:</strong> a general chat
+            adapter, authenticated approvals, tool enforcement, revocation, and
+            execution receipts. Those require a separate security design and
+            evaluation; a workbench allow decision is not authorization to
+            execute a real action.
+          </p>
+        </div>
+      </section>
+
+      <section class="section wrap reproduce" aria-labelledby="reproduce-title">
+        <div>
+          <p class="eyebrow section-index">06 / REPRODUCE IT</p>
+          <h2 id="reproduce-title">Run the code.<br />Challenge the claim.</h2>
+          <p>
+            From the project root, start the local workbench or verify the
+            frozen experiments. No API key, model download, or paid service is
+            needed for these commands.
+          </p>
+          <a
+            class="button button-dark"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/README.md"
+            >Explore the source guide <span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="terminal">
+          <div class="terminal-head">
+            <span class="micro">LOCAL / PYTHON 3</span
+            ><button
+              class="copy-button"
+              id="copy"
+              type="button"
+              aria-label="Copy quickstart commands"
+            >
+              Copy
+            </button>
+          </div>
+          <pre><code id="quickstart"># Run from the EIV project root
+python3 -m venv .venv
+.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python -m eiv.web</code></pre>
+          <p class="terminal-note">
+            Open http://127.0.0.1:8765<br />Windows: use
+            .venv\Scripts\python.exe
+          </p>
+          <div class="terminal-divider"></div>
+          <p class="micro terminal-label">VERIFY THE FROZEN STUDIES</p>
+          <pre><code>python3 scripts/replay_frozen.py \
+  --output build/historical-check</code></pre>
+          <p
+            id="copy-feedback"
+            class="copy-feedback"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </div>
+      </section>
+
+      <section
+        id="references"
+        class="section wrap references"
+        aria-labelledby="references-title"
+      >
+        <div class="reference-intro">
+          <p class="eyebrow section-index">07 / INTELLECTUAL CONTEXT</p>
+          <h2 id="references-title">
+            Built in conversation<br />with prior work.
+          </h2>
+          <p>
+            Interactive clarification, formal specification, and missing
+            interpretations are established research topics. EIV adapts these
+            ideas to a bounded permission study; it does not claim priority for
+            their combination.
+          </p>
+          <a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/research/references.bib"
+            >Bibliography (BibTeX) ↗</a
+          >
+        </div>
+        <ol class="reference-list">
+          <li>
+            <span class="reference-number">[1]</span>
+            <div>
+              <p class="micro">YAO ET AL. · EMNLP-IJCNLP 2019</p>
+              <h3>
+                <a href="https://aclanthology.org/D19-1547/"
+                  >Model-based Interactive Semantic Parsing
+                  <span aria-hidden="true">↗</span></a
+                >
+              </h3>
+              <p>
+                Maintaining an interpretation, deciding when to ask, and
+                updating it after feedback.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="reference-number">[2]</span>
+            <div>
+              <p class="micro">COSLER ET AL. · CAV 2023</p>
+              <h3>
+                <a
+                  href="https://link.springer.com/chapter/10.1007/978-3-031-37703-7_18"
+                  >nl2spec <span aria-hidden="true">↗</span></a
+                >
+              </h3>
+              <p>
+                Interactive translation from natural language into formal
+                temporal specifications.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="reference-number">[3]</span>
+            <div>
+              <p class="micro">SAPARINA &amp; LAPATA · FINDINGS ACL 2025</p>
+              <h3>
+                <a href="https://aclanthology.org/2025.findings-acl.863/"
+                  >Disambiguate First, Parse Later
+                  <span aria-hidden="true">↗</span></a
+                >
+              </h3>
+              <p>
+                Separating interpretation generation from parsing and recovering
+                omitted readings.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="closing wrap">
+        <p class="eyebrow">THE QUESTION THAT REMAINS</p>
+        <p class="closing-line">
+          Did we verify the action,<br />or only our reading of it?
+        </p>
+        <div class="closing-bottom">
+          <p>
+            A personal research engineering project<br />by Roberto Villafuerte.
+          </p>
+          <a
+            class="text-link"
+            href="https://github.com/VillaforTech/eiv/blob/v0.4.0/README.md"
+            >Code, evidence &amp; limitations ↗</a
+          >
+        </div>
+      </section>
+    </main>
+    <footer class="wrap site-footer">
+      <span>© 2026 Roberto Villafuerte</span
+      ><span>EIV · Public project page draft</span
+      ><a href="#main">Back to top ↑</a>
+    </footer>
+  </body>
+</html>
